@@ -25,6 +25,7 @@ module.exports = {
       },
       role: {
         type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
         defaultValue: 1
       },
       createdAt: {

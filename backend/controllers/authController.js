@@ -16,6 +16,7 @@ class AuthController {
       });
     } catch (err) {
       next(err);
+      console.log(err);
     }
   }
 
@@ -58,11 +59,36 @@ class AuthController {
     }
   }
 
-  async forgotPassword(req, res) {}
+  async forgotPassword(req, res, next) {
+    try {
+      const { email } = req.body;
+      await AuthService.passwordMail(email);
+      return res.status(200).json({ message: "Password email sent!" });
+    } catch (err) {
+      next(err);
+    }
+  }
 
-  async sendVerificationEmail(user, token) {}
+  async resetPassword(req, res, next) {
+    try {
+      const token = req.params.token;
+      const { newPassword } = req.body;
+      await AuthService.resetPassword(token, newPassword);
+      return res.status(200).json({ message: "Password updated!" });
+    } catch (err) {
+      next(err);
+    }
+  }
 
-  async verifyEmail(req, res) {}
+  async verifyEmail(req, res, next) {
+    try {
+      const token = req.params.token;
+      await AuthService.verifyEmail(token);
+      return res.status(200).json({ message: "Verified!" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new AuthController();

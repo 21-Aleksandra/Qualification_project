@@ -34,9 +34,11 @@ my_app.use(
     }),
     resave: false,
     saveUninitialized: false,
+    rolling: true,
     cookie: {
       httpOnly: true,
       secure: false,
+      maxAge: 30 * 60 * 1000,
     },
   })
 );

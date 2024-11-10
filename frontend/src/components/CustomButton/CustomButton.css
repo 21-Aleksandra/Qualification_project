@@ -1,0 +1,35 @@
+.custom-button {
+  color: black;
+  border: 2px solid black;
+  background: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 6px 12px;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.custom-button {
+  background-color: rgb(255, 255, 255);
+}
+
+.custom-button:hover {
+  background-color: black;
+  color: white;
+}
+
+.custom-button-sm {
+  padding: 4px 10px;
+  font-size: 0.875em;
+}
+
+.custom-button-md {
+  padding: 6px 14px;
+  font-size: 1em;
+}
+
+.custom-button-lg {
+  padding: 10px 24px;
+  font-size: 1.5em;
+}

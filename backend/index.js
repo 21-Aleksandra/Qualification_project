@@ -18,10 +18,15 @@ redisClient
 
 const PORT = process.env.PORT;
 
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+};
+
 const my_app = express();
 
 my_app.use(express.urlencoded({ extended: true }));
-my_app.use(cors());
+my_app.use(cors(corsOptions));
 my_app.use(express.json());
 
 my_app.use(

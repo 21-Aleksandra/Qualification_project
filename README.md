@@ -51,3 +51,32 @@ All notable changes to this project will be documented in this file.
 #### Fixed
 
 - Minor logical statement bugs in endpoints
+
+### [1.3] - 10-11-2024 - Major update
+
+#### Added
+
+## Backend:
+
+- Auth and role checking middlewares for controlling the access to future backend routes
+- Add auth status cheking route
+- Add regex validation for username, password, email on server
+
+## Frontend:
+
+- Add Navbar,Footer,Banner,Button,News,Form and Statistics reusable, fully-functional components
+- Add non-template look for landing, login, register, password-reset, dashboard pages
+- Add router,userrole,navbar consts for easier managment of component visibility along the system
+- Add Test page for rolebased acess testing (will be removed)
+- Add axios api and Auth endpont call functions for it
+- Add Mobx for state managing and axios for reguests
+
+#### Changed
+
+## Backend:
+
+- Changed file names to follow general naming pattern
+- Username is now a unique field for user and cannot contain bad words
+- Changed returns/redirects for auth service/controllers
+- Changed login logic: now user has only one session per all devices/browsers
+- Changed cors settings

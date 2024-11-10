@@ -1,0 +1,31 @@
+.statistics-block {
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.stats-caption {
+  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.2rem;
+  margin-top: 70px;
+}
+
+.stats-col {
+  text-align: center;
+}
+
+.text-label {
+  margin-bottom: 30px;
+}
+
+.number {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

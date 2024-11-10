@@ -2,7 +2,14 @@ const AppError = require("../utils/errorClass");
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const EmailService = require("../services/email-service");
+const EmailService = require("./emailService");
+const Filter = require("bad-words");
+const {
+  EMAIL_REGEX,
+  USERNAME_REGEX,
+  PASSWORD_REGEX,
+} = require("../utils/regexConsts");
+const filter = new Filter();
 
 class AuthService {
   async registerUser(username, email, password) {
@@ -10,13 +17,39 @@ class AuthService {
       throw AppError.badRequest("Username, email, and password are required");
     }
 
-    const existingUser = await this.checkUserExistanceByEmail(email);
-    if (existingUser) {
-      throw AppError.badRequest("User with this email does exist.");
+    if (!USERNAME_REGEX.test(username)) {
+      throw AppError.badRequest(
+        "Username must be 3-255 characters long and can only contain English letters, numbers, or underscores."
+      );
+    }
+
+    if (!EMAIL_REGEX.test(email)) {
+      throw AppError.badRequest("Invalid email format");
+    }
+
+    if (!PASSWORD_REGEX.test(password)) {
+      throw AppError.badRequest(
+        "Password must be 8-80 characters, include at least one uppercase letter, one lowercase letter, one digit, and one special character (! . - _)."
+      );
+    }
+
+    if (filter.isProfane(username)) {
+      throw AppError.badRequest("Username contains inappropriate language");
+    }
+
+    const existingUserByEmail = await this.checkUserExistanceByEmail(email);
+    if (existingUserByEmail) {
+      throw AppError.badRequest("User with this email already exists.");
+    }
+
+    const existingUserByUsername = await this.checkUserExistanceByUsername(
+      username
+    );
+    if (existingUserByUsername) {
+      throw AppError.badRequest("User with this username already exists.");
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-
     const newUser = await User.create({
       username,
       email,
@@ -26,9 +59,7 @@ class AuthService {
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "3d",
     });
-
     const verificationLink = `${process.env.BACKEND_URL}auth/verify-email/${token}`;
-
     await EmailService.SendMail(email, "verification", verificationLink);
 
     return newUser;
@@ -61,7 +92,7 @@ class AuthService {
   }
 
   async verifyEmail(tokenFromLink) {
-    await this.checkExpirationForToken(token);
+    await this.checkExpirationForToken(tokenFromLink);
     const decoded = jwt.verify(tokenFromLink, process.env.JWT_SECRET);
     const userId = decoded.userId;
 
@@ -80,11 +111,17 @@ class AuthService {
 
   async passwordMail(email) {
     const newUser = await this.checkUserExistanceByEmail(email);
+    if (!newUser) {
+      throw AppError.badRequest("No user with such email");
+    }
+    if (!newUser.isVerified) {
+      throw AppError.badRequest("Verify your email first!");
+    }
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "15m",
     });
 
-    const passwordLink = `${process.env.BACKEND_URL}auth/reset-password/${token}`;
+    const passwordLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
     await EmailService.SendMail(email, "passwordReset", passwordLink);
   }
@@ -95,24 +132,30 @@ class AuthService {
     const userId = decoded.userId;
 
     const user = await this.checkUserExistanceById(userId);
-
     if (!user) {
       throw AppError.badRequest("User not found");
     }
 
-    const passwordHash = await bcrypt.hash(newPassword, 10);
+    if (!PASSWORD_REGEX.test(newPassword)) {
+      throw AppError.badRequest(
+        "Password must be 8-80 characters, include at least one uppercase letter, one lowercase letter, one digit, and one special character (! . - _)."
+      );
+    }
 
+    const passwordHash = await bcrypt.hash(newPassword, 10);
     await User.update({ password: passwordHash }, { where: { id: userId } });
   }
 
   async checkUserExistanceByEmail(email) {
-    const existingUser = await User.findOne({ where: { email: email } });
-    return existingUser;
+    return User.findOne({ where: { email } });
   }
 
   async checkUserExistanceById(id) {
-    const existingUser = await User.findOne({ where: { id: id } });
-    return existingUser;
+    return User.findOne({ where: { id } });
+  }
+
+  async checkUserExistanceByUsername(username) {
+    return await User.findOne({ where: { username } });
   }
 
   async checkExpirationForToken(token) {

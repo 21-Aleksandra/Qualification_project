@@ -18,7 +18,7 @@ class EmailService {
   async loadTemplate(templateName) {
     const templatePath = path.join(
       __dirname,
-      "email-templates",
+      "emailTemplates",
       `${templateName}.html`
     );
     return fs.promises.readFile(templatePath, "utf-8");

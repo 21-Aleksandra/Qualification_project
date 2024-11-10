@@ -1,7 +1,13 @@
 const AppError = require("../utils/errorClass");
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
-const AuthService = require("../services/auth-service");
+const AuthService = require("../services/authService");
+const { createClient } = require("redis");
+const redisClient = createClient();
+
+redisClient
+  .connect()
+  .catch((e) => console.log("Could not connect to Redis", e));
 
 class AuthController {
   async registerUser(req, res, next) {
@@ -16,7 +22,6 @@ class AuthController {
       });
     } catch (err) {
       next(err);
-      console.log(err);
     }
   }
 
@@ -26,15 +31,35 @@ class AuthController {
 
       const existingUser = await AuthService.loginUser(email, password);
 
-      req.session.logged_in = true;
-      req.session.user = {
-        id: existingUser.id,
-        role: existingUser.role,
-      };
+      const previousSessionId = await redisClient.get(
+        `user:${existingUser.id}`
+      );
 
-      return res.status(200).json({
-        message: "Login successful",
-        user: existingUser.email,
+      if (previousSessionId) {
+        await redisClient.del(`sess:${previousSessionId}`);
+      }
+
+      req.session.regenerate(async (err) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ message: "Session regeneration error" });
+        }
+
+        req.session.logged_in = true;
+        req.session.user = {
+          id: existingUser.id,
+          role: existingUser.role,
+          username: existingUser.username,
+        };
+
+        await redisClient.set(`user:${existingUser.id}`, req.session.id);
+
+        return res.status(200).json({
+          message: "Login successful",
+          role: existingUser.role,
+          username: existingUser.username,
+        });
       });
     } catch (err) {
       next(err);
@@ -84,7 +109,27 @@ class AuthController {
     try {
       const token = req.params.token;
       await AuthService.verifyEmail(token);
-      return res.status(200).json({ message: "Verified!" });
+      return res.redirect(process.env.FRONTEND_URL);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async checkStatus(req, res, next) {
+    try {
+      if (req.session.user) {
+        res.json({
+          isAuthenticated: true,
+          role: req.session.user.role,
+          username: req.session.user.username,
+        });
+      } else {
+        res.json({
+          isAuthenticated: false,
+          role: null,
+          username: null,
+        });
+      }
     } catch (err) {
       next(err);
     }

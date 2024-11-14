@@ -21,6 +21,11 @@ const navigationLinks = [
     link: "/admin",
     allowedRoles: [UserRoles.ADMIN],
   },
+  {
+    name: "My organisations",
+    link: "/my-organisations",
+    allowedRoles: [UserRoles.MANAGER],
+  },
 ];
 
 export default navigationLinks;

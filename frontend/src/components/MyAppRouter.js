@@ -11,13 +11,13 @@ const MyAppRouter = observer(() => {
   console.log(user);
 
   const isAuth = user.isAuth;
-  const userRole = Number(user.role);
+  const userRoles = user.roles;
 
   const hasPermission = (routeRoles) => {
-    return routeRoles.includes(userRole);
+    return routeRoles.some((role) => userRoles.includes(role));
   };
 
-  const isBlocked = userRole === UserRoles.BLOCKED;
+  const isBlocked = userRoles.includes(UserRoles.BLOCKED);
 
   return (
     <Routes>
@@ -53,7 +53,6 @@ const MyAppRouter = observer(() => {
       {isBlocked && (
         <Route path="*" element={<Navigate to={LANDING_ROUTE} />} />
       )}
-
       <Route
         path="*"
         element={<Navigate to={isAuth ? DASHBOARD_ROUTE : LANDING_ROUTE} />}

@@ -15,7 +15,7 @@ const App = observer(() => {
   useEffect(() => {
     ckeckStatus()
       .then((data) => {
-        user.setRole(data.role);
+        user.setRoles(data.roles);
         user.setAuth(data.isAuthenticated);
         user.setUser(data.username);
       })

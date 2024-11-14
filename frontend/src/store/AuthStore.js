@@ -3,7 +3,7 @@ import { makeAutoObservable } from "mobx";
 export default class AuthStore {
   constructor() {
     this._isAuth = false;
-    this._role = null;
+    this._roles = [];
     this._username = null;
     makeAutoObservable(this);
   }
@@ -12,8 +12,8 @@ export default class AuthStore {
     this._isAuth = isAuthenticated;
   }
 
-  setRole(userRole) {
-    this._role = userRole;
+  setRoles(userRoles) {
+    this._roles = userRoles;
   }
 
   setUser(username) {
@@ -22,7 +22,7 @@ export default class AuthStore {
 
   logout() {
     this._isAuth = false;
-    this._role = null;
+    this._roles = [];
     this._username = null;
   }
 
@@ -30,8 +30,8 @@ export default class AuthStore {
     return this._isAuth;
   }
 
-  get role() {
-    return this._role;
+  get roles() {
+    return this._roles;
   }
 
   get user() {

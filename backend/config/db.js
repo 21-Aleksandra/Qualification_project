@@ -1,9 +1,8 @@
-const { Sequelize } = require('sequelize');
-const config = require('./config');
+const { Sequelize } = require("sequelize");
+const config = require("./config");
 
-const env = process.env.NODE_ENV || 'development'; 
+const env = process.env.NODE_ENV || "development";
 const dbConfig = config[env];
-
 
 const sequelize = new Sequelize(
   dbConfig.database,
@@ -14,7 +13,7 @@ const sequelize = new Sequelize(
     dialect: dbConfig.dialect,
     port: dbConfig.port,
     logging: false,
-    timezone: dbConfig.timezone, 
+    timezone: dbConfig.timezone,
   }
 );
 

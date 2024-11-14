@@ -61,10 +61,18 @@ const LoginRegisterPage = observer(() => {
     } else {
       try {
         const response = await loginUser(formState.email, formState.password);
-        user.setAuth(true);
-        user.setUser(response.username);
-        user.setRole(response.role);
-        navigate(DASHBOARD_ROUTE);
+        if (response.roles.length > 0) {
+          user.setAuth(true);
+          user.setUser(response.username);
+          user.setRoles(response.roles);
+          navigate(DASHBOARD_ROUTE);
+        } else {
+          window.alert(
+            "There is a problem with your account, contact the administrator!"
+          );
+          user.logout();
+          navigate(LANDING_ROUTE);
+        }
       } catch (err) {
         setError(err?.message || "Login failed.");
       }

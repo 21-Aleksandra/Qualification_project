@@ -6,17 +6,20 @@ const roleChecker = (requiredRoles) => {
     if (
       req.session &&
       req.session.user &&
-      req.session.user.role !== undefined
+      req.session.user.roles !== undefined
     ) {
-      const userRole = req.session.user.role;
+      const userRoles = req.session.user.roles;
 
-      if (userRole === Roles.BLOCKED) {
+      if (userRoles.includes(Roles.BLOCKED)) {
         return next(
           AppError.forbidden("Your account is blocked. Please contact support.")
         );
       }
+      const hasRequiredRole = requiredRoles.some((role) =>
+        userRoles.includes(role)
+      );
 
-      if (requiredRoles.includes(userRole)) {
+      if (hasRequiredRole) {
         return next();
       } else {
         return next(

@@ -41,6 +41,10 @@ const NavigationBar = observer(() => {
 
   const toggleOffcanvas = () => setShowOffcanvas(!showOffcanvas);
 
+  const hasPermission = (allowedRoles) => {
+    return allowedRoles.some((role) => user.roles.includes(role));
+  };
+
   return (
     <Navbar expand="lg" className="navbar-custom shadow-sm">
       <Container fluid>
@@ -61,7 +65,7 @@ const NavigationBar = observer(() => {
           {user.isAuth && (
             <Nav className="mx-auto">
               {navigationLinks
-                .filter((link) => link.allowedRoles.includes(user.role))
+                .filter((link) => hasPermission(link.allowedRoles))
                 .map((link, index) => (
                   <Nav.Link
                     key={index}
@@ -84,7 +88,7 @@ const NavigationBar = observer(() => {
               className="user-dropdown-custom"
             >
               {profileLinks
-                .filter((link) => link.allowedRoles.includes(user.role))
+                .filter((link) => hasPermission(link.allowedRoles))
                 .map((link, index) => (
                   <NavDropdown.Item
                     key={index}
@@ -139,7 +143,7 @@ const NavigationBar = observer(() => {
                 <div className="mb-3">
                   <div className="offcanvas-username">{user.user}</div>
                   {profileLinks
-                    .filter((link) => link.allowedRoles.includes(user.role))
+                    .filter((link) => hasPermission(link.allowedRoles))
                     .map((link, index) => (
                       <Nav.Link
                         key={index}
@@ -154,7 +158,7 @@ const NavigationBar = observer(() => {
               )}
               {user.isAuth &&
                 navigationLinks
-                  .filter((link) => link.allowedRoles.includes(user.role))
+                  .filter((link) => hasPermission(link.allowedRoles))
                   .map((link, index) => (
                     <Nav.Link
                       key={index}

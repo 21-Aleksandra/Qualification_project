@@ -1,7 +1,8 @@
 const AppError = require("../utils/errorClass");
-const { User } = require("../models");
+const { User, UserRole } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Roles = require("../enums/roles");
 const EmailService = require("./emailService");
 const Filter = require("bad-words");
 const {
@@ -56,6 +57,11 @@ class AuthService {
       password: passwordHash,
     });
 
+    await UserRole.create({
+      userId: newUser.id,
+      roleId: Roles.REGULAR,
+    });
+
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "3d",
     });
@@ -71,7 +77,6 @@ class AuthService {
     }
 
     const existingUser = await this.checkUserExistanceByEmail(email);
-
     if (!existingUser) {
       throw AppError.badRequest("User with this email does not exist.");
     }
@@ -84,11 +89,18 @@ class AuthService {
       password,
       existingUser.password
     );
-
     if (!isValidPassword) {
       throw AppError.badRequest("Invalid data");
     }
-    return existingUser;
+
+    const roles = await UserRole.findAll({
+      where: { userId: existingUser.id },
+      attributes: ["roleId"],
+    });
+
+    const roleIds = roles.map((role) => role.roleId);
+
+    return { user: existingUser, roles: roleIds };
   }
 
   async verifyEmail(tokenFromLink) {

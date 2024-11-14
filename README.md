@@ -56,13 +56,13 @@ All notable changes to this project will be documented in this file.
 
 #### Added
 
-## Backend:
+##### Backend:
 
 - Auth and role checking middlewares for controlling the access to future backend routes
 - Add auth status cheking route
 - Add regex validation for username, password, email on server
 
-## Frontend:
+##### Frontend:
 
 - Add Navbar,Footer,Banner,Button,News,Form and Statistics reusable, fully-functional components
 - Add non-template look for landing, login, register, password-reset, dashboard pages
@@ -73,10 +73,32 @@ All notable changes to this project will be documented in this file.
 
 #### Changed
 
-## Backend:
+##### Backend:
 
 - Changed file names to follow general naming pattern
 - Username is now a unique field for user and cannot contain bad words
 - Changed returns/redirects for auth service/controllers
 - Changed login logic: now user has only one session per all devices/browsers
 - Changed cors settings
+
+### [1.4] - 14-11-2024
+
+#### Added
+
+##### Backend:
+
+- Role model, migration and seeder
+- UserRole model, migration and seeder for more scalible and reliable system
+
+#### Changed
+
+##### Backend:
+
+- RoleChecker middleware processing logic for roles - now ensures correct permissons even for multiple roles
+- Changed some responses that included role id to role id array
+- User table now don't have userId column
+
+##### Frontend:
+
+- Auth store now stores roles as array
+- Changed role-based permission processing to potentially allow multiple roles for one user in future

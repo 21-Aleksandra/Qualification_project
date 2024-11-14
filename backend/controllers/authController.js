@@ -29,12 +29,9 @@ class AuthController {
     try {
       const { email, password } = req.body;
 
-      const existingUser = await AuthService.loginUser(email, password);
+      const { user, roles } = await AuthService.loginUser(email, password);
 
-      const previousSessionId = await redisClient.get(
-        `user:${existingUser.id}`
-      );
-
+      const previousSessionId = await redisClient.get(`user:${user.id}`);
       if (previousSessionId) {
         await redisClient.del(`sess:${previousSessionId}`);
       }
@@ -48,24 +45,23 @@ class AuthController {
 
         req.session.logged_in = true;
         req.session.user = {
-          id: existingUser.id,
-          role: existingUser.role,
-          username: existingUser.username,
+          id: user.id,
+          username: user.username,
+          roles: roles,
         };
 
-        await redisClient.set(`user:${existingUser.id}`, req.session.id);
+        await redisClient.set(`user:${user.id}`, req.session.id);
 
         return res.status(200).json({
           message: "Login successful",
-          role: existingUser.role,
-          username: existingUser.username,
+          username: user.username,
+          roles: roles,
         });
       });
     } catch (err) {
       next(err);
     }
   }
-
   async logoutUser(req, res, next) {
     try {
       req.session.destroy((err) => {
@@ -120,13 +116,13 @@ class AuthController {
       if (req.session.user) {
         res.json({
           isAuthenticated: true,
-          role: req.session.user.role,
+          roles: req.session.user.roles,
           username: req.session.user.username,
         });
       } else {
         res.json({
           isAuthenticated: false,
-          role: null,
+          roles: [],
           username: null,
         });
       }

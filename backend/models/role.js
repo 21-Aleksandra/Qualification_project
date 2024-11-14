@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "User",
+  const Role = sequelize.define(
+    "Role",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -8,18 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      username: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING(255),
+      rolename: {
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
-      },
-      password: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -32,24 +24,19 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.NOW,
         onUpdate: DataTypes.NOW,
       },
-      isVerified: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
     },
     {
-      tableName: "User",
+      tableName: "Roles",
       timestamps: true,
     }
   );
 
-  User.associate = function (models) {
-    User.belongsToMany(models.Role, {
+  Role.associate = function (models) {
+    Role.belongsToMany(models.User, {
       through: models.UserRole,
-      foreignKey: "User_userId",
+      foreignKey: "Role_roleId",
     });
   };
 
-  return User;
+  return Role;
 };

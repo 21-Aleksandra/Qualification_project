@@ -10,8 +10,14 @@ const bodyParser = require("body-parser");
 const errorHandlerMiddleware = require("./middlewares/errorHandler.js");
 const { createClient } = require("redis");
 const RedisStore = require("connect-redis").default;
-const redisClient = createClient();
-
+const redisClient = createClient({
+  socket: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+  },
+  password: null,
+  database: process.env.REDIS_DB || 0,
+});
 redisClient
   .connect()
   .catch((e) => console.log("Could not connect to Redis", e));

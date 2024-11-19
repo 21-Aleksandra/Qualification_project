@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "User",
+  const Photo = sequelize.define(
+    "Photo",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -8,18 +8,25 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      username: {
+      url: {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
-      email: {
+      filename: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        unique: true,
       },
-      password: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
+      type: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+      },
+      photoSetId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      isBannerPhoto: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -32,29 +39,18 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.NOW,
         onUpdate: DataTypes.NOW,
       },
-      isVerified: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
     },
     {
-      tableName: "User",
+      tableName: "Photo",
       timestamps: true,
     }
   );
 
-  User.associate = function (models) {
-    User.belongsToMany(models.Role, {
-      through: models.User_Role,
-      foreignKey: "userId",
-    });
-
-    User.belongsToMany(models.Subsidiary, {
-      through: models.Subsidiary_Manager,
-      foreignKey: "managerId",
+  Photo.associate = function (models) {
+    Photo.belongsTo(models.Photo_Set, {
+      foreignKey: "photoSetId",
     });
   };
 
-  return User;
+  return Photo;
 };

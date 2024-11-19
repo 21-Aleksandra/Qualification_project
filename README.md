@@ -102,3 +102,20 @@ All notable changes to this project will be documented in this file.
 
 - Auth store now stores roles as array
 - Changed role-based permission processing to potentially allow multiple roles for one user in future
+
+### [2.0] - 19-11-2024
+
+#### Added
+
+##### Backend:
+
+- Address/MainOrganization/PhotoSet/Photo/Mission/Subsidiary/SubsidiaryMission/SubsidiaryManager model, migration and seeder
+
+#### Changed
+
+##### Backend:
+
+- DB settings - now tables can be named with underscores
+- Changed UserRole to User_Role
+- Changed UserRole related fk as well as added id field to UserRole to improve sequelize queries
+- Redis client port and host configuration is moved to .env file

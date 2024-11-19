@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Role = sequelize.define(
-    "Role",
+  const Main_Organization = sequelize.define(
+    "Main_Organization",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -8,10 +8,9 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      rolename: {
-        type: DataTypes.STRING(100),
+      name: {
+        type: DataTypes.TEXT("tiny"),
         allowNull: false,
-        unique: true,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -26,17 +25,16 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "Role",
+      tableName: "Main_Organization",
       timestamps: true,
     }
   );
 
-  Role.associate = function (models) {
-    Role.belongsToMany(models.User, {
-      through: models.User_Role,
-      foreignKey: "roleId",
+  Main_Organization.associate = function (models) {
+    Main_Organization.hasMany(models.Subsidiary, {
+      foreignKey: "mainOrganizationId",
     });
   };
 
-  return Role;
+  return Main_Organization;
 };

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Role = sequelize.define(
-    "Role",
+  const Address = sequelize.define(
+    "Address",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -8,10 +8,17 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      rolename: {
-        type: DataTypes.STRING(100),
+      country: {
+        type: DataTypes.TEXT("tiny"),
         allowNull: false,
-        unique: true,
+      },
+      city: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false,
+      },
+      street: {
+        type: DataTypes.TEXT("tiny"),
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -26,17 +33,16 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "Role",
+      tableName: "Address",
       timestamps: true,
     }
   );
 
-  Role.associate = function (models) {
-    Role.belongsToMany(models.User, {
-      through: models.User_Role,
-      foreignKey: "roleId",
+  Address.associate = function (models) {
+    Address.hasMany(models.Subsidiary, {
+      foreignKey: "addressId",
     });
   };
 
-  return Role;
+  return Address;
 };

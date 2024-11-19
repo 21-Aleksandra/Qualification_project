@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const UserRole = sequelize.define(
-    "UserRole",
+  const User_Role = sequelize.define(
+    "User_Role",
     {
       userId: {
         type: DataTypes.INTEGER,
@@ -25,10 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "UserRole",
+      tableName: "User_Role",
       timestamps: true,
     }
   );
 
-  return UserRole;
+  return User_Role;
 };

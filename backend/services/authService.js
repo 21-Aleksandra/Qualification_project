@@ -1,5 +1,5 @@
 const AppError = require("../utils/errorClass");
-const { User, UserRole } = require("../models");
+const { User, User_Role } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Roles = require("../enums/roles");
@@ -57,7 +57,7 @@ class AuthService {
       password: passwordHash,
     });
 
-    await UserRole.create({
+    await User_Role.create({
       userId: newUser.id,
       roleId: Roles.REGULAR,
     });
@@ -93,7 +93,7 @@ class AuthService {
       throw AppError.badRequest("Invalid data");
     }
 
-    const roles = await UserRole.findAll({
+    const roles = await User_Role.findAll({
       where: { userId: existingUser.id },
       attributes: ["roleId"],
     });

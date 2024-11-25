@@ -110,6 +110,7 @@ All notable changes to this project will be documented in this file.
 ##### Backend:
 
 - Address/MainOrganization/PhotoSet/Photo/Mission/Subsidiary/SubsidiaryMission/SubsidiaryManager model, migration and seeder
+- Address, mainOrganization, mission and subsidiary services and controllers
 
 #### Changed
 
@@ -119,3 +120,8 @@ All notable changes to this project will be documented in this file.
 - Changed UserRole to User_Role
 - Changed UserRole related fk as well as added id field to UserRole to improve sequelize queries
 - Redis client port and host configuration is moved to .env file
+- Changed session model - now user has id
+
+##### Frontend:
+
+- User id is added to Auth storage and accoring methods

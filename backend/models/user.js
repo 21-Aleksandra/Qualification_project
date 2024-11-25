@@ -48,11 +48,13 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsToMany(models.Role, {
       through: models.User_Role,
       foreignKey: "userId",
+      otherKey: "roleId",
     });
 
     User.belongsToMany(models.Subsidiary, {
       through: models.Subsidiary_Manager,
       foreignKey: "managerId",
+      otherKey: "subsidiaryId",
     });
   };
 

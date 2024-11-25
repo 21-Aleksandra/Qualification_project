@@ -56,6 +56,7 @@ class AuthController {
           message: "Login successful",
           username: user.username,
           roles: roles,
+          id: user.id,
         });
       });
     } catch (err) {
@@ -118,12 +119,14 @@ class AuthController {
           isAuthenticated: true,
           roles: req.session.user.roles,
           username: req.session.user.username,
+          id: req.session.user.id,
         });
       } else {
         res.json({
           isAuthenticated: false,
           roles: [],
           username: null,
+          id: null,
         });
       }
     } catch (err) {

@@ -84,6 +84,7 @@ module.exports = (sequelize, DataTypes) => {
     Subsidiary.belongsToMany(models.User, {
       through: models.Subsidiary_Manager,
       foreignKey: "subsidiaryId",
+      otherKey: "managerId",
     });
   };
 

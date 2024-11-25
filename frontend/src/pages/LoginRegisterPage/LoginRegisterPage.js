@@ -65,6 +65,7 @@ const LoginRegisterPage = observer(() => {
           user.setAuth(true);
           user.setUser(response.username);
           user.setRoles(response.roles);
+          user.setId(response.id);
           navigate(DASHBOARD_ROUTE);
         } else {
           window.alert(

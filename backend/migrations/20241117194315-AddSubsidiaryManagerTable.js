@@ -3,20 +3,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("User_Role", {
+    await queryInterface.createTable("Subsidiary_Manager", {
       id: {
         type: Sequelize.DataTypes.INTEGER,
-        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
-      userId: {
+      managerId: {
         type: Sequelize.DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
-      roleId: {
+      subsidiaryId: {
         type: Sequelize.DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -31,10 +31,10 @@ module.exports = {
       },
     });
 
-    await queryInterface.addConstraint("User_Role", {
-      fields: ["userId"],
+    await queryInterface.addConstraint("Subsidiary_Manager", {
+      fields: ["managerId"],
       type: "foreign key",
-      name: "fk_userRole_user",
+      name: "fk_subsidiaryManager_user",
       references: {
         table: "User",
         field: "id",
@@ -43,12 +43,12 @@ module.exports = {
       onDelete: "CASCADE",
     });
 
-    await queryInterface.addConstraint("User_Role", {
-      fields: ["roleId"],
+    await queryInterface.addConstraint("Subsidiary_Manager", {
+      fields: ["subsidiaryId"],
       type: "foreign key",
-      name: "fk_userRole_role",
+      name: "fk_subsidiaryManager_subsidiary",
       references: {
-        table: "Role",
+        table: "Subsidiary",
         field: "id",
       },
       onUpdate: "CASCADE",
@@ -57,8 +57,15 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint("User_Role", "fk_userRole_user");
-    await queryInterface.removeConstraint("User_Role", "fk_userRole_role");
-    await queryInterface.dropTable("User_Role");
+    await queryInterface.removeConstraint(
+      "Subsidiary_Manager",
+      "fk_subsidiaryManager_user"
+    );
+    await queryInterface.removeConstraint(
+      "Subsidiary_Manager",
+      "fk_subsidiaryManager_subsidiary"
+    );
+
+    await queryInterface.dropTable("Subsidiary_Manager");
   },
 };

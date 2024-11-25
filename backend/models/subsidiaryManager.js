@@ -1,16 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
-  const User_Role = sequelize.define(
-    "User_Role",
+  const Subsidiary_Manager = sequelize.define(
+    "Subsidiary_Manager",
     {
-      userId: {
+      id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
       },
-      roleId: {
+      managerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true,
+      },
+      subsidiaryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -25,10 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "User_Role",
+      tableName: "Subsidiary_Manager",
       timestamps: true,
     }
   );
 
-  return User_Role;
+  return Subsidiary_Manager;
 };

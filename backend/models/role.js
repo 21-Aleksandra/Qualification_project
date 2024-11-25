@@ -26,15 +26,16 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "Roles",
+      tableName: "Role",
       timestamps: true,
     }
   );
 
   Role.associate = function (models) {
     Role.belongsToMany(models.User, {
-      through: models.UserRole,
-      foreignKey: "Role_roleId",
+      through: models.User_Role,
+      foreignKey: "roleId",
+      otherKey: "userId",
     });
   };
 

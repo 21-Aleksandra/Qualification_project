@@ -1,15 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const User_Role = sequelize.define(
-    "User_Role",
+  const Photo_Set = sequelize.define(
+    "Photo_Set",
     {
-      userId: {
+      id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true,
-      },
-      roleId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
       },
       createdAt: {
@@ -25,10 +21,20 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "User_Role",
+      tableName: "Photo_Set",
       timestamps: true,
     }
   );
 
-  return User_Role;
+  Photo_Set.associate = function (models) {
+    Photo_Set.hasMany(models.Photo, {
+      foreignKey: "photoSetId",
+    });
+
+    Photo_Set.hasMany(models.Subsidiary, {
+      foreignKey: "photoSetId",
+    });
+  };
+
+  return Photo_Set;
 };

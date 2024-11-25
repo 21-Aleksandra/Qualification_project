@@ -3,20 +3,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("User_Role", {
+    await queryInterface.createTable("Subsidiary_Mission", {
       id: {
         type: Sequelize.DataTypes.INTEGER,
-        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
-      userId: {
+      missionId: {
         type: Sequelize.DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
-      roleId: {
+      subsidiaryId: {
         type: Sequelize.DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -31,24 +31,24 @@ module.exports = {
       },
     });
 
-    await queryInterface.addConstraint("User_Role", {
-      fields: ["userId"],
+    await queryInterface.addConstraint("Subsidiary_Mission", {
+      fields: ["missionId"],
       type: "foreign key",
-      name: "fk_userRole_user",
+      name: "fk_subsidiaryMission_mission",
       references: {
-        table: "User",
+        table: "Mission",
         field: "id",
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     });
 
-    await queryInterface.addConstraint("User_Role", {
-      fields: ["roleId"],
+    await queryInterface.addConstraint("Subsidiary_Mission", {
+      fields: ["subsidiaryId"],
       type: "foreign key",
-      name: "fk_userRole_role",
+      name: "fk_subsidiaryMission_subsidiary",
       references: {
-        table: "Role",
+        table: "Subsidiary",
         field: "id",
       },
       onUpdate: "CASCADE",
@@ -57,8 +57,15 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint("User_Role", "fk_userRole_user");
-    await queryInterface.removeConstraint("User_Role", "fk_userRole_role");
-    await queryInterface.dropTable("User_Role");
+    await queryInterface.removeConstraint(
+      "Subsidiary_Mission",
+      "fk_subsidiaryMission_mission"
+    );
+    await queryInterface.removeConstraint(
+      "Subsidiary_Mission",
+      "fk_subsidiaryMission_subsidiary"
+    );
+
+    await queryInterface.dropTable("Subsidiary_Mission");
   },
 };

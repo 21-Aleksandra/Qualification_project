@@ -18,6 +18,7 @@ const App = observer(() => {
         user.setRoles(data.roles);
         user.setAuth(data.isAuthenticated);
         user.setUser(data.username);
+        user.setId(data.id);
       })
       .finally(() => setLoading(false));
   }, [user]);

@@ -14,6 +14,10 @@ const sequelize = new Sequelize(
     port: dbConfig.port,
     logging: false,
     timezone: dbConfig.timezone,
+    define: {
+      underscored: true,
+      freezeTableName: true,
+    },
   }
 );
 

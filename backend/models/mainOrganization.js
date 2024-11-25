@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
-  const User_Role = sequelize.define(
-    "User_Role",
+  const Main_Organization = sequelize.define(
+    "Main_Organization",
     {
-      userId: {
+      id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
       },
-      roleId: {
-        type: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.TEXT("tiny"),
         allowNull: false,
-        primaryKey: true,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -25,10 +25,16 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "User_Role",
+      tableName: "Main_Organization",
       timestamps: true,
     }
   );
 
-  return User_Role;
+  Main_Organization.associate = function (models) {
+    Main_Organization.hasMany(models.Subsidiary, {
+      foreignKey: "mainOrganizationId",
+    });
+  };
+
+  return Main_Organization;
 };

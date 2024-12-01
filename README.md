@@ -4,6 +4,11 @@
 
 All notable changes to this project will be documented in this file.
 
+In summary:
+
+v1.x - Auth related jobs
+v2.x - Subsidiary related jobs
+
 ### [1.0] - 28-09-2024
 
 #### Added
@@ -103,7 +108,7 @@ All notable changes to this project will be documented in this file.
 - Auth store now stores roles as array
 - Changed role-based permission processing to potentially allow multiple roles for one user in future
 
-### [2.0] - 19-11-2024
+### [2.0] - 25-11-2024
 
 #### Added
 
@@ -125,3 +130,33 @@ All notable changes to this project will be documented in this file.
 ##### Frontend:
 
 - User id is added to Auth storage and accoring methods
+
+### [2.1] - 01-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Address/MainOrganization/Mission/Subsidiary stores for effective data managment
+- MultiSelectItem, Pagination universal components
+- Subsidiary list page and subsidiary item page with manager-only data retrievieng option
+- Subsidiary-specific filter component
+- Default subsidiary picure
+- New envs and router consts
+- GoogleMaps component and google maps API integration for displaying the location pf subsidiary
+
+#### Changed
+
+##### Backend:
+
+- Added coordinates to Address model/table/responses
+- Changed get-list responses for mainOrgainzations,addresses so they would be specific for managers and related only to subsidiaries
+
+##### Frontend:
+
+- Loading panels for some pages/components
+
+#### Fixed
+
+- Minor logical statement bugs in endpoints
+- Css overlapping problems (not component-specific css)

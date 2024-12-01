@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { resetPassword } from "../../api/AuthAPI";
 import FormContainer from "../../components/FormContainer/FormContainer";
 import { LOGIN_ROUTE, LANDING_ROUTE } from "../../utils/routerConsts";
+import { Spinner } from "react-bootstrap";
 const PasswordResetFormPage = () => {
   const navigate = useNavigate();
   const { token } = useParams();
@@ -46,6 +47,15 @@ const PasswordResetFormPage = () => {
       setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div id="subsidiary-loading" className="text-center my-5">
+        <Spinner animation="border" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <FormContainer

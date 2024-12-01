@@ -23,6 +23,7 @@ class MissionController {
 
       const newMission = await missionService.addMission(name);
       res.status(201).json({
+        message: "Mission added successfully",
         mission: newMission,
       });
     } catch (err) {

@@ -8,3 +8,5 @@ export const TEST_ROUTE = "/test";
 export const EVENTS_ROUTE = "/events";
 export const USERS_ROUTE = "/users";
 export const MY_ORGANISATIONS_ROUTE = "/my-organisations";
+export const SUBSIDIARIES_ROUTE = "/subsidiaries";
+export const SUBSIDIARY_ITEM_ROUTE = "/subsidiaries/:id";

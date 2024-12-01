@@ -1,10 +1,61 @@
-const { Address } = require("../models");
+const { Address, Subsidiary, User, Subsidiary_Manager } = require("../models");
 const { Op } = require("sequelize");
 const AppError = require("../utils/errorClass");
-
+const Roles = require("../enums/roles");
 class AddressService {
-  async findAddresses() {
+  async findSubsidiaryAddresses(userId, userRoles) {
+    if (userId && userRoles && userRoles.includes(Roles.MANAGER)) {
+      return await Address.findAll({
+        attributes: [
+          "id",
+          "country",
+          "city",
+          "street",
+          "lat",
+          "lng",
+          "createdAt",
+          "updatedAt",
+        ],
+        include: [
+          {
+            model: Subsidiary,
+            required: true,
+            include: [
+              {
+                model: User,
+                where: { id: userId },
+                attributes: [],
+              },
+            ],
+            attributes: [],
+          },
+        ],
+        order: [
+          ["country", "ASC"],
+          ["city", "ASC"],
+          ["street", "ASC"],
+        ],
+      });
+    }
+
     return await Address.findAll({
+      attributes: [
+        "id",
+        "country",
+        "city",
+        "street",
+        "lat",
+        "lng",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: [
+        {
+          model: Subsidiary,
+          required: true,
+          attributes: [],
+        },
+      ],
       order: [
         ["country", "ASC"],
         ["city", "ASC"],
@@ -13,7 +64,7 @@ class AddressService {
     });
   }
 
-  async createAddress(country, city, street) {
+  async createAddress(country, city, street, lat, lng) {
     const MAX_LENGTH = 255;
 
     if (country.length > MAX_LENGTH) {
@@ -50,7 +101,13 @@ class AddressService {
       );
     }
 
-    const newAddress = await Address.create({ country, city, street });
+    const newAddress = await Address.create({
+      country,
+      city,
+      street,
+      lat,
+      lng,
+    });
     return newAddress;
   }
 }

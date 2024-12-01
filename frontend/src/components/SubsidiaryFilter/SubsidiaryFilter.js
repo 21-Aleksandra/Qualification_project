@@ -1,0 +1,249 @@
+import React, { useState, useEffect, useContext } from "react";
+import { observer } from "mobx-react-lite";
+import { Context } from "../../index";
+import { getSubsidiaryFilteredList } from "../../api/SubsidiaryAPI";
+import { getSubsidiaryAddressList } from "../../api/AddressAPI";
+import { getMissionList } from "../../api/MissionAPI";
+import { getMainOrganizationList } from "../../api/MainOrganizationAPI";
+import MultiSelectInput from "../../components/MultiSelectInput/MultiSelectInput";
+import CustomButton from "../../components/CustomButton/CustomButton";
+import UserRoles from "../../utils/roleConsts";
+import "./SubsidiaryFilter.css";
+
+const FilterPanel = observer(() => {
+  const { subsidiary, address, mission, mainOrganization, user } =
+    useContext(Context);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [userRoles, setUserRoles] = useState([]);
+  const [isManager, setIsManager] = useState(false);
+
+  useEffect(() => {
+    const roles = Array.isArray(user.roles) ? user.roles : [user.roles];
+    const validRoles = roles.map(Number).filter((role) => !isNaN(role));
+    setUserRoles(validRoles);
+    setIsManager(validRoles.includes(UserRoles.MANAGER));
+  }, [user.roles]);
+
+  const userId = user.id;
+
+  useEffect(() => {
+    const fetchAddressesAndOptions = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const addressResponse = await getSubsidiaryAddressList({
+          userId,
+          userRoles: userRoles.join(","),
+        });
+        address.setAddresses(addressResponse || []);
+
+        const orgResponse = await getMainOrganizationList({
+          userId,
+          userRoles: userRoles.join(","),
+        });
+        mainOrganization.setOrganizations(orgResponse?.organizations || []);
+
+        const missionResponse = await getMissionList();
+        mission.setMissions(missionResponse?.missions || []);
+
+        setLoading(false);
+      } catch (err) {
+        setError(
+          err?.message || "Failed to fetch filter data. Please try again."
+        );
+        setLoading(false);
+      }
+    };
+    fetchAddressesAndOptions();
+  }, [address, mission, mainOrganization, userId, userRoles]);
+
+  const applyFilters = async () => {
+    const sortMapping = {
+      nameAsc: { sortBy: "name", sortOrder: "asc" },
+      nameDesc: { sortBy: "name", sortOrder: "desc" },
+      oldest: { sortBy: "createdAt", sortOrder: "asc" },
+      newest: { sortBy: "createdAt", sortOrder: "desc" },
+    };
+    const { sortBy, sortOrder } = sortMapping[subsidiary.filters.sortOption];
+
+    const filterParams = {
+      name: subsidiary.filters.searchName,
+      countries: subsidiary.filters.selectedCountries.join(","),
+      cities: subsidiary.filters.selectedCities.join(","),
+      missions: subsidiary.filters.selectedMissions.join(","),
+      mainOrganizationIds: subsidiary.filters.selectedOrganizations.join(","),
+      sortBy,
+      sortOrder,
+      userId: isManager ? userId : undefined,
+      userRoles: userRoles.join(","),
+    };
+
+    try {
+      setError("");
+      const response = await getSubsidiaryFilteredList(filterParams);
+      subsidiary.setSubsidiaries(response || []);
+    } catch (err) {
+      setError(
+        err?.message || "No subsidiaries with such filters. Please try again."
+      );
+    }
+  };
+
+  const removeFilters = async () => {
+    subsidiary.resetFilters();
+
+    try {
+      setError("");
+      const fullSubsidiaryList = await getSubsidiaryFilteredList({
+        userId: isManager ? userId : undefined,
+        userRoles: userRoles.join(","),
+      });
+      subsidiary.setSubsidiaries(fullSubsidiaryList || []);
+    } catch (err) {
+      setError(err?.message || "Failed to reset filters. Please try again.");
+    }
+  };
+
+  const handleCountryChange = (selectedCountries) => {
+    subsidiary.setFilters({
+      ...subsidiary.filters,
+      selectedCountries,
+      selectedCities: [],
+    });
+  };
+
+  const filteredCities = address.getFilteredCities(
+    address.addresses,
+    subsidiary.filters.selectedCountries
+  );
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="filter-panel">
+      <h3>Filter Subsidiaries</h3>
+      {error && <div className="error-panel">{error}</div>}
+
+      <div>
+        <label>Search Name</label>
+        <input
+          type="text"
+          value={subsidiary.filters.searchName}
+          onChange={(e) =>
+            subsidiary.setFilters({
+              ...subsidiary.filters,
+              searchName: e.target.value,
+            })
+          }
+          placeholder="Enter name"
+        />
+      </div>
+
+      <div>
+        <label>Sort By</label>
+        <select
+          value={subsidiary.filters.sortOption}
+          onChange={(e) =>
+            subsidiary.setFilters({
+              ...subsidiary.filters,
+              sortOption: e.target.value,
+            })
+          }
+        >
+          <option value="nameAsc">Name A-Z</option>
+          <option value="nameDesc">Name Z-A</option>
+          <option value="oldest">Oldest First</option>
+          <option value="newest">Newest First</option>
+        </select>
+      </div>
+
+      <MultiSelectInput
+        label="Countries"
+        searchValue={subsidiary.filters.searchCountry}
+        setSearchValue={(value) =>
+          subsidiary.setFilters({ ...subsidiary.filters, searchCountry: value })
+        }
+        options={address.countries.map((country) => ({ name: country }))}
+        selectedValues={subsidiary.filters.selectedCountries}
+        setSelectedValues={handleCountryChange}
+      />
+
+      <MultiSelectInput
+        label="Cities"
+        searchValue={subsidiary.filters.searchCity}
+        setSearchValue={(value) =>
+          subsidiary.setFilters({ ...subsidiary.filters, searchCity: value })
+        }
+        options={filteredCities.map((city) => ({ name: city }))}
+        selectedValues={subsidiary.filters.selectedCities}
+        setSelectedValues={(value) =>
+          subsidiary.setFilters({
+            ...subsidiary.filters,
+            selectedCities: value,
+          })
+        }
+      />
+
+      <MultiSelectInput
+        label="Missions"
+        searchValue={subsidiary.filters.searchMission}
+        setSearchValue={(value) =>
+          subsidiary.setFilters({ ...subsidiary.filters, searchMission: value })
+        }
+        options={mission.missions.map((mission) => ({
+          name: mission.name,
+          id: mission.id,
+        }))}
+        selectedValues={subsidiary.filters.selectedMissions}
+        setSelectedValues={(value) =>
+          subsidiary.setFilters({
+            ...subsidiary.filters,
+            selectedMissions: value,
+          })
+        }
+      />
+
+      <MultiSelectInput
+        label="Organizations"
+        searchValue={subsidiary.filters.searchOrganization}
+        setSearchValue={(value) =>
+          subsidiary.setFilters({
+            ...subsidiary.filters,
+            searchOrganization: value,
+          })
+        }
+        options={mainOrganization.organizations.map((org) => ({
+          name: org.name,
+          id: org.id,
+        }))}
+        selectedValues={subsidiary.filters.selectedOrganizations}
+        setSelectedValues={(value) =>
+          subsidiary.setFilters({
+            ...subsidiary.filters,
+            selectedOrganizations: value,
+          })
+        }
+      />
+
+      <div className="button-group">
+        <CustomButton size="md" onClick={applyFilters}>
+          Apply Filters
+        </CustomButton>
+        <CustomButton
+          size="md"
+          onClick={removeFilters}
+          className="clear-button"
+        >
+          Remove Filters
+        </CustomButton>
+      </div>
+    </div>
+  );
+});
+
+export default FilterPanel;

@@ -3,7 +3,7 @@ import { requestPasswordReset } from "../../api/AuthAPI";
 import { useNavigate } from "react-router-dom";
 import FormContainer from "../../components/FormContainer/FormContainer";
 import { LOGIN_ROUTE } from "../../utils/routerConsts";
-
+import { Spinner } from "react-bootstrap";
 const PasswordResetEmailPage = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -29,6 +29,15 @@ const PasswordResetEmailPage = () => {
       setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div id="subsidiary-loading" className="text-center my-5">
+        <Spinner animation="border" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <FormContainer

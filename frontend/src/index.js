@@ -2,13 +2,25 @@ import React, { createContext } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import AuthStore from "./store/AuthStore";
+import SubsidiaryStore from "./store/SubsidiaryStore";
+import AddressStore from "./store/AddressStore";
+import MainOrganisationStore from "./store/MainOrganisationStore";
+import MissionStore from "./store/MissionStore";
 
 export const Context = createContext(null);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <Context.Provider value={{ user: new AuthStore() }}>
+  <Context.Provider
+    value={{
+      user: new AuthStore(),
+      subsidiary: new SubsidiaryStore(),
+      address: new AddressStore(),
+      mission: new MissionStore(),
+      mainOrganization: new MainOrganisationStore(),
+    }}
+  >
     <App />
   </Context.Provider>
 );

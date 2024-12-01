@@ -26,7 +26,7 @@ class SubsidiaryService {
       sortBy,
       sortOrder,
       userId,
-      userRole,
+      userRoles,
     } = filters;
 
     const whereConditions = {};
@@ -51,7 +51,7 @@ class SubsidiaryService {
       include: [
         {
           model: Address,
-          attributes: ["city", "country", "street"],
+          attributes: ["city", "country", "street", "lat", "lng"],
           where: Object.keys(addressConditions).length
             ? addressConditions
             : undefined,
@@ -94,18 +94,15 @@ class SubsidiaryService {
     });
 
     if (!subsidiaries.length) {
-      throw new AppError(
-        "No subsidiaries found with the provided filters",
-        404
-      );
+      return [];
     }
 
-    if (userId != null && userRole != null && userRole == Roles.MANAGER) {
+    if (userId != null && userRoles && userRoles.includes(Roles.MANAGER)) {
       const user = await User.findByPk(userId, {
         include: {
           model: Role,
           attributes: ["id", "rolename"],
-          where: { id: userRole },
+          where: { id: { [Op.in]: userRoles } },
         },
       });
 
@@ -123,14 +120,14 @@ class SubsidiaryService {
     return subsidiaries;
   }
 
-  async getSubsidiaryById(id, userId, userRole) {
+  async getSubsidiaryById(id, userId, userRoles) {
     const subsidiary = await Subsidiary.findOne({
       attributes: { exclude: ["createdAt", "updatedAt"] },
       where: { id },
       include: [
         {
           model: Address,
-          attributes: ["city", "country", "street"],
+          attributes: ["city", "country", "street", "lat", "lng"],
         },
         {
           model: Photo_Set,
@@ -166,14 +163,12 @@ class SubsidiaryService {
       throw new AppError(`Subsidiary with ID ${id} not found`, 404);
     }
 
-    if (userId != null && userRole != null && userRole == Roles.MANAGER) {
-      console.log("Checking manager role...");
-
+    if (userId != null && userRoles && userRoles.includes(Roles.MANAGER)) {
       const user = await User.findByPk(userId, {
         include: {
           model: Role,
           attributes: ["id", "rolename"],
-          where: { id: userRole },
+          where: { id: { [Op.in]: userRoles } },
         },
       });
 

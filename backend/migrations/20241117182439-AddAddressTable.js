@@ -22,6 +22,14 @@ module.exports = {
         type: Sequelize.DataTypes.TEXT("tiny"),
         allowNull: false,
       },
+      lat: {
+        type: Sequelize.DataTypes.DECIMAL(10, 8),
+        allowNull: true,
+      },
+      lng: {
+        type: Sequelize.DataTypes.DECIMAL(10, 8),
+        allowNull: true,
+      },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,

@@ -1,0 +1,54 @@
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.pagination-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  font-size: 14px;
+  border-radius: 50%;
+  margin: 0 6px;
+  background-color: transparent;
+  color: #000000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.pagination-button:hover {
+  background-color: #090909;
+  color: white;
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination-button.active {
+  background-color: #000000;
+  color: white;
+}
+
+.pagination-button svg {
+  font-size: 18px;
+}
+
+.pagination-wrapper .flex {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .pagination-button {
+    height: 35px;
+    width: 35px;
+    font-size: 12px;
+  }
+}

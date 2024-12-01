@@ -2,21 +2,27 @@ const AppError = require("../utils/errorClass");
 const addressService = require("../services/addressService");
 
 class AddressController {
-  async getAddressList(req, res, next) {
+  async getSubsidiaryAddressList(req, res, next) {
     try {
-      const { query } = req.query;
-
-      const addresses = await addressService.findAddresses(query);
+      const { userId, userRoles } = req.query;
+      const rolesArray = userRoles
+        ? userRoles.split(",").map((role) => Number(role))
+        : [];
+      const addresses = await addressService.findSubsidiaryAddresses(
+        userId,
+        rolesArray
+      );
 
       res.status(200).json(addresses);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }
 
   async addAddress(req, res, next) {
     try {
-      const { country, city, street } = req.body;
+      const { country, city, street, lat, lng } = req.body;
 
       if (!country || !city || !street) {
         throw new AppError(
@@ -28,12 +34,14 @@ class AddressController {
       const newAddress = await addressService.createAddress(
         country,
         city,
-        street
+        street,
+        lat,
+        lng
       );
 
       res.status(201).json({
         message: "Address added successfully",
-        address: newAddress,
+        addressId: newAddress,
       });
     } catch (err) {
       next(err);

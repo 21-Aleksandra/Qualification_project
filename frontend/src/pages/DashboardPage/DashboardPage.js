@@ -13,12 +13,16 @@ import NewsBlock from "../../components/NewsBlock/NewsBlock";
 const DashboardPage = () => {
   const { user } = useContext(Context);
 
-  const userRole = Number(user.role);
+  const userRoles = Array.isArray(user.roles)
+    ? user.roles.map(Number)
+    : [Number(user.role)];
+  const highestRole = Math.max(...userRoles);
   const username = user._username;
+  console.log(highestRole);
 
   let text, buttonText, buttonLink;
 
-  switch (userRole) {
+  switch (highestRole) {
     case UserRoles.REGULAR:
       text = `Welcome ${username}, browse all our events!`;
       buttonText = "Browse";

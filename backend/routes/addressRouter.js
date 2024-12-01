@@ -5,7 +5,11 @@ const authChecker = require("../middlewares/authChecker");
 const roleChecker = require("../middlewares/roleChecker");
 const Roles = require("../enums/roles");
 
-router.get("/list", authChecker, addressController.getAddressList);
+router.get(
+  "/list-subsidiary",
+  authChecker,
+  addressController.getSubsidiaryAddressList
+);
 
 router.post(
   "/add",

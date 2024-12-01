@@ -1,0 +1,43 @@
+.no-subsidiaries-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.subsidiary-page-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.subsidiary-list-container {
+  flex: 3;
+  min-width: 0;
+}
+
+.filter-panel-container {
+  flex: 1;
+  min-width: 250px;
+}
+
+@media (max-width: 1200px) {
+  .subsidiary-page-wrapper {
+    flex-direction: column;
+  }
+
+  .filter-panel-container {
+    order: -1;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .subsidiary-list-container {
+    width: 100%;
+  }
+}

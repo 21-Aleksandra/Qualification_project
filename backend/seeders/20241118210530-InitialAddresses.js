@@ -20,6 +20,8 @@ module.exports = {
           country: "Latvia",
           city: "Riga",
           street: "Brīvības iela 115",
+          lat: -43,
+          lng: 34.6,
         },
         {
           country: "Latvia",

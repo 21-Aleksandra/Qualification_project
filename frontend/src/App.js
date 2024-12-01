@@ -10,7 +10,7 @@ import { BrowserRouter } from "react-router-dom";
 
 const App = observer(() => {
   const { user } = useContext(Context);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     ckeckStatus()
@@ -20,11 +20,16 @@ const App = observer(() => {
         user.setUser(data.username);
         user.setId(data.id);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   }, [user]);
 
-  if (loading) {
-    return <Spinner animation="grow" />;
+  if (isLoading) {
+    return (
+      <div id="subsidiary-loading" className="text-center my-5">
+        <Spinner animation="border" />
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   return (

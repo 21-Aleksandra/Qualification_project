@@ -21,7 +21,9 @@ class SubsidiaryController {
         sortBy: req.query.sortBy || "createdAt",
         sortOrder: req.query.sortOrder || "desc",
         userId: req.query.userId,
-        userRole: req.query.userRole,
+        userRoles: req.query.userRoles
+          ? req.query.userRoles.split(",").map((role) => Number(role.trim()))
+          : [],
       };
 
       const subsidiaries = await subsidiaryService.getSubsidiaryFilteredList(
@@ -30,7 +32,7 @@ class SubsidiaryController {
 
       res.status(200).json(subsidiaries);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       next(err);
     }
   }
@@ -39,7 +41,7 @@ class SubsidiaryController {
     try {
       const { id } = req.params;
       const userId = req.query.userId;
-      const userRole = req.query.userRole;
+      const userRoles = req.query.userRoles;
       if (!id) {
         throw new AppError("Subsidiary ID is required", 400);
       }
@@ -47,7 +49,7 @@ class SubsidiaryController {
       const subsidiary = await subsidiaryService.getSubsidiaryById(
         id,
         userId,
-        userRole
+        userRoles
       );
 
       res.status(200).json(subsidiary);

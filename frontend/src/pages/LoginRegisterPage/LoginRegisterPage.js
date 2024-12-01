@@ -11,6 +11,7 @@ import {
   RESET_PASSWORD_MAIL_ROUTE,
   LANDING_ROUTE,
 } from "../../utils/routerConsts";
+import { Spinner } from "react-bootstrap";
 
 const LoginRegisterPage = observer(() => {
   const { user } = useContext(Context);
@@ -76,9 +77,10 @@ const LoginRegisterPage = observer(() => {
         }
       } catch (err) {
         setError(err?.message || "Login failed.");
+      } finally {
+        setIsLoading(false);
       }
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -126,7 +128,14 @@ const LoginRegisterPage = observer(() => {
           value: formState.password,
         },
       ];
-
+  if (isLoading) {
+    return (
+      <div id="subsidiary-loading" className="text-center my-5">
+        <Spinner animation="border" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
     <FormContainer
       title={isRegisterPage ? "Register" : "Login"}

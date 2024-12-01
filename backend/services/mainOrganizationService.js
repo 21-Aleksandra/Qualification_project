@@ -1,11 +1,34 @@
-const { Main_Organization } = require("../models");
+const { Main_Organization, Subsidiary, User } = require("../models");
 const AppError = require("../utils/errorClass");
+const Roles = require("../enums/roles");
 
 class MainOrganizationService {
-  async getMainOrganizationList() {
-    const organizations = await Main_Organization.findAll({
-      order: [["name", "ASC"]],
-    });
+  async getMainOrganizationList(userId, userRoles) {
+    let organizations;
+    if (userRoles && userRoles.includes(Roles.MANAGER)) {
+      organizations = await Main_Organization.findAll({
+        include: [
+          {
+            model: Subsidiary,
+            required: true,
+            include: [
+              {
+                model: User,
+                where: { id: userId },
+                attributes: [],
+              },
+            ],
+            attributes: [],
+          },
+        ],
+        order: [["name", "ASC"]],
+      });
+    } else {
+      organizations = await Main_Organization.findAll({
+        order: [["name", "ASC"]],
+      });
+    }
+
     return organizations;
   }
 

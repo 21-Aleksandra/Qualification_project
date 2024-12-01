@@ -1,0 +1,77 @@
+#subsidiary-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+#subsidiary-name {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+#subsidiary-carousel {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#subsidiary-description,
+#subsidiary-details,
+#subsidiary-organization,
+#subsidiary-missions,
+#subsidiary-map,
+#subsidiary-managers {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  background-color: white;
+}
+
+#subsidiary-description h5,
+#subsidiary-details h5,
+#subsidiary-organization h5,
+#subsidiary-missions h5,
+#subsidiary-managers h5,
+#subsidiary-map h5 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+#subsidiary-description p,
+#subsidiary-details p,
+#subsidiary-organization p,
+#subsidiary-missions p,
+#subsidiary-managers p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+#subsidiary-missions .badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}
+
+#subsidiary-carousel img {
+  height: 400px;
+  object-fit: cover;
+}
+
+.subsidiary-missions-badge {
+  background-color: black !important;
+  color: white !important;
+}
+
+#subsidiary-map h5 {
+  padding-bottom: 20px;
+}
+
+.error-panel {
+  color: red;
+  background-color: #ffe6e6;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid red;
+  border-radius: 4px;
+}

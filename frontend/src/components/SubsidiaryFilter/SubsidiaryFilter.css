@@ -1,0 +1,45 @@
+.filter-panel {
+  width: 250px;
+  float: left;
+  margin-right: 20px;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #ffffff;
+}
+
+.filter-panel h3 {
+  margin: 0 0 15px 0;
+}
+
+.filter-panel select,
+.filter-panel input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.filter-panel .button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 1200px) {
+  .filter-panel {
+    width: 100%;
+    margin: 0 auto;
+    float: none;
+  }
+
+  .filter-panel select,
+  .filter-panel input,
+  .filter-panel button {
+    width: 100%;
+  }
+
+  .filter-panel .button-group {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

@@ -30,7 +30,7 @@ const corsOptions = {
 };
 
 const my_app = express();
-
+my_app.use("/static", express.static(path.join(__dirname, "static")));
 my_app.use(express.urlencoded({ extended: true }));
 my_app.use(cors(corsOptions));
 my_app.use(express.json());

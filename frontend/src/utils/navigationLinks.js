@@ -1,9 +1,10 @@
 import UserRoles from "./roleConsts";
+import { SUBSIDIARIES_ROUTE } from "../utils/routerConsts";
 
 const navigationLinks = [
   {
-    name: "News",
-    link: "/news",
+    name: "Subsidiaries",
+    link: SUBSIDIARIES_ROUTE,
     allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
   },
   {

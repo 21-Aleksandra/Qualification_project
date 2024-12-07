@@ -1,7 +1,7 @@
 import React from "react";
-import Banner from "../../components/Banner/Banner";
+import Banner from "../../components/Sections/Banner/Banner";
 import homeBannerImage from "../../assets/home_banner.png";
-import Statistics from "../../components/Statistics/Statistics";
+import Statistics from "../../components/Sections/Statistics/Statistics";
 import { REGISTER_ROUTE } from "../../utils/routerConsts";
 
 const LandingPage = () => {

@@ -31,5 +31,8 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Main_Organization", null, {});
+    await queryInterface.sequelize.query(
+      "ALTER TABLE main_organization AUTO_INCREMENT = 1;"
+    );
   },
 };

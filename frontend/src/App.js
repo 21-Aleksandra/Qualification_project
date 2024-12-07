@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import MyAppRouter from "./components/MyAppRouter";
-import NavigationBar from "./components/Navbar/Navbar";
-import Footer from "./components/Footer/Footer";
+import NavigationBar from "./components/Layout/Navbar/Navbar";
+import Footer from "./components/Layout/Footer/Footer";
 import { observer } from "mobx-react-lite";
 import { Context } from "./index";
 import { ckeckStatus } from "./api/AuthAPI";

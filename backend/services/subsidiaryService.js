@@ -14,6 +14,9 @@ const AppError = require("../utils/errorClass");
 const { Op } = require("sequelize");
 const { EMAIL_REGEX } = require("../utils/regexConsts");
 const Roles = require("../enums/roles");
+const path = require("path");
+const fs = require("fs");
+const { savePhoto } = require("../utils/photoUtils");
 
 class SubsidiaryService {
   async getSubsidiaryFilteredList(filters = {}) {
@@ -192,6 +195,7 @@ class SubsidiaryService {
   }
 
   async addSubsidiary({
+    managerId,
     name,
     description,
     mainOrganizationId,
@@ -201,15 +205,16 @@ class SubsidiaryService {
     website,
     staffCount,
     missions,
+    bannerPhoto,
+    otherPhotos,
   }) {
-    const photoSet = await Photo_Set.create({});
-
-    if (!photoSet) {
-      throw new AppError("Failed to create Photo_Set", 500);
+    if (email && !EMAIL_REGEX.test(email)) {
+      throw new AppError("Invalid email format", 400);
     }
 
-    if (email != null && !EMAIL_REGEX.test(email)) {
-      throw AppError.badRequest("Invalid email format");
+    const photoSet = await Photo_Set.create({});
+    if (!photoSet) {
+      throw new AppError("Failed to create Photo_Set", 500);
     }
 
     const newSubsidiary = await Subsidiary.create({
@@ -228,13 +233,43 @@ class SubsidiaryService {
       throw new AppError("Failed to add subsidiary", 500);
     }
 
-    if (missions && Array.isArray(missions)) {
-      for (const missionId of missions) {
+    if (missions) {
+      const missionsArray = Array.isArray(missions) ? missions : [missions];
+
+      for (const missionId of missionsArray) {
+        const missionExists = await Mission.findByPk(missionId);
+        if (!missionExists) {
+          throw new AppError(`Mission with ID ${missionId} not found`, 404);
+        }
         await Subsidiary_Mission.findOrCreate({
           where: { subsidiaryId: newSubsidiary.id, missionId },
         });
       }
     }
+
+    const photosDirectory =
+      process.env.SUBSIDIARY_IMAGE_PATH || "static/subsidiaryPhotos";
+    if (!fs.existsSync(photosDirectory)) {
+      fs.mkdirSync(photosDirectory, { recursive: true });
+    }
+
+    if (bannerPhoto) {
+      await savePhoto(bannerPhoto, true, photosDirectory, photoSet.id);
+    }
+
+    if (otherPhotos && Array.isArray(otherPhotos)) {
+      if (otherPhotos.length > 3) {
+        throw new AppError("Cannot upload more than 3 other photos.", 400);
+      }
+      for (const photo of otherPhotos) {
+        await savePhoto(photo, false, photosDirectory, photoSet.id);
+      }
+    }
+
+    await Subsidiary_Manager.create({
+      managerId,
+      subsidiaryId: newSubsidiary.id,
+    });
 
     return newSubsidiary;
   }
@@ -251,6 +286,8 @@ class SubsidiaryService {
       website,
       staffCount,
       missions,
+      bannerPhoto,
+      otherPhotos,
     }
   ) {
     const subsidiary = await Subsidiary.findByPk(id);
@@ -258,8 +295,8 @@ class SubsidiaryService {
       throw new AppError(`Subsidiary with ID ${id} not found`, 404);
     }
 
-    if (email != null && !EMAIL_REGEX.test(email)) {
-      throw AppError.badRequest("Invalid email format");
+    if (email && !EMAIL_REGEX.test(email)) {
+      throw new AppError("Invalid email format", 400);
     }
 
     await subsidiary.update({
@@ -273,14 +310,16 @@ class SubsidiaryService {
       staffCount,
     });
 
-    if (missions && Array.isArray(missions)) {
+    if (missions) {
+      const missionsArray = Array.isArray(missions) ? missions : [missions];
+
       const existingMissionIds = await Subsidiary_Mission.findAll({
         where: { subsidiaryId: id },
         attributes: ["missionId"],
       }).then((rows) => rows.map((row) => row.missionId));
 
       const existingMissionIdsAsNumbers = existingMissionIds.map(Number);
-      const missionsAsNumbers = missions.map(Number);
+      const missionsAsNumbers = missionsArray.map(Number);
 
       const newMissions = missionsAsNumbers.filter(
         (missionId) => !existingMissionIdsAsNumbers.includes(missionId)
@@ -305,6 +344,74 @@ class SubsidiaryService {
         });
       }
     }
+
+    const existingBannerPhoto = await Photo.findOne({
+      where: { photoSetId: subsidiary.photoSetId, isBannerPhoto: true },
+    });
+
+    if (bannerPhoto) {
+      if (
+        !existingBannerPhoto ||
+        existingBannerPhoto.filename !== bannerPhoto.originalname
+      ) {
+        if (existingBannerPhoto) {
+          await fs.promises.unlink(
+            path.resolve(__dirname, `../${existingBannerPhoto.url}`)
+          );
+          await existingBannerPhoto.destroy();
+        }
+        await savePhoto(
+          bannerPhoto,
+          true,
+          process.env.SUBSIDIARY_IMAGE_PATH,
+          subsidiary.photoSetId
+        );
+      }
+    } else if (existingBannerPhoto) {
+      await fs.promises.unlink(
+        path.resolve(__dirname, `../${existingBannerPhoto.url}`)
+      );
+      await existingBannerPhoto.destroy();
+    }
+
+    const existingOtherPhotos = await Photo.findAll({
+      where: { photoSetId: subsidiary.photoSetId, isBannerPhoto: false },
+    });
+
+    const existingFilenames = existingOtherPhotos.map(
+      (photo) => photo.filename
+    );
+    const incomingFilenames = otherPhotos
+      ? otherPhotos.map((photo) => photo.originalname)
+      : [];
+
+    const photosToDelete = existingOtherPhotos.filter(
+      (photo) => !incomingFilenames.includes(photo.filename)
+    );
+    for (const photo of photosToDelete) {
+      await fs.promises.unlink(path.resolve(__dirname, `../${photo.url}`));
+      await photo.destroy();
+    }
+
+    const photosToAdd = otherPhotos
+      ? otherPhotos.filter(
+          (photo) => !existingFilenames.includes(photo.originalname)
+        )
+      : [];
+
+    if (existingOtherPhotos.length + photosToAdd.length > 3) {
+      throw new AppError("Cannot upload more than 3 other photos.", 400);
+    }
+
+    for (const photo of photosToAdd) {
+      await savePhoto(
+        photo,
+        false,
+        process.env.SUBSIDIARY_IMAGE_PATH,
+        subsidiary.photoSetId
+      );
+    }
+
     return subsidiary;
   }
 

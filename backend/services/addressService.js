@@ -64,6 +64,26 @@ class AddressService {
     });
   }
 
+  async getAllAddresses() {
+    return await Address.findAll({
+      attributes: [
+        "id",
+        "country",
+        "city",
+        "street",
+        "lat",
+        "lng",
+        "createdAt",
+        "updatedAt",
+      ],
+      order: [
+        ["country", "ASC"],
+        ["city", "ASC"],
+        ["street", "ASC"],
+      ],
+    });
+  }
+
   async createAddress(country, city, street, lat, lng) {
     const MAX_LENGTH = 255;
 

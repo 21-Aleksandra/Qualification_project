@@ -53,5 +53,8 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Photo_Set", null, {});
+    await queryInterface.sequelize.query(
+      "ALTER TABLE photo_set AUTO_INCREMENT = 1;"
+    );
   },
 };

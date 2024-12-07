@@ -5,6 +5,7 @@ import PasswordResetEmailPage from "./pages/PasswordResetEmailPage/PasswordReset
 import PasswordResetFormPage from "./pages/PasswordResetFormPage/PasswordResetFormPage";
 import SubsidiaryPage from "./pages/SubsidiaryPage/SubsidiaryPage";
 import SubsidiaryItemPage from "./pages/SubsidiaryItemPage/SubsidiaryItemPage";
+import AddEditSubsidiaryPage from "./pages/AddEditSubsidiaryPage/AddEditSubsidiaryPage";
 import TestPage from "./pages/TestPage";
 import UserRoles from "./utils/roleConsts";
 
@@ -18,6 +19,8 @@ import {
   TEST_ROUTE,
   SUBSIDIARIES_ROUTE,
   SUBSIDIARY_ITEM_ROUTE,
+  SUBSIDIARY_EDIT_ROUTE,
+  SUBSIDIARY_ADD_ROUTE,
 } from "./utils/routerConsts";
 
 export const publicRoutes = [
@@ -63,5 +66,15 @@ export const registeredRoutes = [
     path: SUBSIDIARY_ITEM_ROUTE,
     Component: SubsidiaryItemPage,
     roles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
+  },
+  {
+    path: SUBSIDIARY_EDIT_ROUTE,
+    Component: AddEditSubsidiaryPage,
+    roles: [UserRoles.MANAGER],
+  },
+  {
+    path: SUBSIDIARY_ADD_ROUTE,
+    Component: AddEditSubsidiaryPage,
+    roles: [UserRoles.MANAGER],
   },
 ];

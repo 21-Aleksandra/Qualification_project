@@ -37,5 +37,8 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("User_Role", null, {});
+    await queryInterface.sequelize.query(
+      "ALTER TABLE user_role AUTO_INCREMENT = 1;"
+    );
   },
 };

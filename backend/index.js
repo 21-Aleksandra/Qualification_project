@@ -30,10 +30,19 @@ const corsOptions = {
 };
 
 const my_app = express();
-my_app.use("/static", express.static(path.join(__dirname, "static")));
-my_app.use(express.urlencoded({ extended: true }));
-my_app.use(cors(corsOptions));
 my_app.use(express.json());
+my_app.use(express.urlencoded({ extended: true }));
+my_app.use(
+  "/static",
+  express.static(path.join(__dirname, "static"), {
+    setHeaders: (res, path, stat) => {
+      res.set("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+      res.set("Access-Control-Allow-Credentials", "true");
+    },
+  })
+);
+
+my_app.use(cors(corsOptions));
 
 my_app.use(
   session({

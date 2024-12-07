@@ -29,5 +29,8 @@ module.exports = {
 
   async down(queryInterface) {
     await queryInterface.bulkDelete("Role", null, {});
+    await queryInterface.sequelize.query(
+      "ALTER TABLE role AUTO_INCREMENT = 1;"
+    );
   },
 };

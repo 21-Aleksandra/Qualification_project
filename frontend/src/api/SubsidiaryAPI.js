@@ -22,7 +22,9 @@ export const getSubsidiaryById = async (id, userId, userRole) => {
 
 export const addSubsidiary = async (subsidiaryData) => {
   try {
-    const response = await api.post("subsidiary/add", subsidiaryData);
+    const response = await api.post("subsidiary/add", subsidiaryData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
@@ -31,7 +33,9 @@ export const addSubsidiary = async (subsidiaryData) => {
 
 export const editSubsidiary = async (id, subsidiaryData) => {
   try {
-    const response = await api.put(`subsidiary/${id}/edit`, subsidiaryData);
+    const response = await api.put(`subsidiary/${id}/edit`, subsidiaryData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;

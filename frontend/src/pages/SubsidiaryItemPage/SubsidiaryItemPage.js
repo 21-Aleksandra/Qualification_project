@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { getSubsidiaryById } from "../../api/SubsidiaryAPI";
 import { fetchLatLng } from "../../api/ExternalApiRequests/ExternalApiRequests";
-import GoogleMapComponent from "../../components/GoogleMapComponent/GoogleMapComponent";
+import GoogleMapComponent from "../../components/Sections/GoogleMapComponent/GoogleMapComponent";
 import defaultImage from "../../assets/default_subsidiary.png";
 import "./SubsidiaryItemPage.css";
 

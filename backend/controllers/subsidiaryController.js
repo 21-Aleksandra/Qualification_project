@@ -61,7 +61,9 @@ class SubsidiaryController {
 
   async addSubsidiary(req, res, next) {
     try {
+      console.log(req.files);
       const {
+        managerId,
         name,
         description,
         mainOrganizationId,
@@ -73,7 +75,19 @@ class SubsidiaryController {
         missions,
       } = req.body;
 
+      console.log(missions);
+
+      if (!name || !managerId) {
+        throw new AppError("ManagedId and name are required", 400);
+      }
+
+      const bannerPhoto = req.files.bannerPhoto
+        ? req.files.bannerPhoto[0]
+        : null;
+      const otherPhotos = req.files.otherPhotos || [];
+
       const newSubsidiary = await subsidiaryService.addSubsidiary({
+        managerId,
         name,
         description,
         mainOrganizationId,
@@ -83,10 +97,13 @@ class SubsidiaryController {
         website,
         staffCount,
         missions,
+        bannerPhoto,
+        otherPhotos,
       });
 
       res.status(201).json(newSubsidiary);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }
@@ -106,6 +123,11 @@ class SubsidiaryController {
         missions,
       } = req.body;
 
+      const bannerPhoto = req.files.bannerPhoto
+        ? req.files.bannerPhoto[0]
+        : null;
+      const otherPhotos = req.files.otherPhotos || [];
+
       if (!id) {
         throw new AppError("Subsidiary ID is required", 400);
       }
@@ -120,6 +142,8 @@ class SubsidiaryController {
         website,
         staffCount,
         missions,
+        bannerPhoto,
+        otherPhotos,
       });
 
       res.status(200).json(updatedSubsidiary);

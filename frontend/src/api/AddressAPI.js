@@ -11,12 +11,23 @@ export const getSubsidiaryAddressList = async (filters = {}) => {
   }
 };
 
-export const addAddress = async (country, city, street) => {
+export const getAllAddressList = async () => {
+  try {
+    const response = await api.get("address/list-all");
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error.message;
+  }
+};
+
+export const addAddress = async (country, city, street, lat, lng) => {
   try {
     const response = await api.post("address/add", {
       country,
       city,
       street,
+      lat,
+      lng,
     });
     return response.data;
   } catch (error) {

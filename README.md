@@ -6,8 +6,8 @@ All notable changes to this project will be documented in this file.
 
 In summary:
 
-v1.x - Auth related jobs
-v2.x - Subsidiary related jobs
+- v1.x - Auth related jobs
+- v2.x - Subsidiary related jobs
 
 ### [1.0] - 28-09-2024
 
@@ -158,5 +158,49 @@ v2.x - Subsidiary related jobs
 
 #### Fixed
 
+##### Backend:
+
 - Minor logical statement bugs in endpoints
+
+##### Frontend:
+
 - Css overlapping problems (not component-specific css)
+
+### [2.2] - 07-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added all address get endpoint
+- Photo uploading and deleting for subsidiaries as well as PhotoUtils
+
+##### Frontend:
+
+- New folders for complex form features and hooks
+- Add and edit form for subsidiary as well as delete functionality and checkboxes for selection
+- New general components for more convenient layout - search dropdowns, simple add forms, text inputs etc.
+- File utils for file-related handling such as upload from server
+
+#### Changed
+
+##### Backend:
+
+- Changed Address table fields - now it has better precision for lng and lat
+- Changed /static access configuration for form data handling to avoid cors mismatch and errors
+- Now subsidiary photos are stored in subsidiaryPhotos folder
+
+##### Frontend:
+
+- Component file organisations - how conponents are sorted by general folders depending on its functionality
+
+#### Fixed
+
+##### Backend:
+
+- Seeder auto-increment problem - now reseeding is prssible without errors
+- Subsidiary and address endpoint logical flaws - now deletion and adding work as expected
+
+##### Frontend:
+
+- Google API loading problems

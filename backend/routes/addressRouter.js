@@ -11,6 +11,13 @@ router.get(
   addressController.getSubsidiaryAddressList
 );
 
+router.get(
+  "/list-all",
+  authChecker,
+  roleChecker([Roles.MANAGER, Roles.ADMIN]),
+  addressController.getAllAddressList
+);
+
 router.post(
   "/add",
   authChecker,

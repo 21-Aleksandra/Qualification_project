@@ -45,5 +45,8 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Address", null, {});
+    await queryInterface.sequelize.query(
+      "ALTER TABLE address AUTO_INCREMENT = 1;"
+    );
   },
 };

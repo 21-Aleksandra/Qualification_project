@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { requestPasswordReset } from "../../api/AuthAPI";
 import { useNavigate } from "react-router-dom";
-import FormContainer from "../../components/FormContainer/FormContainer";
+import FormContainer from "../../components/SmallForms/FormContainer/FormContainer";
 import { LOGIN_ROUTE } from "../../utils/routerConsts";
 import { Spinner } from "react-bootstrap";
 const PasswordResetEmailPage = () => {

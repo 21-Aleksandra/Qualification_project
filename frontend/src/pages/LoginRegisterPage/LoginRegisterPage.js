@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
 import { loginUser, registerUser } from "../../api/AuthAPI";
-import FormContainer from "../../components/FormContainer/FormContainer";
+import FormContainer from "../../components/SmallForms/FormContainer/FormContainer";
 import {
   DASHBOARD_ROUTE,
   REGISTER_ROUTE,

@@ -10,3 +10,5 @@ export const USERS_ROUTE = "/users";
 export const MY_ORGANISATIONS_ROUTE = "/my-organisations";
 export const SUBSIDIARIES_ROUTE = "/subsidiaries";
 export const SUBSIDIARY_ITEM_ROUTE = "/subsidiaries/:id";
+export const SUBSIDIARY_EDIT_ROUTE = "/subsidiaries/edit/:id";
+export const SUBSIDIARY_ADD_ROUTE = "/subsidiaries/add-subsidiary";

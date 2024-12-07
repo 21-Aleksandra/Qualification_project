@@ -16,6 +16,10 @@
   gap: 20px;
 }
 
+.edit-filter-box {
+  width: 15%;
+}
+
 .subsidiary-list-container {
   flex: 3;
   min-width: 0;
@@ -26,12 +30,22 @@
   min-width: 250px;
 }
 
+.edit-panel-container {
+  flex: 1;
+  min-width: 250px;
+  padding-bottom: 20px;
+}
+
+#subsidiary-pagination {
+  margin-top: auto;
+}
+
 @media (max-width: 1200px) {
   .subsidiary-page-wrapper {
     flex-direction: column;
   }
 
-  .filter-panel-container {
+  .edit-filter-box {
     order: -1;
     width: 100%;
     margin-bottom: 20px;

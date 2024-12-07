@@ -4,6 +4,8 @@ const subsidiaryController = require("../controllers/subsidiaryController");
 const authChecker = require("../middlewares/authChecker");
 const roleChecker = require("../middlewares/roleChecker");
 const Roles = require("../enums/roles");
+const multer = require("multer");
+const upload = multer();
 
 router.get(
   "/list",
@@ -14,20 +16,22 @@ router.get("/:id", authChecker, subsidiaryController.getSubsidiaryById);
 
 router.post(
   "/add",
+  upload.fields([{ name: "bannerPhoto" }, { name: "otherPhotos" }]),
   authChecker,
-  roleChecker([Roles.MANAGER, Roles.ADMIN]),
+  roleChecker([Roles.MANAGER]),
   subsidiaryController.addSubsidiary
 );
 router.put(
   "/:id/edit",
+  upload.fields([{ name: "bannerPhoto" }, { name: "otherPhotos" }]),
   authChecker,
-  roleChecker([Roles.MANAGER, Roles.ADMIN]),
+  roleChecker([Roles.MANAGER]),
   subsidiaryController.editSubsidiary
 );
 router.delete(
   "/delete",
   authChecker,
-  roleChecker([Roles.ADMIN]),
+  roleChecker([Roles.MANAGER]),
   subsidiaryController.deleteSubsidiaries
 );
 

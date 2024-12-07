@@ -15,7 +15,15 @@ class AddressController {
 
       res.status(200).json(addresses);
     } catch (err) {
-      console.log(err);
+      next(err);
+    }
+  }
+
+  async getAllAddressList(req, res, next) {
+    try {
+      const addresses = await addressService.getAllAddresses();
+      res.status(200).json(addresses);
+    } catch (err) {
       next(err);
     }
   }

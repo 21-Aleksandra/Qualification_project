@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Banner from "../../components/Banner/Banner";
+import Banner from "../../components/Sections/Banner/Banner";
 import dashboardBannerImage from "../../assets/dashboard_banner.png";
 import UserRoles from "../../utils/roleConsts";
 import { Context } from "../../index";
@@ -8,7 +8,7 @@ import {
   USERS_ROUTE,
   MY_ORGANISATIONS_ROUTE,
 } from "../../utils/routerConsts";
-import NewsBlock from "../../components/NewsBlock/NewsBlock";
+import NewsBlock from "../../components/Sections/NewsBlock/NewsBlock";
 
 const DashboardPage = () => {
   const { user } = useContext(Context);

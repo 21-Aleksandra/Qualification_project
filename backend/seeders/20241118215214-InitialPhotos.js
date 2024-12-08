@@ -31,11 +31,18 @@ module.exports = {
           isBannerPhoto: false,
         },
         {
-          url: `${SUBSIDIARY_IMAGE_PATH}test_1_event.png`,
+          url: `${EVENT_IMAGE_PATH}test_1_event.png`,
           filename: "test_1_event.png",
           type: "png",
           photoSetId: 8,
           isBannerPhoto: true,
+        },
+        {
+          url: `${EVENT_IMAGE_PATH}test_2_event.png`,
+          filename: "test_2_event.png",
+          type: "png",
+          photoSetId: 8,
+          isBannerPhoto: false,
         },
       ],
       {}

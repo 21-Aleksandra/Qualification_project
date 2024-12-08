@@ -1,12 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
-  const Photo_Set = sequelize.define(
-    "Photo_Set",
+  const Event_User = sequelize.define(
+    "Event_User",
     {
       id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      eventId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -21,26 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "Photo_Set",
+      tableName: "Event_User",
       timestamps: true,
     }
   );
 
-  Photo_Set.associate = function (models) {
-    Photo_Set.hasMany(models.Photo, {
-      foreignKey: "photoSetId",
-    });
-
-    Photo_Set.belongsTo(models.Subsidiary, {
-      foreignKey: "id",
-      targetKey: "photoSetId",
-    });
-
-    Photo_Set.belongsTo(models.Event, {
-      foreignKey: "id",
-      targetKey: "photoSetId",
-    });
-  };
-
-  return Photo_Set;
+  return Event_User;
 };

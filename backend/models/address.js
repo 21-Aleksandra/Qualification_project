@@ -50,6 +50,10 @@ module.exports = (sequelize, DataTypes) => {
     Address.hasMany(models.Subsidiary, {
       foreignKey: "addressId",
     });
+
+    Address.hasMany(models.Event, {
+      foreignKey: "addressId",
+    });
   };
 
   return Address;

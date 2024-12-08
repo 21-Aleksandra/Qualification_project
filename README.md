@@ -8,6 +8,7 @@ In summary:
 
 - v1.x - Auth related jobs
 - v2.x - Subsidiary related jobs
+- v3.x - Event related jobs
 
 ### [1.0] - 28-09-2024
 
@@ -203,4 +204,18 @@ In summary:
 
 ##### Frontend:
 
-- Google API loading problems
+- Google Geocoding/places API loading problems
+
+### [3.0] - 09-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added event_type, event and event_user tables, seeders, models
+
+#### Changed
+
+##### Backend:
+
+- Relationships between PhotoSet and Subsidiary models - now its one-to-one

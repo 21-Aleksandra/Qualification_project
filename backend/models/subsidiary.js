@@ -67,8 +67,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "addressId",
     });
 
-    Subsidiary.belongsTo(models.Photo_Set, {
-      foreignKey: "photoSetId",
+    Subsidiary.hasOne(models.Photo_Set, {
+      foreignKey: "id",
+      sourceKey: "photoSetId",
     });
 
     Subsidiary.belongsTo(models.Main_Organization, {
@@ -85,6 +86,10 @@ module.exports = (sequelize, DataTypes) => {
       through: models.Subsidiary_Manager,
       foreignKey: "subsidiaryId",
       otherKey: "managerId",
+    });
+
+    Subsidiary.hasMany(models.Event, {
+      foreignKey: "subsidiaryId",
     });
   };
 

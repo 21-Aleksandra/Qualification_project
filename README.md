@@ -219,3 +219,25 @@ In summary:
 ##### Backend:
 
 - Relationships between PhotoSet and Subsidiary models - now its one-to-one
+
+### [3.1] - 10-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added event_type, event and event_user routes, controllers, services
+- New email types - eventChange and eventCancelation(delition) letters
+
+#### Changed
+
+##### Backend:
+
+- Adjusted initialEventUsers seeder to have more fair destirbution of data
+- User and event models relationship naming - now there are aliases for easier understanding (e.g. authors and participants)
+
+#### Fixed
+
+##### Backend:
+
+- Problem with file delition in the directory when subsidiary photo is removed

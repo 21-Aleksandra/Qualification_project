@@ -27,6 +27,8 @@ class EmailService {
   emailSubjects = {
     verification: "Verification email for volunteer website",
     passwordReset: "Reset your password at volunteer website ",
+    eventChanges: "Event Changes Notification",
+    eventCanceled: "Event Canceled Notification",
   };
 
   async SendMail(address_to, emailType, link = null) {

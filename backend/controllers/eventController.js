@@ -1,8 +1,8 @@
-const subsidiaryService = require("../services/subsidiaryService");
+const eventService = require("../services/eventService");
 const AppError = require("../utils/errorClass");
 
-class SubsidiaryController {
-  async getSubsidiaryFilteredList(req, res, next) {
+class EventController {
+  async getEventFilteredList(req, res, next) {
     try {
       const filters = {
         name: req.query.name || "",
@@ -12,12 +12,15 @@ class SubsidiaryController {
         countries: req.query.countries
           ? req.query.countries.split(",").map((country) => country.trim())
           : [],
-        missions: req.query.missions
-          ? req.query.missions.split(",").map((mission) => mission.trim())
+        subsidiaryIds: req.query.subsidiaryIds
+          ? req.query.subsidiaryIds.split(",").map((id) => id.trim())
           : [],
-        mainOrganizationIds: req.query.mainOrganizationIds
-          ? req.query.mainOrganizationIds.split(",").map((id) => id.trim())
+        typeIds: req.query.typeIds
+          ? req.query.typeIds.split(",").map((id) => id.trim())
           : [],
+        dateFrom: req.query.dateFrom,
+        dateTo: req.query.dateTo,
+        applicationDeadline: req.query.applicationDeadline,
         sortBy: req.query.sortBy || "createdAt",
         sortOrder: req.query.sortOrder || "desc",
         userId: req.query.userId,
@@ -26,103 +29,96 @@ class SubsidiaryController {
           : [],
       };
 
-      const subsidiaries = await subsidiaryService.getSubsidiaryFilteredList(
-        filters
-      );
+      const events = await eventService.getEventFilteredList(filters);
 
-      res.status(200).json(subsidiaries);
+      res.status(200).json(events);
     } catch (err) {
       console.error(err);
       next(err);
     }
   }
 
-  async getSubsidiaryById(req, res, next) {
+  async getEventById(req, res, next) {
     try {
       const { id } = req.params;
       const userId = req.query.userId;
       const userRoles = req.query.userRoles;
       if (!id) {
-        throw new AppError("Subsidiary ID is required", 400);
+        throw new AppError("Eevent ID is required", 400);
       }
 
-      const subsidiary = await subsidiaryService.getSubsidiaryById(
-        id,
-        userId,
-        userRoles
-      );
+      const event = await eventService.getEventById(id, userId, userRoles);
 
-      res.status(200).json(subsidiary);
+      res.status(200).json(event);
     } catch (err) {
       console.log(err);
       next(err);
     }
   }
 
-  async addSubsidiary(req, res, next) {
+  async addEvent(req, res, next) {
     try {
       console.log(req.files);
       const {
         managerId,
         name,
         description,
-        mainOrganizationId,
-        foundedAt,
+        typeId,
+        dateFrom,
+        dateTo,
+        publishOn,
+        applicationDeadline,
         addressId,
-        email,
-        website,
-        staffCount,
-        missions,
+        subsidiaryId,
+        maxPeopleAllowed,
       } = req.body;
-
-      console.log(missions);
 
       if (!name || !managerId) {
         throw new AppError("ManagedId and name are required", 400);
       }
-
-      console.log(req.files);
 
       const bannerPhoto = req.files.bannerPhoto
         ? req.files.bannerPhoto[0]
         : null;
       const otherPhotos = req.files.otherPhotos || [];
 
-      const newSubsidiary = await subsidiaryService.addSubsidiary({
+      const newEvent = await eventService.addEvent({
         managerId,
         name,
         description,
-        mainOrganizationId,
-        foundedAt,
+        typeId,
+        dateFrom,
+        dateTo,
+        publishOn,
+        applicationDeadline,
         addressId,
-        email,
-        website,
-        staffCount,
-        missions,
+        subsidiaryId,
+        maxPeopleAllowed,
         bannerPhoto,
         otherPhotos,
       });
 
-      res.status(201).json(newSubsidiary);
+      res.status(201).json(newEvent);
     } catch (err) {
       console.log(err);
       next(err);
     }
   }
 
-  async editSubsidiary(req, res, next) {
+  async editEvent(req, res, next) {
     try {
       const { id } = req.params;
       const {
         name,
         description,
-        mainOrganizationId,
-        foundedAt,
+        typeId,
+        dateFrom,
+        dateTo,
+        publishOn,
+        applicationDeadline,
         addressId,
-        email,
-        website,
-        staffCount,
-        missions,
+        subsidiaryId,
+        maxPeopleAllowed,
       } = req.body;
 
       const bannerPhoto = req.files.bannerPhoto
@@ -138,43 +134,45 @@ class SubsidiaryController {
         throw new AppError("Name is required", 400);
       }
 
-      const updatedSubsidiary = await subsidiaryService.editSubsidiary(id, {
+      const updatedEvent = await eventService.editEvent(id, {
         name,
+        typeId,
         description,
-        mainOrganizationId,
-        foundedAt,
+        dateFrom,
+        dateTo,
+        publishOn,
+        applicationDeadline,
         addressId,
-        email,
-        website,
-        staffCount,
-        missions,
+        subsidiaryId,
+        maxPeopleAllowed,
         bannerPhoto,
         otherPhotos,
       });
 
-      res.status(200).json(updatedSubsidiary);
+      res.status(200).json(updatedEvent);
     } catch (err) {
       console.log(err);
       next(err);
     }
   }
 
-  async deleteSubsidiaries(req, res, next) {
+  async deleteEvents(req, res, next) {
     try {
       const { ids } = req.body;
 
       if (!ids || !Array.isArray(ids) || ids.length === 0) {
-        throw new AppError("A valid array of subsidiary IDs is required", 400);
+        throw new AppError("A valid array of event IDs is required", 400);
       }
 
-      const result = await subsidiaryService.deleteSubsidiaries(ids);
+      const result = await eventService.deleteEvents(ids);
       res
         .status(200)
-        .json({ message: `Successfully deleted ${result} subsidiaries` });
+        .json({ message: `Successfully deleted ${result} events` });
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }
 }
 
-module.exports = new SubsidiaryController();
+module.exports = new EventController();

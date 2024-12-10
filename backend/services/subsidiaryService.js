@@ -349,6 +349,8 @@ class SubsidiaryService {
       where: { photoSetId: subsidiary.photoSetId, isBannerPhoto: true },
     });
 
+    const parentDir = path.resolve(__dirname, "..");
+
     if (bannerPhoto) {
       if (
         !existingBannerPhoto ||
@@ -356,7 +358,7 @@ class SubsidiaryService {
       ) {
         if (existingBannerPhoto) {
           await fs.promises.unlink(
-            path.resolve(__dirname, `../${existingBannerPhoto.url}`)
+            path.join(parentDir, `${existingBannerPhoto.url}`)
           );
           await existingBannerPhoto.destroy();
         }
@@ -369,7 +371,7 @@ class SubsidiaryService {
       }
     } else if (existingBannerPhoto) {
       await fs.promises.unlink(
-        path.resolve(__dirname, `../${existingBannerPhoto.url}`)
+        path.join(parentDir, `${existingBannerPhoto.url}`)
       );
       await existingBannerPhoto.destroy();
     }
@@ -389,7 +391,7 @@ class SubsidiaryService {
       (photo) => !incomingFilenames.includes(photo.filename)
     );
     for (const photo of photosToDelete) {
-      await fs.promises.unlink(path.resolve(__dirname, `../${photo.url}`));
+      await fs.promises.unlink(path.join(parentDir, `${photo.url}`));
       await photo.destroy();
     }
 
@@ -399,7 +401,10 @@ class SubsidiaryService {
         )
       : [];
 
-    if (existingOtherPhotos.length + photosToAdd.length > 3) {
+    if (
+      existingOtherPhotos.length - photosToDelete.length + photosToAdd.length >
+      3
+    ) {
       throw new AppError("Cannot upload more than 3 other photos.", 400);
     }
 
@@ -416,9 +421,33 @@ class SubsidiaryService {
   }
 
   async deleteSubsidiaries(ids) {
+    const subsidiaries = await Subsidiary.findAll({
+      where: { id: { [Op.in]: ids } },
+      include: [{ model: Photo_Set, include: [Photo] }],
+    });
+
+    if (subsidiaries.length === 0) {
+      throw new AppError("No subsidiaries found with the provided IDs", 404);
+    }
+
+    const parentDir = path.resolve(__dirname, "..");
+
+    for (const subsidiary of subsidiaries) {
+      if (subsidiary.Photo_Set && subsidiary.Photo_Set.Photos) {
+        for (const photo of subsidiary.Photo_Set.Photos) {
+          const photoPath = path.join(parentDir, photo.url);
+          if (fs.existsSync(photoPath)) {
+            await fs.promises.unlink(photoPath);
+          }
+          await photo.destroy();
+        }
+      }
+    }
+
     const deletedCount = await Subsidiary.destroy({
       where: { id: { [Op.in]: ids } },
     });
+
     return deletedCount;
   }
 }

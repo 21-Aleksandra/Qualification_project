@@ -87,10 +87,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "subsidiaryId",
     });
 
-    Event.belongsTo(models.User, {
-      foreignKey: "authorId",
-    });
-
     Event.hasOne(models.Photo_Set, {
       foreignKey: "id",
       sourceKey: "photoSetId",
@@ -98,8 +94,14 @@ module.exports = (sequelize, DataTypes) => {
 
     Event.belongsToMany(models.User, {
       through: models.Event_User,
+      as: "Participants",
       foreignKey: "eventId",
       otherKey: "userId",
+    });
+
+    Event.belongsTo(models.User, {
+      foreignKey: "authorId",
+      as: "Author",
     });
   };
 

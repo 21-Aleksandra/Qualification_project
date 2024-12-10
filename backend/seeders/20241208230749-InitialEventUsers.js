@@ -14,18 +14,6 @@ module.exports = {
       },
       {
         userId: 1,
-        eventId: 2,
-      },
-      {
-        userId: 4,
-        eventId: 2,
-      },
-      {
-        userId: 1,
-        eventId: 3,
-      },
-      {
-        userId: 4,
         eventId: 3,
       },
       {
@@ -37,16 +25,8 @@ module.exports = {
         eventId: 4,
       },
       {
-        userId: 1,
-        eventId: 5,
-      },
-      {
         userId: 4,
         eventId: 5,
-      },
-      {
-        userId: 1,
-        eventId: 6,
       },
       {
         userId: 4,

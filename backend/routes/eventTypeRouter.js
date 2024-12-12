@@ -5,7 +5,12 @@ const authChecker = require("../middlewares/authChecker");
 const roleChecker = require("../middlewares/roleChecker");
 const Roles = require("../enums/roles");
 
-router.get("/list", eventTypeController.getEventTypeList);
-router.post("/add", eventTypeController.addEventType);
+router.get("/list", authChecker, eventTypeController.getEventTypeList);
+router.post(
+  "/add",
+  authChecker,
+  roleChecker([Roles.MANAGER]),
+  eventTypeController.addEventType
+);
 
 module.exports = router;

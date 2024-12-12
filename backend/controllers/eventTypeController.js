@@ -5,9 +5,12 @@ class EventTypeController {
   async getEventTypeList(req, res, next) {
     try {
       const { userId, userRoles } = req.query;
+      const rolesArray = userRoles
+        ? userRoles.split(",").map((role) => Number(role))
+        : [];
       const eventTypes = await eventTypeService.getEventTypeList(
         userId,
-        userRoles
+        rolesArray
       );
       res.status(200).json({
         eventTypes,

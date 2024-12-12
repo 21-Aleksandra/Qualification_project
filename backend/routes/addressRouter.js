@@ -11,6 +11,8 @@ router.get(
   addressController.getSubsidiaryAddressList
 );
 
+router.get("/list-event", authChecker, addressController.getEventAddressList);
+
 router.get(
   "/list-all",
   authChecker,

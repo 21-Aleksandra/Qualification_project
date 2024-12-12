@@ -7,11 +7,13 @@ const Roles = require("../enums/roles");
 const multer = require("multer");
 const upload = multer();
 
-router.get("/list", eventController.getEventFilteredList);
-router.get("/:id", eventController.getEventById);
+router.get("/list", authChecker, eventController.getEventFilteredList);
+router.get("/:id", authChecker, eventController.getEventById);
 
 router.post(
   "/add",
+  authChecker,
+  roleChecker([Roles.MANAGER]),
   upload.fields([{ name: "bannerPhoto" }, { name: "otherPhotos" }]),
 
   eventController.addEvent
@@ -19,11 +21,17 @@ router.post(
 
 router.put(
   "/:id/edit",
+  authChecker,
+  roleChecker([Roles.MANAGER]),
   upload.fields([{ name: "bannerPhoto" }, { name: "otherPhotos" }]),
-
   eventController.editEvent
 );
 
-router.delete("/delete", eventController.deleteEvents);
+router.delete(
+  "/delete",
+  authChecker,
+  roleChecker([Roles.MANAGER]),
+  eventController.deleteEvents
+);
 
 module.exports = router;

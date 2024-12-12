@@ -59,6 +59,23 @@ class SubsidiaryController {
     }
   }
 
+  async getSubsidiaryNamesList(req, res, next) {
+    try {
+      const { userId, userRoles } = req.query;
+      const rolesArray = userRoles
+        ? userRoles.split(",").map((role) => Number(role))
+        : [];
+      const subsidiaries = await subsidiaryService.findSubsidiaryNames(
+        userId,
+        rolesArray
+      );
+
+      res.status(200).json(subsidiaries);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async addSubsidiary(req, res, next) {
     try {
       console.log(req.files);

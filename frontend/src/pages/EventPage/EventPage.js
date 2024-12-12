@@ -1,24 +1,18 @@
 import React, { useEffect, useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
-import SubsidiaryList from "../../components/Sections/SubsidiarySections/SubsidiaryList/SubsidiaryList";
-import {
-  getSubsidiaryFilteredList,
-  deleteSubsidiaries,
-} from "../../api/SubsidiaryAPI";
+import EventList from "../../components/Sections/EventSections/EventList/EventList";
+import { getEventFilteredList, deleteEvents } from "../../api/EventAPI";
 import Pagination from "../../components/Common/Pagination/Pagination";
-import FilterPanel from "../../components/Sections/SubsidiarySections/SubsidiaryFilter/SubsidiaryFilter";
+import FilterPanel from "../../components/Sections/EventSections/EventFilter/EventFilter";
 import EditComponent from "../../components/Sections/EditComponent/EditComponent";
 import UserRoles from "../../utils/roleConsts";
 import { Spinner, Alert } from "react-bootstrap";
-import {
-  SUBSIDIARY_EDIT_ROUTE,
-  SUBSIDIARY_ADD_ROUTE,
-} from "../../utils/routerConsts";
-import "./SubsidiaryPage.css";
+import { EVENT_EDIT_ROUTE, EVENT_ADD_ROUTE } from "../../utils/routerConsts";
+import "./EventPage.css";
 
-const SubsidiaryPage = observer(() => {
-  const { subsidiary, user } = useContext(Context);
+const EventPage = observer(() => {
+  const { event, user } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -26,7 +20,7 @@ const SubsidiaryPage = observer(() => {
   const userId = user._id;
 
   useEffect(() => {
-    const fetchSubsidiaries = async () => {
+    const fetchEvents = async () => {
       try {
         setLoading(true);
         setError(null);
@@ -39,23 +33,23 @@ const SubsidiaryPage = observer(() => {
           };
         }
         let response;
-        if (subsidiary.params != null) {
-          response = await getSubsidiaryFilteredList(subsidiary.params);
+        if (event.params != null) {
+          response = await getEventFilteredList(event.params);
         } else {
-          response = await getSubsidiaryFilteredList(params);
+          response = await getEventFilteredList(params);
         }
 
-        subsidiary.setSubsidiaries(response || []);
+        event.setEvents(response || []);
       } catch (err) {
-        console.error("Failed to fetch subsidiaries:", err);
-        setError("Failed to load subsidiaries. Please try again later.");
+        console.error("Failed to fetch events:", err);
+        setError("Failed to load events. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSubsidiaries();
-  }, [subsidiary._currentPage, subsidiary, userId, user.roles]);
+    fetchEvents();
+  }, [event._currentPage, event, userId, user.roles]);
 
   const handleCheckboxChange = (id, isChecked) => {
     setSelectedIds((prev) =>
@@ -70,22 +64,22 @@ const SubsidiaryPage = observer(() => {
   const handleDelete = async (ids) => {
     try {
       console.log("Deleting IDs:", ids);
-      await deleteSubsidiaries(ids);
-      const response = await getSubsidiaryFilteredList({
+      await deleteEvents(ids);
+      const response = await getEventFilteredList({
         userId,
         userRoles: user.roles.join(","),
       });
-      subsidiary.setSubsidiaries(response || []);
+      event.setEvents(response || []);
       setSelectedIds([]);
     } catch (err) {
-      console.error("Failed to delete subsidiaries:", err);
-      alert("Error deleting subsidiaries.");
+      console.error("Failed to delete events:", err);
+      alert("Error deleting events.");
     }
   };
 
   if (loading) {
     return (
-      <div id="subsidiary-loading" className="text-center my-5">
+      <div id="event-loading" className="text-center my-5">
         <Spinner animation="border" />
         <p>Loading...</p>
       </div>
@@ -94,30 +88,26 @@ const SubsidiaryPage = observer(() => {
 
   if (error) {
     return (
-      <Alert
-        id="subsidiary-error"
-        variant="danger"
-        className="my-5 text-center"
-      >
+      <Alert id="event-error" variant="danger" className="my-5 text-center">
         {error}
       </Alert>
     );
   }
 
-  const selectedItems = subsidiary.subsidiaries.filter((subsidiaryItem) =>
-    selectedIds.includes(subsidiaryItem.id)
+  const selectedItems = event.events.filter((eventItem) =>
+    selectedIds.includes(eventItem.id)
   );
 
   return (
     <div className="container mt-3">
-      <h2 className="mb-3">Subsidiaries</h2>
-      <div className="subsidiary-page-wrapper">
-        <div className="subsidiary-list-container">
-          {subsidiary.subsidiaries.length === 0 ? (
-            <div className="no-subsidiaries-message">No subsidiaries found</div>
+      <h2 className="mb-3">Events</h2>
+      <div className="event-page-wrapper">
+        <div className="event-list-container">
+          {event.events.length === 0 ? (
+            <div className="no-events-message">No events found</div>
           ) : (
-            <SubsidiaryList
-              selectedSubsidiaries={selectedIds}
+            <EventList
+              selectedEvents={selectedIds}
               onCheckboxChange={handleCheckboxChange}
             />
           )}
@@ -126,8 +116,8 @@ const SubsidiaryPage = observer(() => {
           {user.roles.includes(UserRoles.MANAGER) && (
             <div className="edit-panel-container">
               <EditComponent
-                addPath={SUBSIDIARY_ADD_ROUTE}
-                editPath={SUBSIDIARY_EDIT_ROUTE}
+                addPath={EVENT_ADD_ROUTE}
+                editPath={EVENT_EDIT_ROUTE}
                 deleteApiRequest={handleDelete}
                 selectedIds={selectedIds}
                 selectedItems={selectedItems}
@@ -140,9 +130,9 @@ const SubsidiaryPage = observer(() => {
           </div>
         </div>
       </div>
-      <Pagination store={subsidiary} />
+      <Pagination store={event} />
     </div>
   );
 });
 
-export default SubsidiaryPage;
+export default EventPage;

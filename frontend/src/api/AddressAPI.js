@@ -11,6 +11,17 @@ export const getSubsidiaryAddressList = async (filters = {}) => {
   }
 };
 
+export const getEventAddresses = async (filters = {}) => {
+  try {
+    const response = await api.get("address/list-event", {
+      params: filters,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error.message;
+  }
+};
+
 export const getAllAddressList = async () => {
   try {
     const response = await api.get("address/list-all");

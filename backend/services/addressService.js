@@ -1,4 +1,10 @@
-const { Address, Subsidiary, User, Subsidiary_Manager } = require("../models");
+const {
+  Address,
+  Subsidiary,
+  User,
+  Subsidiary_Manager,
+  Event,
+} = require("../models");
 const { Op } = require("sequelize");
 const AppError = require("../utils/errorClass");
 const Roles = require("../enums/roles");
@@ -52,6 +58,68 @@ class AddressService {
       include: [
         {
           model: Subsidiary,
+          required: true,
+          attributes: [],
+        },
+      ],
+      order: [
+        ["country", "ASC"],
+        ["city", "ASC"],
+        ["street", "ASC"],
+      ],
+    });
+  }
+
+  async findEventAddresses(userId, userRoles) {
+    if (userId && userRoles && userRoles.includes(Roles.MANAGER)) {
+      return await Address.findAll({
+        attributes: [
+          "id",
+          "country",
+          "city",
+          "street",
+          "lat",
+          "lng",
+          "createdAt",
+          "updatedAt",
+        ],
+        include: [
+          {
+            model: Event,
+            required: true,
+            include: [
+              {
+                model: User,
+                as: "Author",
+                where: { id: userId },
+                attributes: [],
+              },
+            ],
+            attributes: [],
+          },
+        ],
+        order: [
+          ["country", "ASC"],
+          ["city", "ASC"],
+          ["street", "ASC"],
+        ],
+      });
+    }
+
+    return await Address.findAll({
+      attributes: [
+        "id",
+        "country",
+        "city",
+        "street",
+        "lat",
+        "lng",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: [
+        {
+          model: Event,
           required: true,
           attributes: [],
         },

@@ -95,6 +95,7 @@ const FilterPanel = observer(() => {
       setError("");
       const response = await getSubsidiaryFilteredList(filterParams);
       subsidiary.setSubsidiaries(response || []);
+      subsidiary.setParams(filterParams);
     } catch (err) {
       setError(
         err?.message || "No subsidiaries with such filters. Please try again."
@@ -112,6 +113,7 @@ const FilterPanel = observer(() => {
         userRoles: userRoles.join(","),
       });
       subsidiary.setSubsidiaries(fullSubsidiaryList || []);
+      subsidiary.setParams(null);
     } catch (err) {
       setError(err?.message || "Failed to reset filters. Please try again.");
     }

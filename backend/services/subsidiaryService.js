@@ -194,6 +194,30 @@ class SubsidiaryService {
     return subsidiary;
   }
 
+  async findSubsidiaryNames(userId, userRoles) {
+    if (userId && userRoles && userRoles.includes(Roles.MANAGER)) {
+      return await Subsidiary.findAll({
+        attributes: ["id", "name"],
+        include: [
+          {
+            model: User,
+            through: {
+              model: Subsidiary_Manager,
+              attributes: [],
+            },
+            where: { id: userId },
+            attributes: [],
+          },
+        ],
+      });
+    }
+
+    // If no user or role-based filtering is required, fetch all subsidiaries.
+    return await Subsidiary.findAll({
+      attributes: ["id", "name"],
+    });
+  }
+
   async addSubsidiary({
     managerId,
     name,

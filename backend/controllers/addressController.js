@@ -19,6 +19,23 @@ class AddressController {
     }
   }
 
+  async getEventAddressList(req, res, next) {
+    try {
+      const { userId, userRoles } = req.query;
+      const rolesArray = userRoles
+        ? userRoles.split(",").map((role) => Number(role))
+        : [];
+      const addresses = await addressService.findEventAddresses(
+        userId,
+        rolesArray
+      );
+
+      res.status(200).json(addresses);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async getAllAddressList(req, res, next) {
     try {
       const addresses = await addressService.getAllAddresses();

@@ -20,6 +20,15 @@ export const getSubsidiaryById = async (id, userId, userRole) => {
   }
 };
 
+export const getSubsidiaryNames = async (filters = {}) => {
+  try {
+    const response = await api.get(`subsidiary/get/names`, { params: filters });
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error.message;
+  }
+};
+
 export const addSubsidiary = async (subsidiaryData) => {
   try {
     const response = await api.post("subsidiary/add", subsidiaryData, {

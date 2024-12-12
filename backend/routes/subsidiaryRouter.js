@@ -14,6 +14,12 @@ router.get(
 );
 router.get("/:id", authChecker, subsidiaryController.getSubsidiaryById);
 
+router.get(
+  "/get/names",
+  authChecker,
+  subsidiaryController.getSubsidiaryNamesList
+);
+
 router.post(
   "/add",
   upload.fields([{ name: "bannerPhoto" }, { name: "otherPhotos" }]),

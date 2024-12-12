@@ -12,7 +12,7 @@ const {
 const AppError = require("../utils/errorClass");
 const EmailService = require("./emailService");
 const Roles = require("../enums/roles");
-
+const { Op } = require("sequelize");
 const path = require("path");
 const fs = require("fs");
 const { savePhoto } = require("../utils/photoUtils");
@@ -148,7 +148,7 @@ class EventService {
         },
         {
           model: Subsidiary,
-          attributes: ["id", "name"],
+          attributes: ["id", "name", "email"],
         },
         {
           model: User,

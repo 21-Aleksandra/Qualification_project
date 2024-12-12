@@ -6,6 +6,8 @@ import PasswordResetFormPage from "./pages/PasswordResetFormPage/PasswordResetFo
 import SubsidiaryPage from "./pages/SubsidiaryPage/SubsidiaryPage";
 import SubsidiaryItemPage from "./pages/SubsidiaryItemPage/SubsidiaryItemPage";
 import AddEditSubsidiaryPage from "./pages/AddEditSubsidiaryPage/AddEditSubsidiaryPage";
+import EventItemPage from "./pages/EventItemPage/EventItemPage";
+import EventPage from "./pages/EventPage/EventPage";
 import TestPage from "./pages/TestPage";
 import UserRoles from "./utils/roleConsts";
 
@@ -21,6 +23,10 @@ import {
   SUBSIDIARY_ITEM_ROUTE,
   SUBSIDIARY_EDIT_ROUTE,
   SUBSIDIARY_ADD_ROUTE,
+  EVENT_ROUTE,
+  EVENT_ITEM_ROUTE,
+  //EVENT_EDIT_ROUTE,
+  //EVENT_ADD_ROUTE,
 } from "./utils/routerConsts";
 
 export const publicRoutes = [
@@ -76,5 +82,15 @@ export const registeredRoutes = [
     path: SUBSIDIARY_ADD_ROUTE,
     Component: AddEditSubsidiaryPage,
     roles: [UserRoles.MANAGER],
+  },
+  {
+    path: EVENT_ROUTE,
+    Component: EventPage,
+    roles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
+  },
+  {
+    path: EVENT_ITEM_ROUTE,
+    Component: EventItemPage,
+    roles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
   },
 ];

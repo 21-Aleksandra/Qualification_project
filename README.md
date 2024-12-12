@@ -240,4 +240,32 @@ In summary:
 
 ##### Backend:
 
-- Problem with file delition in the directory when subsidiary photo is removed
+- Problem with file deletion in the directory when subsidiary photo is removed
+
+### [3.2] - 12-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added event address get endpoint
+- Added subsidiary name endpoint in order not to retrieve the entire model for filter
+
+##### Frontend:
+
+- Added params to subsidiary and event stores to remember user filter requests among components
+- Added event list page and event filter
+- Event, event-type andevent-user API
+- Added individual event page with application button
+
+#### Changed
+
+##### Backend:
+
+- Access setting for endpoints added in 3.x versions
+
+#### Fixed
+
+##### Backend:
+
+- Fixed role array splitting error for cintroller added in 3.0

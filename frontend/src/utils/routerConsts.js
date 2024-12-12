@@ -12,3 +12,7 @@ export const SUBSIDIARIES_ROUTE = "/subsidiaries";
 export const SUBSIDIARY_ITEM_ROUTE = "/subsidiaries/:id";
 export const SUBSIDIARY_EDIT_ROUTE = "/subsidiaries/edit/:id";
 export const SUBSIDIARY_ADD_ROUTE = "/subsidiaries/add-subsidiary";
+export const EVENT_ROUTE = "/events";
+export const EVENT_ITEM_ROUTE = "/events/:id";
+export const EVENT_EDIT_ROUTE = "/events/edit/:id";
+export const EVENT_ADD_ROUTE = "/events/add-event";

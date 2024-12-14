@@ -212,7 +212,6 @@ class SubsidiaryService {
       });
     }
 
-    // If no user or role-based filtering is required, fetch all subsidiaries.
     return await Subsidiary.findAll({
       attributes: ["id", "name"],
     });

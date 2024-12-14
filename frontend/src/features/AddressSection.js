@@ -1,9 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { Form } from "react-bootstrap";
-import DropdownSelectOneSearch from "../../components/Common/DropdownSelectOneSearch/DropdownSelectOneSearch";
-import AddNewAddressDropdownElement from "../../components/SmallForms/AddNewAddressDropdownElement/AddNewAddressDropdownElement";
-import { getAllAddressList, addAddress } from "../../api/AddressAPI";
+import DropdownSelectOneSearch from "../components/Common/DropdownSelectOneSearch/DropdownSelectOneSearch";
+import AddNewAddressDropdownElement from "../components/SmallForms/AddNewAddressDropdownElement/AddNewAddressDropdownElement";
+import { getAllAddressList, addAddress } from "../api/AddressAPI";
 
 const AddressSection = observer(({ formData, setFormData, address }) => {
   const handleAddressChange = (selectedOption) => {

@@ -38,8 +38,11 @@ const EventPage = observer(() => {
         } else {
           response = await getEventFilteredList(params);
         }
-
-        event.setEvents(response || []);
+        if (user.roles.includes(UserRoles.MANAGER)) {
+          event.setEvents(response || [], true);
+        } else {
+          event.setEvents(response || []);
+        }
       } catch (err) {
         console.error("Failed to fetch events:", err);
         setError("Failed to load events. Please try again later.");

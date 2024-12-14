@@ -14,7 +14,9 @@ const AddOneFieldDropdownElement = observer(
     function getResponseDataElement(response) {
       if (response && typeof response === "object") {
         const keys = Object.keys(response);
-
+        if (Array.isArray(response)) {
+          return response;
+        }
         if (keys.length === 1) {
           return response[keys[0]];
         } else if (keys.length === 2) {

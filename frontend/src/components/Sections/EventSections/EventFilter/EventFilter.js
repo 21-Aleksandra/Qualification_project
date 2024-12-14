@@ -10,11 +10,10 @@ import { Context } from "../../../../index";
 import UserRoles from "../../../../utils/roleConsts";
 
 const EventFilter = observer(() => {
-  const { event, address, eventType, user } = useContext(Context);
+  const { event, address, eventType, user, subsidiary } = useContext(Context);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [subsidiaries, setSubsidiaries] = useState([]);
   const [userRoles, setUserRoles] = useState([]);
   const [isManager, setIsManager] = useState(false);
 
@@ -48,25 +47,25 @@ const EventFilter = observer(() => {
         userId: isManager ? userId : undefined,
         userRoles: userRoles.join(","),
       });
-      setSubsidiaries(subsidiaryResponse || []);
+      subsidiary.setNames(subsidiaryResponse || []);
 
       setLoading(false);
     } catch (err) {
       setError(err?.message || "Failed to load filters. Please try again.");
       setLoading(false);
     }
-  }, [userId, userRoles, address, eventType, isManager]);
+  }, [userId, userRoles, address, eventType, subsidiary, isManager]);
 
   useEffect(() => {
     fetchFilterData();
   }, [fetchFilterData]);
 
-  const applyFilters = async () => {
+  const applyEventFilters = async () => {
     const sortMapping = {
       nameAsc: { sortBy: "name", sortOrder: "asc" },
       nameDesc: { sortBy: "name", sortOrder: "desc" },
-      oldest: { sortBy: "dateFrom", sortOrder: "asc" },
-      newest: { sortBy: "dateFrom", sortOrder: "desc" },
+      oldest: { sortBy: "createdAt", sortOrder: "asc" },
+      newest: { sortBy: "createdAt", sortOrder: "desc" },
     };
     const { sortBy, sortOrder } = sortMapping[event.filters.sortOption] || {};
 
@@ -88,7 +87,11 @@ const EventFilter = observer(() => {
     try {
       setError("");
       const response = await getEventFilteredList(filterParams);
-      event.setEvents(response || []);
+      if (isManager) {
+        event.setEvents(response || [], true);
+      } else {
+        event.setEvents(response || []);
+      }
       event.setParams(filterParams);
     } catch (err) {
       setError(err?.message || "No events found with the selected filters.");
@@ -117,7 +120,12 @@ const EventFilter = observer(() => {
         userId: isManager ? userId : undefined,
         userRoles: userRoles.join(","),
       });
-      event.setEvents(response || []);
+      if (isManager) {
+        event.setEvents(response || [], true);
+      } else {
+        event.setEvents(response || []);
+      }
+
       event.setParams(null);
     } catch (err) {
       setError(err?.message || "Failed to reset filters. Please try again.");
@@ -132,6 +140,21 @@ const EventFilter = observer(() => {
     <div className="filter-panel">
       <h3>Filter Events</h3>
       {error && <div className="error-panel">{error}</div>}
+
+      <div>
+        <label>Sort By</label>
+        <select
+          value={event.filters.sortOption}
+          onChange={(e) =>
+            event.setFilters({ ...event.filters, sortOption: e.target.value })
+          }
+        >
+          <option value="nameAsc">Name A-Z</option>
+          <option value="nameDesc">Name Z-A</option>
+          <option value="oldest">Oldest First</option>
+          <option value="newest">Newest First</option>
+        </select>
+      </div>
 
       <div>
         <label>Search Name</label>
@@ -190,7 +213,7 @@ const EventFilter = observer(() => {
 
       <MultiSelectInput
         label="Subsidiaries"
-        options={subsidiaries.map((sub) => ({
+        options={subsidiary.names.map((sub) => ({
           name: sub.name,
           id: sub.id,
         }))}
@@ -240,23 +263,8 @@ const EventFilter = observer(() => {
         />
       </div>
 
-      <div>
-        <label>Sort By</label>
-        <select
-          value={event.filters.sortOption}
-          onChange={(e) =>
-            event.setFilters({ ...event.filters, sortOption: e.target.value })
-          }
-        >
-          <option value="nameAsc">Name A-Z</option>
-          <option value="nameDesc">Name Z-A</option>
-          <option value="oldest">Oldest First</option>
-          <option value="newest">Newest First</option>
-        </select>
-      </div>
-
       <div className="button-group">
-        <CustomButton size="md" onClick={applyFilters}>
+        <CustomButton size="md" onClick={applyEventFilters}>
           Apply Filters
         </CustomButton>
         <CustomButton size="md" onClick={resetFilters} className="clear-button">

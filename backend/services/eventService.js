@@ -201,7 +201,7 @@ class EventService {
   }
 
   async addEvent({
-    authorId,
+    managerId,
     name,
     description,
     typeId,
@@ -237,7 +237,6 @@ class EventService {
     }
 
     const newEvent = await Event.create({
-      authorId,
       name,
       description,
       typeId,
@@ -247,6 +246,7 @@ class EventService {
       applicationDeadline: parsedApplicationDeadline,
       addressId,
       subsidiaryId,
+      authorId: managerId,
       maxPeopleAllowed,
       photoSetId: photoSet.id,
     });

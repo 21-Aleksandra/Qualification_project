@@ -242,7 +242,7 @@ In summary:
 
 - Problem with file deletion in the directory when subsidiary photo is removed
 
-### [3.2] - 12-12-2024
+### [3.2] - 13-12-2024
 
 #### Added
 
@@ -269,3 +269,30 @@ In summary:
 ##### Backend:
 
 - Fixed role array splitting error for cintroller added in 3.0
+
+### [3.3] - 14-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added AddEdit form for event
+- Added hooks and sections for AddEditEvrntPage in order to make code more readable
+- Added names to subsidiary store for easier maintanance among components
+
+#### Changed
+
+##### Frontend:
+
+- Changed AddOneDropDownElement to work with arrays as well
+- Changed some features placement - how photo section and address section are global
+
+#### Fixed
+
+##### Frontend:
+
+- Filtering issues - now sort order is the same for apply and reset by default and publish on it taken into account in store
+
+##### Backend:
+
+- Issues with passing authorId to edit event (was undefiend)

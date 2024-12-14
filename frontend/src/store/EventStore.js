@@ -50,8 +50,13 @@ export default class EventStore {
     };
   }
 
-  setEvents(events) {
-    this._events = events;
+  setEvents(events, isManager = false) {
+    if (!isManager) {
+      const now = new Date();
+      this._events = events.filter((event) => new Date(event.publishOn) < now);
+    } else {
+      this._events = events;
+    }
   }
 
   addEvent(event) {

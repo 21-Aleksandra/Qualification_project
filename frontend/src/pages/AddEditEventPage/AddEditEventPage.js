@@ -1,36 +1,38 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../../index";
-import { addSubsidiary, editSubsidiary } from "../../api/SubsidiaryAPI";
-import OrganizationSection from "../../features/SubsidiaryEditForm/OrganizationSection";
+import { addEvent, editEvent } from "../../api/EventAPI";
+import EventTypeSection from "../../features/EventEditForm/EventTypeSection";
 import AddressSection from "../../features/AddressSection";
+import DatesSection from "../../features/EventEditForm/DatesSection";
+import SubsidiaryNameSection from "../../features/EventEditForm/SubsidiarySection";
 import { Form, Alert } from "react-bootstrap";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import TextSection from "../../features/EventEditForm/TextSection";
 import { observer } from "mobx-react-lite";
-import TextInputSection from "../../features/SubsidiaryEditForm/TextInputSection";
 import PhotosSection from "../../features/PhotoSection";
-import MissionSection from "../../features/SubsidiaryEditForm/MissionSection";
 import { Spinner } from "react-bootstrap";
-import useFetchSubsidiaryAddEditData from "../../hooks/useFetchSubsidiaryAddEditData";
-import { SUBSIDIARIES_ROUTE } from "../../utils/routerConsts";
-import "./AddEditSubsidiaryPage.css";
+import useFetchEventData from "../../hooks/useFetchEventData";
+import { EVENTS_ROUTE } from "../../utils/routerConsts";
+import "./AddEditEventPage.css";
 
-const AddEditSubsidiaryPage = observer(() => {
-  const { mission, mainOrganization, address, user } = useContext(Context);
+const AddEditEventPage = observer(() => {
+  const { eventType, subsidiary, address, user } = useContext(Context);
   const { id } = useParams();
-  const managerId = user._id;
+  const managerId = user.id;
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    mainOrganizationId: "",
-    foundedAt: "",
+    typeId: "",
+    dateFrom: "",
+    dateTo: "",
+    publishOn: "",
+    applicationDeadline: "",
     addressId: "",
-    email: "",
-    website: "",
-    staffCount: 0,
-    missions: [],
+    subsidiaryId: "",
+    maxPeopleAllowed: 0,
     bannerPhoto: null,
     otherPhotos: [],
     otherPhotosPreviews: [],
@@ -43,8 +45,8 @@ const AddEditSubsidiaryPage = observer(() => {
   const {
     loading: fetchLoading,
     error: fetchError,
-    subsidiaryData,
-  } = useFetchSubsidiaryAddEditData(id, mission, mainOrganization, address);
+    eventData,
+  } = useFetchEventData(id, eventType, subsidiary, user, address);
 
   useEffect(() => {
     if (fetchLoading !== undefined) {
@@ -53,24 +55,25 @@ const AddEditSubsidiaryPage = observer(() => {
     if (fetchError) {
       setError(fetchError);
     }
-    if (subsidiaryData) {
+    if (eventData) {
       setFormData({
-        name: subsidiaryData.name || "",
-        description: subsidiaryData.description || "",
-        mainOrganizationId: subsidiaryData.mainOrganizationId || "",
-        foundedAt: subsidiaryData.foundedAt || "",
-        addressId: subsidiaryData.addressId || "",
-        email: subsidiaryData.email || "",
-        website: subsidiaryData.website || "",
-        staffCount: subsidiaryData.staffCount || 0,
-        missions: subsidiaryData.Missions?.map((m) => m.id) || [],
-        bannerPhoto: subsidiaryData.bannerPhoto,
-        otherPhotos: subsidiaryData.otherPhotos,
-        otherPhotosPreviews: subsidiaryData.otherPhotosPreviews,
+        name: eventData.name || "",
+        description: eventData.description || "",
+        typeId: eventData.typeId || "",
+        dateFrom: eventData.dateFrom || "",
+        dateTo: eventData.dateTo || "",
+        publishOn: eventData.publishOn || "",
+        applicationDeadline: eventData.applicationDeadline || "",
+        addressId: eventData.addressId || "",
+        subsidiaryId: eventData.subsidiaryId || "",
+        maxPeopleAllowed: eventData.maxPeopleAllowed || 0,
+        bannerPhoto: eventData.bannerPhoto,
+        otherPhotos: eventData.otherPhotos,
+        otherPhotosPreviews: eventData.otherPhotosPreviews,
       });
       setIsEditing(true);
     }
-  }, [fetchLoading, fetchError, setError, setLoading, subsidiaryData]);
+  }, [fetchLoading, fetchError, eventData]);
 
   const handleFileChange = (e, fieldName) => {
     const files = e.target.files;
@@ -121,8 +124,6 @@ const AddEditSubsidiaryPage = observer(() => {
         value.forEach(({ file }) => submitData.append("otherPhotos", file));
       } else if (key === "bannerPhoto" && value) {
         submitData.append("bannerPhoto", value);
-      } else if (Array.isArray(value)) {
-        value.forEach((item) => submitData.append(key, item));
       } else if (value) {
         submitData.append(key, value);
       }
@@ -134,11 +135,11 @@ const AddEditSubsidiaryPage = observer(() => {
 
     try {
       if (isEditing) {
-        await editSubsidiary(id, submitData);
+        await editEvent(id, submitData);
       } else {
-        await addSubsidiary(submitData);
+        await addEvent(submitData);
       }
-      navigate(SUBSIDIARIES_ROUTE);
+      navigate(EVENTS_ROUTE);
     } catch (err) {
       setError(
         "Failed to submit the form: " + err.message + ". Please try again."
@@ -156,9 +157,19 @@ const AddEditSubsidiaryPage = observer(() => {
     }));
   };
 
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    const utcDate = new Date(value).toISOString();
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: utcDate,
+    }));
+  };
+
   if (loading) {
     return (
-      <div id="subsidiary-loading" className="text-center my-5">
+      <div id="event-loading" className="text-center my-5">
         <Spinner animation="border" />
         <p>Loading...</p>
       </div>
@@ -166,27 +177,26 @@ const AddEditSubsidiaryPage = observer(() => {
   }
 
   return (
-    <div className="container mt-3 subsidiary-form-container-special">
-      <h2>{isEditing ? "Edit Subsidiary" : "Add Subsidiary"}</h2>
+    <div className="container mt-3 event-form-container">
+      <h2>{isEditing ? "Edit Event" : "Add Event"}</h2>
       {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <TextInputSection formData={formData} handleChange={handleChange} />
 
-        <OrganizationSection
+      <TextSection formData={formData} handleChange={handleChange} />
+
+      <Form onSubmit={handleSubmit}>
+        <EventTypeSection
           formData={formData}
           setFormData={setFormData}
-          mainOrganization={mainOrganization}
+          eventType={eventType}
         />
 
-        <Form.Group controlId="foundedAt">
-          <Form.Label>Founded At</Form.Label>
-          <Form.Control
-            type="date"
-            name="foundedAt"
-            value={formData.foundedAt ? formData.foundedAt.slice(0, 10) : ""}
-            onChange={handleChange}
-          />
-        </Form.Group>
+        <SubsidiaryNameSection
+          formData={formData}
+          setFormData={setFormData}
+          subsidiary={subsidiary}
+        />
+
+        <DatesSection formData={formData} handleDateChange={handleDateChange} />
 
         <AddressSection
           formData={formData}
@@ -194,12 +204,12 @@ const AddEditSubsidiaryPage = observer(() => {
           address={address}
         />
 
-        <Form.Group controlId="staffCount">
-          <Form.Label>Staff Count</Form.Label>
+        <Form.Group controlId="maxPeopleAllowed">
+          <Form.Label>Max People Allowed</Form.Label>
           <Form.Control
             type="number"
-            name="staffCount"
-            value={formData.staffCount}
+            name="maxPeopleAllowed"
+            value={formData.maxPeopleAllowed}
             onChange={handleChange}
           />
         </Form.Group>
@@ -211,22 +221,16 @@ const AddEditSubsidiaryPage = observer(() => {
           setFormData={setFormData}
         />
 
-        <MissionSection
-          formData={formData}
-          setFormData={setFormData}
-          missionStore={mission}
-        />
-
         <CustomButton
           type="submit"
           disabled={loading}
           className="custom-button-primary"
         >
-          {isEditing ? "Update" : "Add"} Subsidiary
+          {isEditing ? "Update" : "Add"} Event
         </CustomButton>
       </Form>
     </div>
   );
 });
 
-export default AddEditSubsidiaryPage;
+export default AddEditEventPage;

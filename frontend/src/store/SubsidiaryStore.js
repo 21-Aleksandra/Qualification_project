@@ -18,11 +18,16 @@ export default class SubsidiaryStore {
       sortOption: "newest",
     };
     this.params = null;
+    this.names = [];
     makeAutoObservable(this);
   }
 
   setFilters(filters) {
     this.filters = filters;
+  }
+
+  setNames(names) {
+    this.names = names;
   }
 
   setParams(params) {

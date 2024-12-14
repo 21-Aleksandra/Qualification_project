@@ -10,6 +10,7 @@ import EventItemPage from "./pages/EventItemPage/EventItemPage";
 import EventPage from "./pages/EventPage/EventPage";
 import TestPage from "./pages/TestPage";
 import UserRoles from "./utils/roleConsts";
+import AddEditEventPage from "./pages/AddEditEventPage/AddEditEventPage";
 
 import {
   LOGIN_ROUTE,
@@ -25,8 +26,8 @@ import {
   SUBSIDIARY_ADD_ROUTE,
   EVENT_ROUTE,
   EVENT_ITEM_ROUTE,
-  //EVENT_EDIT_ROUTE,
-  //EVENT_ADD_ROUTE,
+  EVENT_EDIT_ROUTE,
+  EVENT_ADD_ROUTE,
 } from "./utils/routerConsts";
 
 export const publicRoutes = [
@@ -92,5 +93,15 @@ export const registeredRoutes = [
     path: EVENT_ITEM_ROUTE,
     Component: EventItemPage,
     roles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
+  },
+  {
+    path: EVENT_EDIT_ROUTE,
+    Component: AddEditEventPage,
+    roles: [UserRoles.MANAGER],
+  },
+  {
+    path: EVENT_ADD_ROUTE,
+    Component: AddEditEventPage,
+    roles: [UserRoles.MANAGER],
   },
 ];

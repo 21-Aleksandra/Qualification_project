@@ -16,3 +16,5 @@ export const EVENT_ROUTE = "/events";
 export const EVENT_ITEM_ROUTE = "/events/:id";
 export const EVENT_EDIT_ROUTE = "/events/edit/:id";
 export const EVENT_ADD_ROUTE = "/events/add-event";
+export const MY_EVENTS_ROUTE = "/events/my-events";
+export const MY_PROFILE_ROUTE = "/profile";

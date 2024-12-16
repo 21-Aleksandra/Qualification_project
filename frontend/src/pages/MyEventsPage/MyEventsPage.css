@@ -1,0 +1,56 @@
+.my-events-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.my-event-filter {
+  width: 250px;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  order: 1;
+}
+
+.my-events-list-wrapper {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  order: 2;
+}
+
+.no-events-message {
+  text-align: center;
+  color: #6c757d;
+}
+
+@media (max-width: 1200px) {
+  .my-events-layout {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .my-event-filter,
+  .my-events-list-wrapper {
+    width: 100%;
+  }
+
+  .my-event-filter {
+    order: -1;
+    margin-bottom: 20px;
+  }
+
+  .my-events-list-wrapper {
+    order: 0;
+  }
+}
+
+@media (min-width: 1201px) {
+  .my-events-layout {
+    flex-direction: row-reverse;
+  }
+}

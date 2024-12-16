@@ -296,3 +296,29 @@ In summary:
 ##### Backend:
 
 - Issues with passing authorId to edit event (was undefiend)
+
+### [3.4] - 17-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added profile and my event routes
+- Added basic profile page and full my event page with filters and unregister buttons
+
+#### Changed
+
+##### Frontend:
+
+- Changed profile and navigation links to variables from router consts
+- Changed date formating for event pages
+
+#### Fixed
+
+##### Frontend:
+
+- Fixed api call for user's event to pass data to body, not params
+
+##### Backend:
+
+- Fixed issues with filtering user's events

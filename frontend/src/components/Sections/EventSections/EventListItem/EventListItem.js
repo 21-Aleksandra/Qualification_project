@@ -5,6 +5,7 @@ import { Context } from "../../../../index";
 import defaultImage from "../../../../assets/default_event.png";
 import { EVENT_ITEM_ROUTE } from "../../../../utils/routerConsts";
 import UserRoles from "../../../../utils/roleConsts";
+import { formatDateTime } from "../../../../utils/dateUtils";
 import "./EventListItem.css";
 
 const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
@@ -31,18 +32,6 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
   const address = event?.Address || {};
   const eventType = event?.Event_Type?.name || "No type available";
   const isManager = user.roles.includes(UserRoles.MANAGER);
-
-  const formatDateTime = (dateString) => {
-    if (!dateString) return "Unknown";
-    const date = new Date(dateString);
-    return date.toLocaleString(undefined, {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const formatDateTimeRange = (from, to) => {
     return `${formatDateTime(from)} - ${formatDateTime(to)}`;
@@ -71,15 +60,21 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
 
         <div className="event-card-section" onClick={handleCardClick}>
           <Card.Text className="event-card-text text-muted">
-            Type: {eventType}
+            <strong>Type:</strong> {eventType}
+          </Card.Text>
+        </div>
+
+        <div className="event-card-section" onClick={handleCardClick}>
+          <Card.Text className="event-card-text text-muted">
+            <strong>Subsidiary:</strong> {event.Subsidiary.name}
           </Card.Text>
         </div>
 
         <div className="event-card-section" onClick={handleCardClick}>
           {address.street || address.city || address.country ? (
             <Card.Text className="event-card-text text-muted">
-              {address.street || "No street"}, {address.city || "No city"},{" "}
-              {address.country || "No country"}
+              <strong> Address:</strong> {address.street || "No street"},{" "}
+              {address.city || "No city"}, {address.country || "No country"}
             </Card.Text>
           ) : (
             <Card.Text className="event-card-text text-muted">
@@ -90,13 +85,15 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
 
         <div className="event-card-section" onClick={handleCardClick}>
           <Card.Text className="event-card-text text-muted">
-            Date: {formatDateTimeRange(event.dateFrom, event.dateTo)}
+            <strong> Date: </strong>
+            {formatDateTimeRange(event.dateFrom, event.dateTo)}
           </Card.Text>
         </div>
 
         <div className="event-card-section" onClick={handleCardClick}>
           <Card.Text className="event-card-text text-muted">
-            Application Deadline: {formatDateTime(event.applicationDeadline)}
+            <strong> Application Deadline:</strong>{" "}
+            {formatDateTime(event.applicationDeadline)}
           </Card.Text>
         </div>
 

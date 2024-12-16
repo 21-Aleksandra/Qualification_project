@@ -47,11 +47,12 @@ class EventUserController {
 
       const { dateFrom, dateTo, name } = req.query;
 
-      const events = await eventUserService.listEventsByUser(userId, {
-        dateFrom,
-        dateTo,
-        name,
-      });
+      const filters = {};
+      if (dateFrom) filters.dateFrom = dateFrom;
+      if (dateTo) filters.dateTo = dateTo;
+      if (name) filters.name = name;
+
+      const events = await eventUserService.listEventsByUser(userId, filters);
 
       res.status(200).json({ events });
     } catch (err) {

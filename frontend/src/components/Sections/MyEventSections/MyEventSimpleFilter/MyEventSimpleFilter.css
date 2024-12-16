@@ -1,0 +1,56 @@
+.simple-filter-container {
+  width: 250px;
+  float: left;
+  margin-right: 20px;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #ffffff;
+}
+
+.simple-filter-container h3 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.simple-filter-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.simple-filter-container input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.simple-filter-container .button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 1200px) {
+  .simple-filter-container {
+    width: 100%;
+    margin: 0 auto;
+    float: none;
+    order: -1;
+  }
+
+  .simple-filter-container input,
+  .simple-filter-container button {
+    width: 100%;
+  }
+
+  .simple-filter-container .button-group {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

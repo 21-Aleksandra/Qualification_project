@@ -14,6 +14,7 @@ import { registerUserToEvent } from "../../api/EventUserAPI";
 import defaultImage from "../../assets/default_event.png";
 import UserRoles from "../../utils/roleConsts";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
+import { formatDateTime } from "../../utils/dateUtils";
 import "./EventItemPage.css";
 
 const EventItemPage = () => {
@@ -148,12 +149,12 @@ const EventItemPage = () => {
               : "No address available."}
           </p>
           <p>
-            <strong>Event Dates:</strong> {new Date(dateFrom).toLocaleString()}{" "}
-            - {new Date(dateTo).toLocaleString()}
+            <strong>Event Dates:</strong> {formatDateTime(dateFrom)} -{" "}
+            {formatDateTime(dateTo)}
           </p>
           <p>
             <strong>Application Deadline:</strong>{" "}
-            {new Date(applicationDeadline).toLocaleString()}
+            {formatDateTime(applicationDeadline)}
           </p>
           <p>
             <strong>Max People Allowed:</strong> {maxPeopleAllowed}

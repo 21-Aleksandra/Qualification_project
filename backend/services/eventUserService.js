@@ -51,7 +51,14 @@ class EventUserService {
 
     const events = await Event.findAll({
       where: whereClause,
-      attributes: ["id", "name", "description", "dateFrom", "dateTo"],
+      attributes: [
+        "id",
+        "name",
+        "description",
+        "dateFrom",
+        "dateTo",
+        "applicationDeadline",
+      ],
       include: [
         {
           model: User,

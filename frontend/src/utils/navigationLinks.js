@@ -1,16 +1,16 @@
 import UserRoles from "./roleConsts";
-import { SUBSIDIARIES_ROUTE } from "../utils/routerConsts";
+import { SUBSIDIARIES_ROUTE, EVENT_ROUTE } from "../utils/routerConsts";
 
 const navigationLinks = [
   {
     name: "Subsidiaries",
     link: SUBSIDIARIES_ROUTE,
-    allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
+    allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER],
   },
   {
     name: "Events",
-    link: "/events",
-    allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
+    link: EVENT_ROUTE,
+    allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER],
   },
   {
     name: "Organisations",

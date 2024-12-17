@@ -8,6 +8,7 @@ const subsidiaryRouter = require("./subsidiaryRouter");
 const eventRouter = require("./eventRouter");
 const eventTypeRouter = require("./eventTypeRouter");
 const eventUserRouter = require("./eventUserRouter");
+const statisticsRouter = require("./statisticsRouter");
 
 router.use("/auth", authRouter);
 router.use("/address", addressRouter);
@@ -17,4 +18,5 @@ router.use("/subsidiary", subsidiaryRouter);
 router.use("/event", eventRouter);
 router.use("/event-type", eventTypeRouter);
 router.use("/event-user", eventUserRouter);
+router.use("/statistics", statisticsRouter);
 module.exports = router;

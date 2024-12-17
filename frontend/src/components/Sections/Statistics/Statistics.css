@@ -1,6 +1,6 @@
 .statistics-block {
   width: 100%;
-  padding: 20px 0;
+  padding: 10px 10px;
   text-align: center;
 }
 
@@ -13,7 +13,7 @@
 .stats-row {
   display: flex;
   justify-content: space-around;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-top: 70px;
 }
 
@@ -26,6 +26,6 @@
 }
 
 .number {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
 }

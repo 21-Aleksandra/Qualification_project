@@ -9,6 +9,7 @@ In summary:
 - v1.x - Auth related jobs
 - v2.x - Subsidiary related jobs
 - v3.x - Event related jobs
+- v4.x - Profile, main page and dashboard related jobs
 
 ### [1.0] - 28-09-2024
 
@@ -322,3 +323,22 @@ In summary:
 ##### Backend:
 
 - Fixed issues with filtering user's events
+
+### [4.0] - 17-12-2024
+
+#### Added
+
+##### Backend:
+
+-Added statistics router, controller and service as well as endpoint for summary
+
+##### Frontend:
+
+- Added StatisticsAPI
+- Added real statistics data to landing page
+
+#### Changed
+
+##### Frontend:
+
+- Changed statistics styles

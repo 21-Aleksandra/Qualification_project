@@ -9,7 +9,7 @@ In summary:
 - v1.x - Auth related jobs
 - v2.x - Subsidiary related jobs
 - v3.x - Event related jobs
-- v4.x - Profile, main page and dashboard related jobs
+- v4.x - Profile, news, statistics, landing page and dashboard related jobs
 
 ### [1.0] - 28-09-2024
 
@@ -330,7 +330,7 @@ In summary:
 
 ##### Backend:
 
--Added statistics router, controller and service as well as endpoint for summary
+- Added statistics router, controller and service as well as endpoint for summary
 
 ##### Frontend:
 
@@ -342,3 +342,37 @@ In summary:
 ##### Frontend:
 
 - Changed statistics styles
+
+### [4.1] - 19-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added profile router,controller, service
+- Added adminRequest email
+- Added RequestSequence model,table, seeder
+- Added single photo processing util
+
+##### Frontend:
+
+- Added ProfileAPI
+- Added real profile page with edit forms and admin request form to inform about bugs
+- Added profile form components
+
+#### Changed
+
+- Login and check methods in auth service - now they return progile picture url
+- User table,model, seeder - now user has photoId'
+- Photo model - now it has conncection to user
+
+##### Frontend:
+
+- Changed auth store to store profile picture url info
+- Changed login to set up profile picture on login
+
+#### Fixed
+
+##### Frontend:
+
+- Layout problems connected to profile picture

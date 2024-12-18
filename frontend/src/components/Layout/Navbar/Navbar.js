@@ -28,6 +28,9 @@ const NavigationBar = observer(() => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const profilePicUrl = user?.url
+    ? `${process.env.REACT_APP_SERVER_URL}${user.url}`
+    : require("../../../assets/default_user_small.png");
 
   const handleLogout = async () => {
     try {
@@ -83,7 +86,16 @@ const NavigationBar = observer(() => {
         {user.isAuth ? (
           <div className="d-none d-lg-block">
             <NavDropdown
-              title={user.user}
+              title={
+                <div className="d-flex align-items-center">
+                  <img
+                    src={profilePicUrl}
+                    alt="Profile"
+                    className="navbar-profile-pic"
+                  />
+                  <span className="ms-2">{user.user}</span>
+                </div>
+              }
               id="user-dropdown"
               align="end"
               className="user-dropdown-custom"
@@ -142,7 +154,14 @@ const NavigationBar = observer(() => {
             <Nav className="flex-column">
               {user.isAuth && (
                 <div className="mb-3">
-                  <div className="offcanvas-username">{user.user}</div>
+                  <div className="d-flex align-items-center offcanvas-user-info">
+                    <img
+                      src={profilePicUrl}
+                      alt="Profile"
+                      className="navbar-profile-pic"
+                    />
+                    <div className="offcanvas-username ms-2">{user.user}</div>
+                  </div>
                   {profileLinks
                     .filter((link) => hasPermission(link.allowedRoles))
                     .map((link, index) => (

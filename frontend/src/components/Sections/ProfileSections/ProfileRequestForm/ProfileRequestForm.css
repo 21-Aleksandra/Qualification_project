@@ -1,0 +1,71 @@
+.profile-request-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-top: 20px;
+}
+
+.profile-request-form .form-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.profile-request-form .form-frame h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.profile-request-form .request-textarea {
+  font-size: 1rem;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  resize: vertical;
+}
+
+.profile-request-form .request-textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.profile-request-form .error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #f5c6cb;
+  font-size: 14px;
+}
+
+.profile-request-form .warning-text {
+  float: left;
+  text-align: left;
+}
+
+.profile-request-form .form-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-request-form .button-group {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.profile-request-form .submit-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}

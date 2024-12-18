@@ -53,11 +53,14 @@ class AuthController {
 
         await redisClient.set(`user:${user.id}`, req.session.id);
 
+        const url = await authService.getUsersProfilePic(req.session.user.id);
+
         return res.status(200).json({
           message: "Login successful",
           username: user.username,
           roles: roles,
           id: user.id,
+          url: url,
         });
       });
     } catch (err) {

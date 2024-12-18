@@ -24,10 +24,14 @@ module.exports = {
         type: Sequelize.DataTypes.STRING(255),
         allowNull: false,
       },
-      role: {
-        type: Sequelize.DataTypes.INTEGER,
+      isVerified: {
+        type: Sequelize.DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 1,
+        defaultValue: false,
+      },
+      photoId: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: true,
       },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -39,11 +43,6 @@ module.exports = {
         allowNull: false,
         defaultValue: Sequelize.fn("NOW"),
         onUpdate: Sequelize.fn("NOW"),
-      },
-      isVerified: {
-        type: Sequelize.DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
       },
     });
   },

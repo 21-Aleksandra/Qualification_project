@@ -1,0 +1,101 @@
+.profile-picture-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture-form .profile-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture-form .profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.profile-picture-form .profile-picture-form .username {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.profile-picture-form .form-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-picture-form .upload-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.profile-picture-form .upload-button:hover {
+  background-color: #0056b3;
+}
+
+.profile-picture-form .button-group {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-picture-form .submit-button {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+}
+
+.profile-picture-form .submit-button:hover {
+  background-color: #444;
+}
+
+.profile-picture-form .submit-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.profile-picture-form .error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #f5c6cb;
+  font-size: 1.2rem;
+}
+
+.warning-text {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.warning-text p {
+  margin: 0;
+  padding: 5px 0;
+}

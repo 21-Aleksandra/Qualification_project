@@ -29,4 +29,31 @@ async function savePhoto(photo, isBanner, directory, photoSetId) {
   });
 }
 
-module.exports = { savePhoto };
+async function saveOnePhoto(photo, directory) {
+  const extension = path.extname(photo.originalname || "").toLowerCase();
+  if (![".jpg", ".jpeg", ".png"].includes(extension)) {
+    throw new AppError(
+      "Invalid file type. Only jpg, jpeg, png are allowed.",
+      400
+    );
+  }
+
+  const fileName = `${uuidv4()}_${new Date()
+    .toISOString()
+    .replace(/[:.]/g, "-")}${extension}`;
+  const filePath = path.join(directory, fileName);
+
+  fs.mkdirSync(directory, { recursive: true });
+
+  fs.writeFileSync(filePath, photo.buffer);
+
+  const newPhoto = await Photo.create({
+    url: `${directory}${fileName}`,
+    filename: fileName,
+    type: extension.slice(1),
+  });
+
+  return newPhoto;
+}
+
+module.exports = { savePhoto, saveOnePhoto };

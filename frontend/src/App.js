@@ -19,6 +19,7 @@ const App = observer(() => {
         user.setAuth(data.isAuthenticated);
         user.setUser(data.username);
         user.setId(data.id);
+        user.setUrl(data.url);
       })
       .finally(() => setIsLoading(false));
   }, [user]);

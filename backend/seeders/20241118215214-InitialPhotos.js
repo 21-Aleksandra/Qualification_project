@@ -5,6 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     const SUBSIDIARY_IMAGE_PATH = process.env.SUBSIDIARY_IMAGE_PATH;
     const EVENT_IMAGE_PATH = process.env.EVENT_IMAGE_PATH;
+    const USER_IMAGE_PATH = process.env.USER_IMAGE_PATH;
 
     await queryInterface.bulkInsert(
       "Photo",
@@ -43,6 +44,13 @@ module.exports = {
           type: "png",
           photoSetId: 8,
           isBannerPhoto: false,
+        },
+        {
+          url: `${USER_IMAGE_PATH}test_1_user.png`,
+          filename: "test_1_user.png",
+          type: "png",
+          photoSetId: null,
+          isBannerPhoto: null,
         },
       ],
       {}

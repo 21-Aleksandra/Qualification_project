@@ -1,5 +1,5 @@
 const AppError = require("../utils/errorClass");
-const { User, User_Role } = require("../models");
+const { User, User_Role, Photo } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Roles = require("../enums/roles");
@@ -177,6 +177,28 @@ class AuthService {
     if (decoded.payload.exp < currentTime) {
       throw AppError.badRequest("Expired link!");
     }
+  }
+
+  async getUsersProfilePic(userId) {
+    const user = await User.findOne({
+      where: { id: userId },
+      attributes: ["photoId"],
+    });
+
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    if (user.photoId == null) {
+      return null;
+    }
+
+    const photo = await Photo.findOne({
+      where: { id: user.photoId },
+      attributes: ["url"],
+    });
+
+    return photo.url;
   }
 }
 

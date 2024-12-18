@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false,
       },
+      photoId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       tableName: "User",
@@ -67,6 +71,12 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Event, {
       foreignKey: "authorId",
       as: "AuthoredEvents",
+    });
+
+    User.hasOne(models.Photo, {
+      foreignKey: "id",
+      sourceKey: "photoId",
+      as: "Photo",
     });
   };
 

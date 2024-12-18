@@ -50,6 +50,12 @@ module.exports = (sequelize, DataTypes) => {
     Photo.belongsTo(models.Photo_Set, {
       foreignKey: "photoSetId",
     });
+
+    Photo.belongsTo(models.User, {
+      foreignKey: "id",
+      targetKey: "photoId",
+      as: "User",
+    });
   };
 
   return Photo;

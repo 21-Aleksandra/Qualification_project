@@ -31,7 +31,7 @@ class EmailService {
     eventCanceled: "Event Canceled Notification",
   };
 
-  async SendMail(address_to, emailType, link = null) {
+  async SendMail(address_to, emailType, link = null, customSubject = null) {
     const htmlTemplate = await this.loadTemplate(emailType);
 
     let htmlContent = htmlTemplate;
@@ -39,7 +39,13 @@ class EmailService {
       htmlContent = htmlContent.replace("{{link}}", link);
     }
 
-    const subject = this.emailSubjects[emailType];
+    let subject;
+
+    if (customSubject != null) {
+      subject = customSubject;
+    } else {
+      subject = this.emailSubjects[emailType];
+    }
 
     await this.transporter.sendMail({
       from: process.env.SMTP_ACCOUNT,

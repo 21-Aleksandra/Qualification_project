@@ -3,6 +3,7 @@ const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const AuthService = require("../services/authService");
 const { createClient } = require("redis");
+const authService = require("../services/authService");
 const redisClient = createClient();
 
 redisClient
@@ -115,11 +116,13 @@ class AuthController {
   async checkStatus(req, res, next) {
     try {
       if (req.session.user) {
+        const url = await authService.getUsersProfilePic(req.session.user.id);
         res.json({
           isAuthenticated: true,
           roles: req.session.user.roles,
           username: req.session.user.username,
           id: req.session.user.id,
+          url: url,
         });
       } else {
         res.json({
@@ -127,6 +130,7 @@ class AuthController {
           roles: [],
           username: null,
           id: null,
+          url: null,
         });
       }
     } catch (err) {

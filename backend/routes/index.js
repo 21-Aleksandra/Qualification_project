@@ -9,6 +9,7 @@ const eventRouter = require("./eventRouter");
 const eventTypeRouter = require("./eventTypeRouter");
 const eventUserRouter = require("./eventUserRouter");
 const statisticsRouter = require("./statisticsRouter");
+const profileRouter = require("./profileRouter");
 
 router.use("/auth", authRouter);
 router.use("/address", addressRouter);
@@ -19,4 +20,5 @@ router.use("/event", eventRouter);
 router.use("/event-type", eventTypeRouter);
 router.use("/event-user", eventUserRouter);
 router.use("/statistics", statisticsRouter);
+router.use("/profile", profileRouter);
 module.exports = router;

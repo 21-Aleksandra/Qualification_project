@@ -34,6 +34,10 @@ module.exports = {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: true,
       },
+      newsSetId: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: true,
+      },
       email: {
         type: Sequelize.STRING,
         allowNull: true,

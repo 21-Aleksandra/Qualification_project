@@ -18,7 +18,6 @@ const DashboardPage = () => {
     : [Number(user.role)];
   const highestRole = Math.max(...userRoles);
   const username = user._username;
-  console.log(highestRole);
 
   let text, buttonText, buttonLink;
 
@@ -26,22 +25,22 @@ const DashboardPage = () => {
     case UserRoles.REGULAR:
       text = `Welcome ${username}, browse all our events!`;
       buttonText = "Browse";
-      buttonLink = { EVENTS_ROUTE };
+      buttonLink = EVENTS_ROUTE;
       break;
     case UserRoles.MANAGER:
       text = `Welcome ${username}, browse your organisations!`;
       buttonText = "Browse";
-      buttonLink = { MY_ORGANISATIONS_ROUTE };
+      buttonLink = MY_ORGANISATIONS_ROUTE;
       break;
     case UserRoles.ADMIN:
       text = `Welcome ${username}, check the users!`;
       buttonText = "Browse";
-      buttonLink = { USERS_ROUTE };
+      buttonLink = USERS_ROUTE;
       break;
     default:
       text = `Welcome ${username}, explore the platform!`;
       buttonText = "Browse";
-      buttonLink = { EVENTS_ROUTE };
+      buttonLink = EVENTS_ROUTE;
   }
 
   const [newsItems] = useState([

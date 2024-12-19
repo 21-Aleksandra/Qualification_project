@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      newsSetId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       email: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -70,6 +74,11 @@ module.exports = (sequelize, DataTypes) => {
     Subsidiary.hasOne(models.Photo_Set, {
       foreignKey: "id",
       sourceKey: "photoSetId",
+    });
+
+    Subsidiary.hasOne(models.News_Set, {
+      foreignKey: "id",
+      sourceKey: "newsSetId",
     });
 
     Subsidiary.belongsTo(models.Main_Organization, {

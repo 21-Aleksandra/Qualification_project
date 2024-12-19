@@ -56,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      newsSetId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -90,6 +94,11 @@ module.exports = (sequelize, DataTypes) => {
     Event.hasOne(models.Photo_Set, {
       foreignKey: "id",
       sourceKey: "photoSetId",
+    });
+
+    Event.hasOne(models.News_Set, {
+      foreignKey: "id",
+      sourceKey: "newsSetId",
     });
 
     Event.belongsToMany(models.User, {

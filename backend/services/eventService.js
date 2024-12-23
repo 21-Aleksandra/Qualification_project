@@ -8,6 +8,8 @@ const {
   Subsidiary,
   User,
   Event_User,
+  Comment_Set,
+  News_Set,
 } = require("../models");
 const AppError = require("../utils/errorClass");
 const EmailService = require("./emailService");
@@ -236,6 +238,16 @@ class EventService {
       throw new AppError("Failed to create Photo_Set", 500);
     }
 
+    const newsSet = await News_Set.create({});
+    if (!photoSet) {
+      throw new AppError("Failed to create News_Set", 500);
+    }
+
+    const commentSet = await Comment_Set.create({});
+    if (!photoSet) {
+      throw new AppError("Failed to create Comment_Set", 500);
+    }
+
     const newEvent = await Event.create({
       name,
       description,
@@ -249,6 +261,8 @@ class EventService {
       authorId: managerId,
       maxPeopleAllowed,
       photoSetId: photoSet.id,
+      newsSetId: newsSet.id,
+      commentSetId: commentSet.id,
     });
 
     if (!newEvent) {
@@ -299,46 +313,43 @@ class EventService {
       throw new AppError(`Event with ID ${id} not found`, 404);
     }
 
-    const parsedDateFrom = dateFrom ? new Date(dateFrom) : null;
-    const parsedDateTo = dateTo ? new Date(dateTo) : null;
-    const parsedApplicationDeadline = applicationDeadline
-      ? new Date(applicationDeadline)
-      : null;
-    const parsedPublishOn = publishOn ? new Date(publishOn) : null;
+    const parsedFields = {
+      description: description && description !== "" ? description : null,
+      typeId: typeId && typeId !== "" ? typeId : null,
+      addressId: addressId && addressId !== "" ? addressId : null,
+      subsidiaryId: subsidiaryId && subsidiaryId !== "" ? subsidiaryId : null,
+      maxPeopleAllowed:
+        maxPeopleAllowed && !isNaN(maxPeopleAllowed)
+          ? parseInt(maxPeopleAllowed, 10)
+          : null,
+      dateFrom: dateFrom ? new Date(dateFrom) : null,
+      dateTo: dateTo ? new Date(dateTo) : null,
+      applicationDeadline: applicationDeadline
+        ? new Date(applicationDeadline)
+        : null,
+      publishOn: publishOn ? new Date(publishOn) : null,
+    };
 
     if (
-      (dateFrom && isNaN(parsedDateFrom)) ||
-      (dateTo && isNaN(parsedDateTo)) ||
-      (applicationDeadline && isNaN(parsedApplicationDeadline)) ||
-      (publishOn && isNaN(parsedPublishOn))
+      (dateFrom && isNaN(parsedFields.dateFrom)) ||
+      (dateTo && isNaN(parsedFields.dateTo)) ||
+      (applicationDeadline && isNaN(parsedFields.applicationDeadline)) ||
+      (publishOn && isNaN(parsedFields.publishOn))
     ) {
       throw new AppError("Invalid datetime values provided", 400);
     }
 
-    const parsedTypeId = typeId && typeId !== "" ? typeId : null;
-    const parsedDescription =
-      description && description !== "" ? description : null;
-    const parsedAddressId = addressId && addressId !== "" ? addressId : null;
-    const parsedSubsidiaryId =
-      subsidiaryId && subsidiaryId !== "" ? subsidiaryId : null;
-    const parsedMaxPeopleAllowed =
-      maxPeopleAllowed && !isNaN(maxPeopleAllowed)
-        ? parseInt(maxPeopleAllowed)
-        : null;
-
-    await event.update({
+    const updateFields = {};
+    Object.entries({
       name,
-      description: parsedDescription,
-      typeId: parsedTypeId,
-      dateFrom: parsedDateFrom,
-      dateTo: parsedDateTo,
-      publishOn: parsedPublishOn,
-      applicationDeadline: parsedApplicationDeadline,
-      addressId: parsedAddressId,
-      subsidiaryId: parsedSubsidiaryId,
-      maxPeopleAllowed: parsedMaxPeopleAllowed,
+      ...parsedFields,
+    }).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        updateFields[key] = value;
+      }
     });
 
+    await event.update(updateFields);
     const existingBannerPhoto = await Photo.findOne({
       where: { photoSetId: event.photoSetId, isBannerPhoto: true },
     });
@@ -500,6 +511,55 @@ class EventService {
     });
 
     return deletedCount;
+  }
+
+  async getEventCommentSetById(id) {
+    const event = await Event.findByPk(id);
+    if (!event) {
+      throw new AppError("Event not found", 404);
+    }
+    const commentSet = await Comment_Set.findByPk(event.commentSetId);
+
+    if (!commentSet) {
+      throw new AppError("Comment set not found for this event", 404);
+    }
+
+    return commentSet;
+  }
+
+  async getEventNewsSetById(id) {
+    const event = await Event.findByPk(id);
+
+    if (!event) {
+      throw new AppError("Event not found", 404);
+    }
+
+    const newsSet = await News_Set.findByPk(event.newsSetId);
+
+    if (!newsSet) {
+      throw new AppError("News set not found for this event", 404);
+    }
+
+    return newsSet;
+  }
+
+  async findEventNames(userId, userRoles) {
+    if (
+      userId != null &&
+      userRoles != null &&
+      userRoles.includes(Roles.MANAGER)
+    ) {
+      return await Event.findAll({
+        attributes: ["id", "name"],
+        where: {
+          authorId: userId,
+        },
+      });
+    }
+
+    return await Event.findAll({
+      attributes: ["id", "name"],
+    });
   }
 }
 

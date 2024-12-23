@@ -33,10 +33,14 @@ const EditComponent = ({
     if (selectedIds.length === 0) {
       alert("Please select items to delete.");
     } else {
-      const itemNames = selectedItems.map((item) => item.name).join(", ");
+      const itemNames = selectedItems
+        .map((item) => (item.title ? item.title : item.name))
+        .join(", ");
+
       const confirmed = window.confirm(
         `Are you sure you want to delete the following items: ${itemNames}?`
       );
+
       if (confirmed) {
         try {
           await deleteApiRequest(selectedIds);

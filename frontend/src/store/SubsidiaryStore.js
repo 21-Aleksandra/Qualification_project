@@ -70,7 +70,6 @@ export default class SubsidiaryStore {
   get subsidiaries() {
     return this._subsidiaries;
   }
-
   setCurrentPage(page) {
     this._currentPage = page;
   }

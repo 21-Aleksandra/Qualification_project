@@ -192,6 +192,29 @@ class SubsidiaryController {
       next(err);
     }
   }
+
+  async changeManagers(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { managerIds } = req.body;
+
+      if (!managerIds || !Array.isArray(managerIds)) {
+        throw new AppError(
+          "Invalid or missing 'managerIds' parameter. Provide an array of IDs.",
+          400
+        );
+      }
+
+      const result = await subsidiaryService.updateManagers(id, managerIds);
+
+      res.status(200).json({
+        message: "Subsidiary managers updated successfully",
+        ...result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new SubsidiaryController();

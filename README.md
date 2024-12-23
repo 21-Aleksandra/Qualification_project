@@ -390,8 +390,6 @@ In summary:
 - Added news, news_set tables, models, seeder
 - Added news controller, service, router
 
-##### Frontend:
-
 #### Changed
 
 ##### Frontend:
@@ -415,10 +413,28 @@ In summary:
 - Added news routes, assigned proper roles to them
 - Added news mobix store for easier managment
 
-##### Frontend:
-
 #### Changed
 
 ##### Frontend:
 
 - News block now displays author name as well
+
+### [4.3] - 23-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added AddEditNewsPage
+- Added event name getting controller, route, service
+
+#### Changed
+
+##### Frontend:
+
+- Some methods in newsAPI
+- Updated EventAPI - how it has getEventNames method
+
+##### Backend:
+
+- Fixed news service issues

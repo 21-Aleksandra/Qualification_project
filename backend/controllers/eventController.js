@@ -56,6 +56,21 @@ class EventController {
     }
   }
 
+  async getEventNamesList(req, res, next) {
+    try {
+      const { userId, userRoles } = req.query;
+      const rolesArray = userRoles
+        ? userRoles.split(",").map((role) => Number(role))
+        : [];
+
+      const events = await eventService.findEventNames(userId, rolesArray);
+
+      res.status(200).json(events);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async addEvent(req, res, next) {
     try {
       console.log(req.files);

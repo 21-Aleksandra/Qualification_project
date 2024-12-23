@@ -8,6 +8,8 @@ const {
   Mission,
   Subsidiary_Mission,
   Subsidiary_Manager,
+  Comment_Set,
+  News_Set,
   Role,
 } = require("../models");
 const AppError = require("../utils/errorClass");
@@ -240,6 +242,16 @@ class SubsidiaryService {
       throw new AppError("Failed to create Photo_Set", 500);
     }
 
+    const newsSet = await News_Set.create({});
+    if (!photoSet) {
+      throw new AppError("Failed to create News_Set", 500);
+    }
+
+    const commentSet = await Comment_Set.create({});
+    if (!photoSet) {
+      throw new AppError("Failed to create Comment_Set", 500);
+    }
+
     const newSubsidiary = await Subsidiary.create({
       name,
       description,
@@ -250,6 +262,8 @@ class SubsidiaryService {
       email,
       website,
       staffCount,
+      newsSetId: newsSet.id,
+      commentSetId: commentSet.id,
     });
 
     if (!newSubsidiary) {
@@ -322,17 +336,35 @@ class SubsidiaryService {
       throw new AppError("Invalid email format", 400);
     }
 
-    await subsidiary.update({
+    const parsedFields = {
+      mainOrganizationId:
+        mainOrganizationId && mainOrganizationId !== ""
+          ? mainOrganizationId
+          : null,
+      foundedAt: foundedAt ? new Date(foundedAt) : null,
+      addressId: addressId && addressId !== "" ? addressId : null,
+      staffCount:
+        staffCount && !isNaN(staffCount) ? parseInt(staffCount, 10) : null,
+    };
+
+    if (foundedAt && isNaN(parsedFields.foundedAt)) {
+      throw new AppError("Invalid date format for 'foundedAt'", 400);
+    }
+
+    const updateFields = {};
+    Object.entries({
       name,
       description,
-      mainOrganizationId,
-      foundedAt,
-      addressId,
       email,
       website,
-      staffCount,
+      ...parsedFields,
+    }).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        updateFields[key] = value;
+      }
     });
 
+    await subsidiary.update(updateFields);
     if (missions) {
       const missionsArray = Array.isArray(missions) ? missions : [missions];
 
@@ -472,6 +504,74 @@ class SubsidiaryService {
     });
 
     return deletedCount;
+  }
+
+  async getSubsidiaryCommentSetById(id) {
+    const subsidiary = await Subsidiary.findByPk(id);
+
+    if (!subsidiary) {
+      throw new AppError("Subsidiary not found", 404);
+    }
+
+    const commentSet = await Comment_Set.findByPk(subsidiary.commentSetId);
+
+    if (!commentSet) {
+      throw new AppError("Comment set not found for this subsidiary", 404);
+    }
+
+    return commentSet;
+  }
+
+  async getSubsidiaryNewsSetById(id) {
+    const subsidiary = await Subsidiary.findByPk(id);
+
+    if (!subsidiary) {
+      throw new AppError("Subsidiary not found", 404);
+    }
+
+    const newsSet = await News_Set.findByPk(subsidiary.newsSetId);
+
+    if (!newsSet) {
+      throw new AppError("News set not found for this subsidiary", 404);
+    }
+
+    return newsSet;
+  }
+
+  async updateManagers(subsidiaryId, newManagerIds) {
+    const existingManagerIds = await Subsidiary_Manager.findAll({
+      where: { subsidiaryId },
+      attributes: ["managerId"],
+    }).then((rows) => rows.map((row) => row.managerId));
+
+    const existingManagerIdsAsNumbers = existingManagerIds.map(Number);
+    const newManagerIdsAsNumbers = newManagerIds.map(Number);
+
+    const managersToAdd = newManagerIdsAsNumbers.filter(
+      (managerId) => !existingManagerIdsAsNumbers.includes(managerId)
+    );
+
+    const managersToRemove = existingManagerIdsAsNumbers.filter(
+      (managerId) => !newManagerIdsAsNumbers.includes(managerId)
+    );
+
+    for (const managerId of managersToAdd) {
+      await Subsidiary_Manager.create({ subsidiaryId, managerId });
+    }
+
+    if (managersToRemove.length) {
+      await Subsidiary_Manager.destroy({
+        where: {
+          subsidiaryId,
+          managerId: { [Op.in]: managersToRemove },
+        },
+      });
+    }
+
+    return {
+      addedManagers: managersToAdd,
+      removedManagers: managersToRemove,
+    };
   }
 }
 

@@ -50,3 +50,12 @@ export const deleteEvents = async (ids) => {
     throw error.response ? error.response.data : error.message;
   }
 };
+
+export const getEventNames = async (filters = {}) => {
+  try {
+    const response = await api.get(`event/get/names`, { params: filters });
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error.message;
+  }
+};

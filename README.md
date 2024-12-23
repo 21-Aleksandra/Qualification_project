@@ -403,3 +403,22 @@ In summary:
 ##### Frontend:
 
 - Dashboard navigation problem - now links work as expected
+
+### [4.3] - 23-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added newsItem, newsList, newsPage and NewsItemPage
+- Added filter for news, configured edit component
+- Added news routes, assigned proper roles to them
+- Added news mobix store for easier managment
+
+##### Frontend:
+
+#### Changed
+
+##### Frontend:
+
+- News block now displays author name as well

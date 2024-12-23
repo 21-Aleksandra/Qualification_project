@@ -23,6 +23,7 @@ const NewsBlock = ({ newsItems }) => {
             >
               <strong>{news.title}</strong>
               <p>{news.text.substring(0, 50)}...</p>
+              <small>Author: {news.author}</small>
             </div>
           ))}
         </div>

@@ -8,6 +8,7 @@ import MainOrganisationStore from "./store/MainOrganisationStore";
 import MissionStore from "./store/MissionStore";
 import EventStore from "./store/EventStore";
 import EventTypeStore from "./store/EventTypeStore";
+import NewsStore from "./store/NewsStore";
 
 export const Context = createContext(null);
 
@@ -23,6 +24,7 @@ root.render(
       mainOrganization: new MainOrganisationStore(),
       event: new EventStore(),
       eventType: new EventTypeStore(),
+      news: new NewsStore(),
     }}
   >
     <App />

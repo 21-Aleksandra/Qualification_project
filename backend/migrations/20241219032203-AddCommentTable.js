@@ -3,32 +3,28 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("News", {
+    await queryInterface.createTable("Comment", {
       id: {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      title: {
-        type: Sequelize.DataTypes.STRING(100),
-        allowNull: false,
-      },
       authorId: {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: true,
       },
-      content: {
+      text: {
         type: Sequelize.DataTypes.TEXT,
-        allowNull: true,
+        allowNull: false,
       },
-      newsSetId: {
+      rating: {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: true,
       },
       commentSetId: {
         type: Sequelize.DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -43,22 +39,10 @@ module.exports = {
       },
     });
 
-    await queryInterface.addConstraint("News", {
-      fields: ["newsSetId"],
-      type: "foreign key",
-      name: "fk_news_newsSet",
-      references: {
-        table: "News_Set",
-        field: "id",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "SET NULL",
-    });
-
-    await queryInterface.addConstraint("News", {
+    await queryInterface.addConstraint("Comment", {
       fields: ["authorId"],
       type: "foreign key",
-      name: "fk_news_user",
+      name: "fk_comment_user",
       references: {
         table: "User",
         field: "id",
@@ -66,11 +50,23 @@ module.exports = {
       onUpdate: "CASCADE",
       onDelete: "SET NULL",
     });
+
+    await queryInterface.addConstraint("Comment", {
+      fields: ["commentSetId"],
+      type: "foreign key",
+      name: "fk_comment_commentSet",
+      references: {
+        table: "Comment_Set",
+        field: "id",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint("News", "fk_news_newsSet");
-    await queryInterface.removeConstraint("News", "fk_news_user");
-    await queryInterface.dropTable("News");
+    await queryInterface.removeConstraint("Comment", "fk_comment_user");
+    await queryInterface.removeConstraint("Comment", "fk_comment_commentSet");
+    await queryInterface.dropTable("Comment");
   },
 };

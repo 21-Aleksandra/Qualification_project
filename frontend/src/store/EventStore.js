@@ -20,6 +20,7 @@ export default class EventStore {
       applicationDeadline: null,
       sortOption: "newest",
     };
+    this.names = [];
     this.params = null;
     makeAutoObservable(this);
   }
@@ -30,6 +31,10 @@ export default class EventStore {
 
   setParams(params) {
     this.params = params;
+  }
+
+  setNames(names) {
+    this.names = names;
   }
 
   resetFilters() {

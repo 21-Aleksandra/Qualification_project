@@ -23,7 +23,7 @@ module.exports = {
         },
         {
           title: "Achievements of the Year",
-          authorId: 2,
+          authorId: 3,
           content:
             "Here are the highlights of our subsidiary's achievements for the past year. We are proud!",
           newsSetId: 5,
@@ -46,21 +46,21 @@ module.exports = {
         },
         {
           title: "Charity Walk Success",
-          authorId: 3,
+          authorId: 2,
           content:
             "Our recent charity walk event was a huge success, raising funds for a great cause. Thank you!",
           newsSetId: 10,
         },
         {
           title: "Volunteer Day Celebration",
-          authorId: 2,
+          authorId: 3,
           content:
             "Celebrate Volunteer Day with us at our special event. There will be activities and prizes!",
           newsSetId: 12,
         },
         {
           title: "Annual Gala Announcement",
-          authorId: 3,
+          authorId: 2,
           content:
             "Save the date! Our annual gala event is coming up. More details to follow soon.",
           newsSetId: 9,

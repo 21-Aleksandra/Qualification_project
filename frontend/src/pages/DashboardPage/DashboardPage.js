@@ -1,17 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Banner from "../../components/Sections/Banner/Banner";
 import dashboardBannerImage from "../../assets/dashboard_banner.png";
 import UserRoles from "../../utils/roleConsts";
 import { Context } from "../../index";
+import { getTopFiveNews } from "../../api/NewsAPI";
 import {
   EVENTS_ROUTE,
   USERS_ROUTE,
   MY_ORGANISATIONS_ROUTE,
+  NEWS_ROUTE,
 } from "../../utils/routerConsts";
 import NewsBlock from "../../components/Sections/NewsBlock/NewsBlock";
+import CustomButton from "../../components/Common/CustomButton/CustomButton";
 
 const DashboardPage = () => {
   const { user } = useContext(Context);
+  const navigate = useNavigate();
 
   const userRoles = Array.isArray(user.roles)
     ? user.roles.map(Number)
@@ -43,23 +48,29 @@ const DashboardPage = () => {
       buttonLink = EVENTS_ROUTE;
   }
 
-  const [newsItems] = useState([
-    {
-      id: 1,
-      title: "New Volunteering Opportunity",
-      text: "Join us for a new project aimed at helping the local community.",
-    },
-    {
-      id: 2,
-      title: "Event Reminder",
-      text: "Don't miss the upcoming event next weekend!",
-    },
-    {
-      id: 3,
-      title: "Volunteer of the Month",
-      text: "We are proud to announce our volunteer of the month!",
-    },
-  ]);
+  const [newsItems, setNewsItems] = useState([]);
+
+  const handleMoreNews = () => {
+    navigate(NEWS_ROUTE);
+  };
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const newsData = await getTopFiveNews();
+        const formattedNews = newsData.map((news) => ({
+          id: news.id,
+          title: news.title,
+          text: news.content,
+          author: news.User.username,
+        }));
+        setNewsItems(formattedNews);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    };
+    fetchNews();
+  }, []);
 
   return (
     <>
@@ -69,8 +80,14 @@ const DashboardPage = () => {
         buttonText={buttonText}
         buttonLink={buttonLink}
       />
-
       <NewsBlock newsItems={newsItems} />
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <div style={{ textAlign: "center", marginTop: "20px" }}>
+          <CustomButton size="md" onClick={handleMoreNews}>
+            More News
+          </CustomButton>
+        </div>
+      </div>
     </>
   );
 };

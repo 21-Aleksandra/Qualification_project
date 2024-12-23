@@ -10,6 +10,9 @@ In summary:
 - v2.x - Subsidiary related jobs
 - v3.x - Event related jobs
 - v4.x - Profile, news, statistics, landing page and dashboard related jobs
+- v5.x - Comments related jobs
+- v6.x - Administration related jobs (user administration, manager assigment, helper table data edit)
+- v7.x - Quality control related jobs(code comments, code tests)
 
 ### [1.0] - 28-09-2024
 
@@ -376,3 +379,27 @@ In summary:
 ##### Frontend:
 
 - Layout problems connected to profile picture
+
+### [4.2] - 23-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added proper error loging with winston
+- Added news, news_set tables, models, seeder
+- Added news controller, service, router
+
+##### Frontend:
+
+#### Changed
+
+##### Frontend:
+
+- Small changes in styles over components
+
+#### Fixed
+
+##### Frontend:
+
+- Dashboard navigation problem - now links work as expected

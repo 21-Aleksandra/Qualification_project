@@ -58,6 +58,10 @@ module.exports = {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: true,
       },
+      newsSetId: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: true,
+      },
       createdAt: {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,

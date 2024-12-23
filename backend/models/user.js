@@ -73,6 +73,11 @@ module.exports = (sequelize, DataTypes) => {
       as: "AuthoredEvents",
     });
 
+    User.hasMany(models.News, {
+      foreignKey: "authorId",
+      as: "AuthoredNews",
+    });
+
     User.hasOne(models.Photo, {
       foreignKey: "id",
       sourceKey: "photoId",

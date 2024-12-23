@@ -15,6 +15,8 @@ import defaultImage from "../../assets/default_event.png";
 import UserRoles from "../../utils/roleConsts";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import { formatDateTime } from "../../utils/dateUtils";
+import CommentSection from "../../components/Sections/CommentSection/CommentSection";
+import { getEventComments, addEventComment } from "../../api/CommentAPI";
 import "./EventItemPage.css";
 
 const EventItemPage = () => {
@@ -109,7 +111,6 @@ const EventItemPage = () => {
       <h2 id="event-name" className="mb-4 text-center">
         {name}
       </h2>
-
       <div id="event-carousel" className="mb-4">
         <Carousel>
           {photos.length > 0 ? (
@@ -131,14 +132,12 @@ const EventItemPage = () => {
           )}
         </Carousel>
       </div>
-
       <Card id="event-description" className="mb-4">
         <Card.Body>
           <h5 className="text-center">Description</h5>
           <p>{description || "No description available."}</p>
         </Card.Body>
       </Card>
-
       <Card id="event-details" className="mb-4">
         <Card.Body>
           <h5>Event Details</h5>
@@ -164,7 +163,6 @@ const EventItemPage = () => {
           </p>
         </Card.Body>
       </Card>
-
       <Card id="event-additional-info" className="mb-4">
         <Card.Body>
           <h5>Additional Information</h5>
@@ -187,7 +185,6 @@ const EventItemPage = () => {
           </p>
         </Card.Body>
       </Card>
-
       {user.roles.includes(UserRoles.MANAGER) && (
         <Card id="event-participants" className="mb-4">
           <Card.Body>
@@ -206,7 +203,6 @@ const EventItemPage = () => {
           </Card.Body>
         </Card>
       )}
-
       <div className="text-center" id="event-button-text">
         {placesLeft > 0 ? (
           user.roles.includes(UserRoles.MANAGER) ? null : !isParticipant ? (
@@ -224,6 +220,16 @@ const EventItemPage = () => {
           <p>No spots left.</p>
         )}
       </div>
+
+      <Card id="event-comments" className="mb-4">
+        <Card.Body>
+          <CommentSection
+            id={id}
+            getRequest={getEventComments}
+            addRequest={addEventComment}
+          />
+        </Card.Body>
+      </Card>
     </Container>
   );
 };

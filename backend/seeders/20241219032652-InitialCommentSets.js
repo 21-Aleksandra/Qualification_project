@@ -3,18 +3,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const photoSets = Array.from({ length: 14 }, () => ({
+    const commentSets = Array.from({ length: 21 }, () => ({
       createdAt: new Date(),
       updatedAt: new Date(),
     }));
 
-    await queryInterface.bulkInsert("Photo_Set", photoSets, {});
+    await queryInterface.bulkInsert("Comment_Set", commentSets, {});
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Photo_Set", null, {});
+    await queryInterface.bulkDelete("Comment_Set", null, {});
     await queryInterface.sequelize.query(
-      "ALTER TABLE Photo_Set AUTO_INCREMENT = 1;"
+      "ALTER TABLE Comment_Set AUTO_INCREMENT = 1;"
     );
   },
 };

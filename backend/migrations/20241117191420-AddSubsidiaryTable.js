@@ -38,6 +38,10 @@ module.exports = {
         type: Sequelize.DataTypes.INTEGER,
         allowNull: true,
       },
+      commentSetId: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: true,
+      },
       email: {
         type: Sequelize.STRING,
         allowNull: true,

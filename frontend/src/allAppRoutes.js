@@ -8,9 +8,13 @@ import SubsidiaryItemPage from "./pages/SubsidiaryItemPage/SubsidiaryItemPage";
 import AddEditSubsidiaryPage from "./pages/AddEditSubsidiaryPage/AddEditSubsidiaryPage";
 import EventItemPage from "./pages/EventItemPage/EventItemPage";
 import EventPage from "./pages/EventPage/EventPage";
+import NewsPage from "./pages/NewsPage/NewsPage";
 import MyProfilePage from "./pages/MyProfilePage/MyProfilePage";
 import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import AddEditEventPage from "./pages/AddEditEventPage/AddEditEventPage";
+import NewsItemPage from "./pages/NewsItemPage/NewsItemPage";
+import AddEditNewsPage from "./pages/AddEditNewsPage/AddEditNewsPage";
+
 import TestPage from "./pages/TestPage";
 import UserRoles from "./utils/roleConsts";
 
@@ -32,6 +36,13 @@ import {
   EVENT_ADD_ROUTE,
   MY_EVENTS_ROUTE,
   MY_PROFILE_ROUTE,
+  NEWS_ROUTE,
+  EVENT_NEWS_ITEM_ROUTE,
+  SUBSIDIARY_NEWS_ITEM_ROUTE,
+  EVENT_NEWS_ADD_ROUTE,
+  SUBSIDIARY_NEWS_ADD_ROUTE,
+  EVENT_NEWS_EDIT_ROUTE,
+  SUBSIDIARY_NEWS_EDIT_ROUTE,
 } from "./utils/routerConsts";
 
 export const publicRoutes = [
@@ -117,5 +128,41 @@ export const registeredRoutes = [
     path: MY_PROFILE_ROUTE,
     Component: MyProfilePage,
     roles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
+  },
+  {
+    path: NEWS_ROUTE,
+    Component: NewsPage,
+    roles: [UserRoles.REGULAR, UserRoles.MANAGER],
+  },
+  {
+    path: EVENT_NEWS_ITEM_ROUTE,
+    Component: NewsItemPage,
+    roles: [UserRoles.REGULAR, UserRoles.MANAGER],
+  },
+  {
+    path: SUBSIDIARY_NEWS_ITEM_ROUTE,
+    Component: NewsItemPage,
+    roles: [UserRoles.REGULAR, UserRoles.MANAGER],
+  },
+
+  {
+    path: SUBSIDIARY_NEWS_ADD_ROUTE,
+    Component: AddEditNewsPage,
+    roles: [UserRoles.MANAGER],
+  },
+  {
+    path: SUBSIDIARY_NEWS_EDIT_ROUTE,
+    Component: AddEditNewsPage,
+    roles: [UserRoles.MANAGER],
+  },
+  {
+    path: EVENT_NEWS_ADD_ROUTE,
+    Component: AddEditNewsPage,
+    roles: [UserRoles.MANAGER],
+  },
+  {
+    path: EVENT_NEWS_EDIT_ROUTE,
+    Component: AddEditNewsPage,
+    roles: [UserRoles.MANAGER],
   },
 ];

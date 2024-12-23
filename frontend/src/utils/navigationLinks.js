@@ -1,5 +1,9 @@
 import UserRoles from "./roleConsts";
-import { SUBSIDIARIES_ROUTE, EVENT_ROUTE } from "../utils/routerConsts";
+import {
+  SUBSIDIARIES_ROUTE,
+  EVENT_ROUTE,
+  NEWS_ROUTE,
+} from "../utils/routerConsts";
 
 const navigationLinks = [
   {
@@ -13,9 +17,9 @@ const navigationLinks = [
     allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER],
   },
   {
-    name: "Organisations",
-    link: "/organisations",
-    allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
+    name: "News",
+    link: NEWS_ROUTE,
+    allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER],
   },
   {
     name: "Admin Panel",

@@ -1,0 +1,89 @@
+.news-card {
+  margin-bottom: 20px;
+}
+
+.news-card-body {
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.news-card-body:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.news-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.news-card-title:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.news-card-content {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin-bottom: 10px;
+}
+
+.news-card-author {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+.news-card-about {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.news-card-checkbox {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.news-card-checkbox .form-check {
+  margin-top: 10px;
+}
+
+.news-card-body:hover {
+  cursor: pointer;
+}
+
+.news-card-img-container:hover {
+  cursor: pointer;
+}
+
+.button-container {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.delete-btn {
+  width: 60%;
+  padding: 12px 20px;
+  text-align: center;
+}
+
+.news-card-checkbox .form-check-input {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #343a40;
+}
+
+.news-card-checkbox {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}

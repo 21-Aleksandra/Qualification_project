@@ -12,7 +12,7 @@ In summary:
 - v4.x - Profile, news, statistics, landing page and dashboard related jobs
 - v5.x - Comments related jobs
 - v6.x - Administration related jobs (user administration, manager assigment, helper table data edit)
-- v7.x - Quality control related jobs(code comments, code tests)
+- v7.x - Quality control related jobs(code comments, code tests, possible bugfixes and clean-ups)
 
 ### [1.0] - 28-09-2024
 
@@ -419,7 +419,7 @@ In summary:
 
 - News block now displays author name as well
 
-### [4.3] - 23-12-2024
+### [4.4] - 23-12-2024
 
 #### Added
 
@@ -435,6 +435,47 @@ In summary:
 - Some methods in newsAPI
 - Updated EventAPI - how it has getEventNames method
 
+#### Fixed
+
 ##### Backend:
 
 - Fixed news service issues
+
+### [5.0] - 23-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added comment, comment_set table, model, seeder
+- Added migration to add fk between comment set and other tables
+
+#### Changed
+
+##### Backend:
+
+- Changed other models and migratins to have comment set assigned
+
+#### Fixed
+
+##### Backend:
+
+- Fixed big Photo_set seeder - now code is more readable and efficient
+
+### [5.1] - 23-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added comment router, service, controller
+
+#### Fixed
+
+##### Backend:
+
+- Fixed error with user model connection absence with comment
+
+##### Frontned:
+
+- Fixed error with undefined eventList fields, added forgotten names fields to EventStore

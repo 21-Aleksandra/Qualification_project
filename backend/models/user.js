@@ -78,6 +78,11 @@ module.exports = (sequelize, DataTypes) => {
       as: "AuthoredNews",
     });
 
+    User.hasMany(models.Comment, {
+      foreignKey: "authorId",
+      as: "AuthoredComments",
+    });
+
     User.hasOne(models.Photo, {
       foreignKey: "id",
       sourceKey: "photoId",

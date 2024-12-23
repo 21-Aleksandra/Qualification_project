@@ -54,7 +54,7 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
       <Card.Body className="event-card-body">
         <div className="event-card-section" onClick={handleCardClick}>
           <Card.Title className="event-card-title text-truncate">
-            {event.name || "No name available"}
+            {event?.name || "No name available"}
           </Card.Title>
         </div>
 
@@ -66,7 +66,8 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
 
         <div className="event-card-section" onClick={handleCardClick}>
           <Card.Text className="event-card-text text-muted">
-            <strong>Subsidiary:</strong> {event.Subsidiary.name}
+            <strong>Subsidiary:</strong>{" "}
+            {event.Subsidiary?.name || "No name available"}
           </Card.Text>
         </div>
 
@@ -78,7 +79,7 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
             </Card.Text>
           ) : (
             <Card.Text className="event-card-text text-muted">
-              No address available
+              <strong> Address: </strong> No address available
             </Card.Text>
           )}
         </div>

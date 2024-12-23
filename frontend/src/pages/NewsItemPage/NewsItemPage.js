@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { Spinner, Alert, Card, Container } from "react-bootstrap";
 import { getOneEventNews, getOneSubsidiaryNews } from "../../api/NewsAPI";
 import { formatDateTime } from "../../utils/dateUtils";
+import CommentSection from "../../components/Sections/CommentSection/CommentSection";
+import { getNewsComments, addNewsComment } from "../../api/CommentAPI";
 import "./NewsItemPage.css";
 
 const NewsItemPage = () => {
@@ -86,6 +88,16 @@ const NewsItemPage = () => {
         <Card.Body>
           <h5>Content</h5>
           <p>{content}</p>
+        </Card.Body>
+      </Card>
+
+      <Card id="news-comments" className="mb-4">
+        <Card.Body>
+          <CommentSection
+            id={id}
+            getRequest={getNewsComments}
+            addRequest={addNewsComment}
+          />
         </Card.Body>
       </Card>
     </Container>

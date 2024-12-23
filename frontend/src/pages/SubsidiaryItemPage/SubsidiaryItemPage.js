@@ -12,6 +12,11 @@ import { getSubsidiaryById } from "../../api/SubsidiaryAPI";
 import { fetchLatLng } from "../../api/ExternalApiRequests/ExternalApiRequests";
 import GoogleMapComponent from "../../components/Sections/GoogleMapComponent/GoogleMapComponent";
 import defaultImage from "../../assets/default_subsidiary.png";
+import CommentSection from "../../components/Sections/CommentSection/CommentSection";
+import {
+  getSubsidiaryComments,
+  addSubsidiaryComment,
+} from "../../api/CommentAPI";
 import "./SubsidiaryItemPage.css";
 
 const SubsidiaryItemPage = () => {
@@ -212,6 +217,15 @@ const SubsidiaryItemPage = () => {
           </Card.Body>
         </Card>
       )}
+      <Card id="subsidiary-comments" className="mb-4">
+        <Card.Body>
+          <CommentSection
+            id={id}
+            getRequest={getSubsidiaryComments}
+            addRequest={addSubsidiaryComment}
+          />
+        </Card.Body>
+      </Card>
     </Container>
   );
 };

@@ -479,3 +479,21 @@ In summary:
 ##### Frontned:
 
 - Fixed error with undefined eventList fields, added forgotten names fields to EventStore
+
+### [5.2] - 24-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added CommentAPI
+- Added comment section component
+- Added comment sections to news, events, subsidiaries
+- Added comment add form that apperas only for regular user
+- Added Comment store and assigned it to context
+
+#### Fixed
+
+##### Backend:
+
+- Fixed comment list return logical error - now if no comments we just return empty array

@@ -53,7 +53,7 @@ class CommentService {
     });
 
     if (!comments.length) {
-      throw new AppError("Comments not found", 404);
+      return [];
     }
 
     return comments;

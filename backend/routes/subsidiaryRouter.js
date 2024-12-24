@@ -40,5 +40,11 @@ router.delete(
   roleChecker([Roles.MANAGER]),
   subsidiaryController.deleteSubsidiaries
 );
+router.put(
+  "/:id/change-managers",
+  authChecker,
+  roleChecker([Roles.ADMIN]),
+  subsidiaryController.changeManagers
+);
 
 module.exports = router;

@@ -27,4 +27,18 @@ router.post(
   addressController.addAddress
 );
 
+router.put(
+  "/:id/edit",
+  authChecker,
+  roleChecker([Roles.ADMIN]),
+  addressController.editAddress
+);
+
+router.get(
+  "/:id/get",
+  authChecker,
+  roleChecker([Roles.ADMIN]),
+  addressController.getOneAddress
+);
+
 module.exports = router;

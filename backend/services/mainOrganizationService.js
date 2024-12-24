@@ -56,6 +56,33 @@ class MainOrganizationService {
     const newOrganization = await Main_Organization.create({ name });
     return newOrganization;
   }
+  async editMainOrganization(id, updateData) {
+    const existingOrganization = await Main_Organization.findByPk(id);
+    if (!existingOrganization) {
+      return null;
+    }
+
+    const changedFields = {};
+    for (const key in updateData) {
+      if (
+        updateData[key] !== undefined &&
+        updateData[key] !== existingOrganization[key]
+      ) {
+        changedFields[key] = updateData[key];
+      }
+    }
+
+    if (Object.keys(changedFields).length === 0) {
+      return existingOrganization; // No changes applied, but return existing entry
+    }
+
+    await existingOrganization.update(changedFields);
+    return existingOrganization;
+  }
+
+  async getOneMainOrganization(id) {
+    return await Main_Organization.findByPk(id);
+  }
 }
 
 module.exports = new MainOrganizationService();

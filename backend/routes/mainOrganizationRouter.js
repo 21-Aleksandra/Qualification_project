@@ -17,4 +17,18 @@ router.post(
   mainOrganizationController.addMainOrganization
 );
 
+router.put(
+  "/:id/edit",
+  authChecker,
+  roleChecker([Roles.ADMIN]),
+  mainOrganizationController.editMainOrganization
+);
+
+router.get(
+  "/:id/get",
+  authChecker,
+  roleChecker([Roles.ADMIN]),
+  mainOrganizationController.getOneMainOrganization
+);
+
 module.exports = router;

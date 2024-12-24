@@ -48,6 +48,34 @@ class EventTypeService {
     const newEventType = await Event_Type.create({ name });
     return newEventType;
   }
+
+  async editEventType(id, updateData) {
+    const existingEventType = await Event_Type.findByPk(id);
+    if (!existingEventType) {
+      return null;
+    }
+
+    const changedFields = {};
+    for (const key in updateData) {
+      if (
+        updateData[key] !== undefined &&
+        updateData[key] !== existingEventType[key]
+      ) {
+        changedFields[key] = updateData[key];
+      }
+    }
+
+    if (Object.keys(changedFields).length === 0) {
+      return existingEventType; // No changes applied, but return existing entry
+    }
+
+    await existingEventType.update(changedFields);
+    return existingEventType;
+  }
+
+  async getOneEventType(id) {
+    return await Event_Type.findByPk(id);
+  }
 }
 
 module.exports = new EventTypeService();

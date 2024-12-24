@@ -29,6 +29,34 @@ class MissionService {
     const newMission = await Mission.create({ name });
     return newMission;
   }
+
+  async editMission(id, updateData) {
+    const existingMission = await Mission.findByPk(id);
+    if (!existingMission) {
+      return null;
+    }
+
+    const changedFields = {};
+    for (const key in updateData) {
+      if (
+        updateData[key] !== undefined &&
+        updateData[key] !== existingMission[key]
+      ) {
+        changedFields[key] = updateData[key];
+      }
+    }
+
+    if (Object.keys(changedFields).length === 0) {
+      return existingMission; // No changes applied, but return existing entry
+    }
+
+    await existingMission.update(changedFields);
+    return existingMission;
+  }
+
+  async getOneMission(id) {
+    return await Mission.findByPk(id);
+  }
 }
 
 module.exports = new MissionService();

@@ -30,6 +30,41 @@ class MissionController {
       next(err);
     }
   }
+
+  async editMission(req, res, next) {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      if (!updateData || Object.keys(updateData).length === 0) {
+        throw new AppError("No data provided for update", 400);
+      }
+
+      const updatedMission = await missionService.editMission(id, updateData);
+      if (!updatedMission) {
+        throw new AppError("Mission not found", 404);
+      }
+
+      res.status(200).json(updatedMission);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getOneMission(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const mission = await missionService.getOneMission(id);
+      if (!mission) {
+        throw new AppError("Mission not found", 404);
+      }
+
+      res.status(200).json(mission);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new MissionController();

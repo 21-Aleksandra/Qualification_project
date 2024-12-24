@@ -37,6 +37,44 @@ class MainOrganizationController {
       next(err);
     }
   }
+
+  async editMainOrganization(req, res, next) {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      if (!updateData || Object.keys(updateData).length === 0) {
+        throw new AppError("No data provided for update", 400);
+      }
+
+      const updatedOrganization =
+        await mainOrganizationService.editMainOrganization(id, updateData);
+      if (!updatedOrganization) {
+        throw new AppError("Main organization not found", 404);
+      }
+
+      res.status(200).json(updatedOrganization);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getOneMainOrganization(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const organization = await mainOrganizationService.getOneMainOrganization(
+        id
+      );
+      if (!organization) {
+        throw new AppError("Main organization not found", 404);
+      }
+
+      res.status(200).json(organization);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new MainOrganizationController();

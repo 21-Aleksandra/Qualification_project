@@ -19,6 +19,9 @@ import CommentAdminPage from "./pages/CommentAdminPage/CommentAdminPage";
 import UserPage from "./pages/UserPage/UserPage";
 import AddEditUserPage from "./pages/AddEditUserPage/AddEditUserPage";
 
+import SubsidiaryManagerPage from "./pages/SubsidiaryManagerPage/SubsidiaryManagerPage";
+import SubsidiaryManagerEditPage from "./pages/SubsidiaryManagerEditPage/SubsidiaryManagerEditPage";
+
 import TestPage from "./pages/TestPage";
 import UserRoles from "./utils/roleConsts";
 
@@ -51,6 +54,8 @@ import {
   USERS_ROUTE,
   USERS_ADD_ROUTE,
   USERS_EDIT_ROUTE,
+  MANAGERS_ROUTE,
+  MANAGERS_EDIT_ROUTE,
 } from "./utils/routerConsts";
 
 export const publicRoutes = [
@@ -191,6 +196,17 @@ export const registeredRoutes = [
   {
     path: USERS_EDIT_ROUTE,
     Component: AddEditUserPage,
+    roles: [UserRoles.ADMIN],
+  },
+
+  {
+    path: MANAGERS_ROUTE,
+    Component: SubsidiaryManagerPage,
+    roles: [UserRoles.ADMIN],
+  },
+  {
+    path: MANAGERS_EDIT_ROUTE,
+    Component: SubsidiaryManagerEditPage,
     roles: [UserRoles.ADMIN],
   },
 ];

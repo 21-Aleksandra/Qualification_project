@@ -1,0 +1,30 @@
+.form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.subsidiary-manager-edit h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.role-select {
+  margin-top: 10px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.custom-button-primary {
+  width: 100%;
+}

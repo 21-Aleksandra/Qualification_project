@@ -552,3 +552,21 @@ In summary:
 ##### Frontend:
 
 - Fixed news visibility for manager in dashboard
+
+### [6.2] - 24-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added subsidiary manager page with subsidiary and manager list and filter
+- Added subsidiary manager edit page
+- Added change managers request to SubsidiaryAPI
+
+#### Changed
+
+##### Backend:
+
+- Changed profile links for admins - now no fake ones
+- Changed subsidiary filter so some fields would be hidden if needed
+- Changed styles for news edit, users

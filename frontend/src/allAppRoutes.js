@@ -14,7 +14,7 @@ import MyEventsPage from "./pages/MyEventsPage/MyEventsPage";
 import AddEditEventPage from "./pages/AddEditEventPage/AddEditEventPage";
 import NewsItemPage from "./pages/NewsItemPage/NewsItemPage";
 import AddEditNewsPage from "./pages/AddEditNewsPage/AddEditNewsPage";
-
+import CommentAdminPage from "./pages/CommentAdminPage/CommentAdminPage";
 import TestPage from "./pages/TestPage";
 import UserRoles from "./utils/roleConsts";
 
@@ -43,6 +43,7 @@ import {
   SUBSIDIARY_NEWS_ADD_ROUTE,
   EVENT_NEWS_EDIT_ROUTE,
   SUBSIDIARY_NEWS_EDIT_ROUTE,
+  COMMENT_ADMIN_ROUTE,
 } from "./utils/routerConsts";
 
 export const publicRoutes = [
@@ -164,5 +165,10 @@ export const registeredRoutes = [
     path: EVENT_NEWS_EDIT_ROUTE,
     Component: AddEditNewsPage,
     roles: [UserRoles.MANAGER],
+  },
+  {
+    path: COMMENT_ADMIN_ROUTE,
+    Component: CommentAdminPage,
+    roles: [UserRoles.ADMIN],
   },
 ];

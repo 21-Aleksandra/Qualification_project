@@ -497,3 +497,19 @@ In summary:
 ##### Backend:
 
 - Fixed comment list return logical error - now if no comments we just return empty array
+
+### [5.3] - 24-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added Comment Administration page
+- Added Comment Administration List and filter
+
+#### Changed
+
+##### Frontend:
+
+- Changed comment store - how it has filter
+- Changed edit component to hide add/edit if needed

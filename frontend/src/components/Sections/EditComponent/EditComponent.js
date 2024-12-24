@@ -10,6 +10,7 @@ const EditComponent = ({
   selectedIds,
   selectedItems,
   onUnselectAll,
+  hideAddEdit = false,
 }) => {
   const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ const EditComponent = ({
       alert("Please select items to delete.");
     } else {
       const itemNames = selectedItems
-        .map((item) => (item.title ? item.title : item.name))
+        .map((item) => item.title || item.name || item.id)
         .join(", ");
 
       const confirmed = window.confirm(
@@ -56,12 +57,20 @@ const EditComponent = ({
   return (
     <div className="edit-component">
       <div className="edit-box">
-        <CustomButton onClick={handleAdd} size="md" className="edit-button">
-          Add
-        </CustomButton>
-        <CustomButton onClick={handleEdit} size="md" className="edit-button">
-          Edit
-        </CustomButton>
+        {!hideAddEdit && (
+          <>
+            <CustomButton onClick={handleAdd} size="md" className="edit-button">
+              Add
+            </CustomButton>
+            <CustomButton
+              onClick={handleEdit}
+              size="md"
+              className="edit-button"
+            >
+              Edit
+            </CustomButton>
+          </>
+        )}
         <CustomButton onClick={handleDelete} size="md" className="edit-button">
           Delete
         </CustomButton>

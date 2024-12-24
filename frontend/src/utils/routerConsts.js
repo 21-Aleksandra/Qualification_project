@@ -25,3 +25,4 @@ export const EVENT_NEWS_ADD_ROUTE = "/news/event-news/add";
 export const SUBSIDIARY_NEWS_ADD_ROUTE = "/news/subsidiary-news/add";
 export const EVENT_NEWS_EDIT_ROUTE = "/news/event-news/:id/edit";
 export const SUBSIDIARY_NEWS_EDIT_ROUTE = "/news/subsidiary-news/:id/edit";
+export const COMMENT_ADMIN_ROUTE = "/comment-admin";

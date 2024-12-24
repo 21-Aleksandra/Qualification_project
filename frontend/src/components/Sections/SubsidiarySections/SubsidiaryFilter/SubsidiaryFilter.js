@@ -11,7 +11,7 @@ import CustomButton from "../../../Common/CustomButton/CustomButton";
 import UserRoles from "../../../../utils/roleConsts";
 import "./SubsidiaryFilter.css";
 
-const FilterPanel = observer(() => {
+const FilterPanel = observer(({ hideFields = false }) => {
   const { subsidiary, address, mission, mainOrganization, user } =
     useContext(Context);
 
@@ -201,46 +201,53 @@ const FilterPanel = observer(() => {
         }
       />
 
-      <MultiSelectInput
-        label="Missions"
-        searchValue={subsidiary.filters.searchMission}
-        setSearchValue={(value) =>
-          subsidiary.setFilters({ ...subsidiary.filters, searchMission: value })
-        }
-        options={mission.missions.map((mission) => ({
-          name: mission.name,
-          id: mission.id,
-        }))}
-        selectedValues={subsidiary.filters.selectedMissions}
-        setSelectedValues={(value) =>
-          subsidiary.setFilters({
-            ...subsidiary.filters,
-            selectedMissions: value,
-          })
-        }
-      />
+      {!hideFields && (
+        <>
+          <MultiSelectInput
+            label="Missions"
+            searchValue={subsidiary.filters.searchMission}
+            setSearchValue={(value) =>
+              subsidiary.setFilters({
+                ...subsidiary.filters,
+                searchMission: value,
+              })
+            }
+            options={mission.missions.map((mission) => ({
+              name: mission.name,
+              id: mission.id,
+            }))}
+            selectedValues={subsidiary.filters.selectedMissions}
+            setSelectedValues={(value) =>
+              subsidiary.setFilters({
+                ...subsidiary.filters,
+                selectedMissions: value,
+              })
+            }
+          />
 
-      <MultiSelectInput
-        label="Organizations"
-        searchValue={subsidiary.filters.searchOrganization}
-        setSearchValue={(value) =>
-          subsidiary.setFilters({
-            ...subsidiary.filters,
-            searchOrganization: value,
-          })
-        }
-        options={mainOrganization.organizations.map((org) => ({
-          name: org.name,
-          id: org.id,
-        }))}
-        selectedValues={subsidiary.filters.selectedOrganizations}
-        setSelectedValues={(value) =>
-          subsidiary.setFilters({
-            ...subsidiary.filters,
-            selectedOrganizations: value,
-          })
-        }
-      />
+          <MultiSelectInput
+            label="Organizations"
+            searchValue={subsidiary.filters.searchOrganization}
+            setSearchValue={(value) =>
+              subsidiary.setFilters({
+                ...subsidiary.filters,
+                searchOrganization: value,
+              })
+            }
+            options={mainOrganization.organizations.map((org) => ({
+              name: org.name,
+              id: org.id,
+            }))}
+            selectedValues={subsidiary.filters.selectedOrganizations}
+            setSelectedValues={(value) =>
+              subsidiary.setFilters({
+                ...subsidiary.filters,
+                selectedOrganizations: value,
+              })
+            }
+          />
+        </>
+      )}
 
       <div className="button-group">
         <CustomButton size="md" onClick={applyFilters}>

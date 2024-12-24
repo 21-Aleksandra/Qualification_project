@@ -11,11 +11,6 @@ const profileLinks = [
     link: MY_EVENTS_ROUTE,
     allowedRoles: [UserRoles.REGULAR],
   },
-  {
-    name: "User Management",
-    link: "/user-management",
-    allowedRoles: [UserRoles.ADMIN],
-  },
 ];
 
 export default profileLinks;

@@ -18,7 +18,7 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import DropdownSelectOneSearch from "../../components/Common/DropdownSelectOneSearch/DropdownSelectOneSearch";
 import { Spinner } from "react-bootstrap";
 import { NEWS_ROUTE } from "../../utils/routerConsts";
-
+import "./AddEditNewsPage.css";
 const AddEditNewsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -208,7 +208,11 @@ const AddEditNewsPage = () => {
             </Form.Group>
           )}
 
-          <CustomButton type="submit" disabled={loading}>
+          <CustomButton
+            type="submit"
+            disabled={loading}
+            className="custom-button-primary"
+          >
             {isEditing ? "Update News" : "Add News"}
           </CustomButton>
         </Form>

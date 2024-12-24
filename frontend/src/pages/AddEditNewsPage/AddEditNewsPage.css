@@ -1,0 +1,44 @@
+.news-form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.news-form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.news-form-container .form-label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.news-form-container .form-group {
+  margin-bottom: 20px;
+}
+
+.news-form-container .custom-button-primary {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.news-form-container .custom-button-primary:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.news-form-container .form-control {
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.news-form-container .alert-danger {
+  margin-bottom: 20px;
+}

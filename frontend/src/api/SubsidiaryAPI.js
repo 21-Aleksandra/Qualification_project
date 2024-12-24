@@ -59,3 +59,17 @@ export const deleteSubsidiaries = async (ids) => {
     throw error.response ? error.response.data : error.message;
   }
 };
+
+export const updateManagers = async (subsidiaryId, managerIds) => {
+  try {
+    const response = await api.put(
+      `/subsidiary/${subsidiaryId}/change-managers`,
+      {
+        managerIds,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error.message;
+  }
+};

@@ -37,6 +37,43 @@ class EventTypeController {
       next(err);
     }
   }
+
+  async editEventType(req, res, next) {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      if (!updateData || Object.keys(updateData).length === 0) {
+        throw new AppError("No data provided for update", 400);
+      }
+
+      const updatedEventType = await eventTypeService.editEventType(
+        id,
+        updateData
+      );
+      if (!updatedEventType) {
+        throw new AppError("Event type not found", 404);
+      }
+
+      res.status(200).json(updatedEventType);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getOneEventType(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const eventType = await eventTypeService.getOneEventType(id);
+      if (!eventType) {
+        throw new AppError("Event type not found", 404);
+      }
+      res.status(200).json(eventType);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new EventTypeController();

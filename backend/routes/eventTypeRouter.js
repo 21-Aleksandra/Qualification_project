@@ -13,4 +13,18 @@ router.post(
   eventTypeController.addEventType
 );
 
+router.put(
+  "/:id/edit",
+  authChecker,
+  roleChecker([Roles.ADMIN]),
+  eventTypeController.editEventType
+);
+
+router.get(
+  "/:id/get",
+  authChecker,
+  roleChecker([Roles.ADMIN]),
+  eventTypeController.getOneEventType
+);
+
 module.exports = router;

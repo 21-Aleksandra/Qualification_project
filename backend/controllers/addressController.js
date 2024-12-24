@@ -72,6 +72,34 @@ class AddressController {
       next(err);
     }
   }
+
+  async getOneAddress(req, res) {
+    try {
+      const { id } = req.params;
+      const address = await addressService.getOneAddress(id);
+      if (!address) {
+        throw new AppError("Address not found", 404);
+      }
+      return res.status(200).json(address);
+    } catch (error) {
+      next(err);
+    }
+  }
+
+  async editAddress(req, res) {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      const updatedAddress = await addressService.editAddress(id, updateData);
+      if (!updatedAddress) {
+        throw new AppError("Address not found or no changes applied", 404);
+      }
+      return res.status(200).json(updatedAddress);
+    } catch (error) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new AddressController();

@@ -34,4 +34,6 @@ router.delete(
   eventController.deleteEvents
 );
 
+router.get("/get/names", authChecker, eventController.getEventNamesList);
+
 module.exports = router;

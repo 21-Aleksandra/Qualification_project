@@ -513,3 +513,19 @@ In summary:
 
 - Changed comment store - how it has filter
 - Changed edit component to hide add/edit if needed
+
+### [6.0] - 24-12-2024
+
+#### Added
+
+##### Backend:
+
+- Added edit and get by id routes, controllers, services to address, eventType, mainOrganization and mission
+- Added user router, controller, service
+- Added change managers route for subsidiary
+
+#### Changed
+
+##### Frontend:
+
+- Changed navigation links for comment administration

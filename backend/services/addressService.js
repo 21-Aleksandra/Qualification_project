@@ -198,6 +198,34 @@ class AddressService {
     });
     return newAddress;
   }
+
+  async getOneAddress(id) {
+    return await Address.findByPk(id);
+  }
+
+  async editAddress(id, updateData) {
+    const existingAddress = await Address.findByPk(id);
+    if (!existingAddress) {
+      return null;
+    }
+
+    const changedFields = {};
+    for (const key in updateData) {
+      if (
+        updateData[key] !== undefined &&
+        updateData[key] !== existingAddress[key]
+      ) {
+        changedFields[key] = updateData[key];
+      }
+    }
+
+    if (Object.keys(changedFields).length === 0) {
+      return existingAddress; // Nothing changed
+    }
+
+    await existingAddress.update(changedFields);
+    return existingAddress;
+  }
 }
 
 module.exports = new AddressService();

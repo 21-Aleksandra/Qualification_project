@@ -4,6 +4,7 @@ import {
   EVENT_ROUTE,
   NEWS_ROUTE,
   COMMENT_ADMIN_ROUTE,
+  USERS_ROUTE,
 } from "../utils/routerConsts";
 
 const navigationLinks = [
@@ -23,19 +24,14 @@ const navigationLinks = [
     allowedRoles: [UserRoles.REGULAR, UserRoles.MANAGER],
   },
   {
-    name: "Admin Panel",
-    link: "/admin",
+    name: "Users",
+    link: USERS_ROUTE,
     allowedRoles: [UserRoles.ADMIN],
   },
   {
-    name: "Comment administration",
+    name: "Comments",
     link: COMMENT_ADMIN_ROUTE,
     allowedRoles: [UserRoles.ADMIN],
-  },
-  {
-    name: "My organisations",
-    link: "/my-organisations",
-    allowedRoles: [UserRoles.MANAGER],
   },
 ];
 

@@ -80,14 +80,16 @@ const DashboardPage = () => {
         buttonText={buttonText}
         buttonLink={buttonLink}
       />
-      <NewsBlock newsItems={newsItems} />
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <CustomButton size="md" onClick={handleMoreNews}>
-            More News
-          </CustomButton>
-        </div>
-      </div>
+      {!userRoles.includes(UserRoles.ADMIN) && (
+        <>
+          <NewsBlock newsItems={newsItems} />
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <CustomButton size="md" onClick={handleMoreNews}>
+              More News
+            </CustomButton>
+          </div>
+        </>
+      )}
     </>
   );
 };

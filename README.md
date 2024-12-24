@@ -529,3 +529,26 @@ In summary:
 ##### Frontend:
 
 - Changed navigation links for comment administration
+
+### [6.1] - 24-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added User axios API
+- Added user store with filters and assigned it to context
+- Added user page with user list and filter
+- Added user add/edit page
+
+#### Changed
+
+##### Backend:
+
+- Changed add and edit methods for user controllers to process roles correctly
+
+#### Fixed
+
+##### Frontend:
+
+- Fixed news visibility for manager in dashboard

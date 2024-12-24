@@ -10,6 +10,7 @@ import EventStore from "./store/EventStore";
 import EventTypeStore from "./store/EventTypeStore";
 import NewsStore from "./store/NewsStore";
 import CommentStore from "./store/CommentStore";
+import UserStore from "./store/UserStore";
 
 export const Context = createContext(null);
 
@@ -27,6 +28,7 @@ root.render(
       eventType: new EventTypeStore(),
       news: new NewsStore(),
       comment: new CommentStore(),
+      adminUsers: new UserStore(),
     }}
   >
     <App />

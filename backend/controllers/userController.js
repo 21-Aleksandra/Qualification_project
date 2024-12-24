@@ -43,11 +43,20 @@ class UserController {
     try {
       const { username, password, email, roles, isVerified } = req.body;
 
+      if (!username || !password || !email || !roles) {
+        throw new AppError(
+          "Username, password, email, roles are required",
+          400
+        );
+      }
+
+      const rolesArray = roles.split(",").map((role) => parseInt(role.trim()));
+
       const newUser = await userService.addUser({
         username,
         password,
         email,
-        roles,
+        roles: rolesArray,
         isVerified,
       });
 
@@ -65,11 +74,17 @@ class UserController {
       const { id } = req.params;
       const { username, email, password, roles, isVerified } = req.body;
 
+      if (!username || !email || !roles) {
+        throw new AppError("Username, email, roles are required", 400);
+      }
+
+      const rolesArray = roles.split(",").map((role) => parseInt(role.trim()));
+
       const updatedUser = await userService.editUser(id, {
         username,
         email,
         password,
-        roles,
+        roles: rolesArray,
         isVerified,
       });
 

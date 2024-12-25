@@ -69,14 +69,14 @@ const SubsidiaryManagerEditPage = () => {
 
   return (
     <div className="form-container subsidiary-manager-edit">
-      <h3>Edit Managers for {subsidiary.name}</h3>
+      <h3>Edit Managers for {subsidiary?.name}</h3>
 
       {error && <Alert variant="danger">{error}</Alert>}
 
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="subsidiaryName">
           <Form.Label>Subsidiary Name</Form.Label>
-          <Form.Control type="text" value={subsidiary.name} readOnly />
+          <Form.Control type="text" value={subsidiary?.name} readOnly />
         </Form.Group>
         <Form.Group controlId="managers">
           <Form.Label>Select Managers</Form.Label>

@@ -22,6 +22,20 @@ import AddEditUserPage from "./pages/AddEditUserPage/AddEditUserPage";
 import SubsidiaryManagerPage from "./pages/SubsidiaryManagerPage/SubsidiaryManagerPage";
 import SubsidiaryManagerEditPage from "./pages/SubsidiaryManagerEditPage/SubsidiaryManagerEditPage";
 
+import HelperTableSelectPage from "./pages/HelperTableSelectPage/HelperTableSelectPage";
+
+import AddressListPage from "./pages/AddressListPage/AddressListPage";
+import AddressListEditPage from "./pages/AddressListEditPage/AddressListEditPage";
+
+import EventTypeListPage from "./pages/EventTypeListPage/EventTypeListPage";
+import EventTypeListEditPage from "./pages/EventTypeListEditPage/EventTypeListEditPage";
+
+import MissionListPage from "./pages/MissionListPage/MissionListPage";
+import MissionListEditPage from "./pages/MissionListEditPage/MissionListEditPage";
+
+import OrganizationListPage from "./pages/OrganizationListPage/OrganizationListPage";
+import OrganizationListEditPage from "./pages/OrganizationListEditPage/OrganizationListEditPage";
+
 import TestPage from "./pages/TestPage";
 import UserRoles from "./utils/roleConsts";
 
@@ -56,6 +70,15 @@ import {
   USERS_EDIT_ROUTE,
   MANAGERS_ROUTE,
   MANAGERS_EDIT_ROUTE,
+  HELPER_TABLE_ROUTE,
+  HELPER_TABLE_ADDRESS_ROUTE,
+  HELPER_TABLE_ADDRESS_EDIT_ROUTE,
+  HELPER_TABLE_EVENTTYPE_ROUTE,
+  HELPER_TABLE_EVENTTYPE_EDIT_ROUTE,
+  HELPER_TABLE_MISSION_ROUTE,
+  HELPER_TABLE_MISSION_EDIT_ROUTE,
+  HELPER_TABLE_ORGANIZATION_ROUTE,
+  HELPER_TABLE_ORGANIZATION_EDIT_ROUTE,
 } from "./utils/routerConsts";
 
 export const publicRoutes = [
@@ -207,6 +230,55 @@ export const registeredRoutes = [
   {
     path: MANAGERS_EDIT_ROUTE,
     Component: SubsidiaryManagerEditPage,
+    roles: [UserRoles.ADMIN],
+  },
+  {
+    path: HELPER_TABLE_ROUTE,
+    Component: HelperTableSelectPage,
+    roles: [UserRoles.ADMIN],
+  },
+  {
+    path: HELPER_TABLE_ADDRESS_ROUTE,
+    Component: AddressListPage,
+    roles: [UserRoles.ADMIN],
+  },
+  {
+    path: HELPER_TABLE_ADDRESS_EDIT_ROUTE,
+    Component: AddressListEditPage,
+    roles: [UserRoles.ADMIN],
+  },
+
+  {
+    path: HELPER_TABLE_EVENTTYPE_ROUTE,
+    Component: EventTypeListPage,
+    roles: [UserRoles.ADMIN],
+  },
+
+  {
+    path: HELPER_TABLE_EVENTTYPE_EDIT_ROUTE,
+    Component: EventTypeListEditPage,
+    roles: [UserRoles.ADMIN],
+  },
+  {
+    path: HELPER_TABLE_MISSION_ROUTE,
+    Component: MissionListPage,
+    roles: [UserRoles.ADMIN],
+  },
+  {
+    path: HELPER_TABLE_MISSION_EDIT_ROUTE,
+    Component: MissionListEditPage,
+    roles: [UserRoles.ADMIN],
+  },
+
+  {
+    path: HELPER_TABLE_ORGANIZATION_ROUTE,
+    Component: OrganizationListPage,
+    roles: [UserRoles.ADMIN],
+  },
+
+  {
+    path: HELPER_TABLE_ORGANIZATION_EDIT_ROUTE,
+    Component: OrganizationListEditPage,
     roles: [UserRoles.ADMIN],
   },
 ];

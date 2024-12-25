@@ -1,0 +1,41 @@
+.address-form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.address-select {
+  margin-top: 10px;
+}
+
+.address-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.address-form-control {
+  margin-top: 10px;
+}
+
+.custom-button-primary {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.custom-checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .address-form-container {
+    max-width: 100%;
+    padding: 15px;
+  }
+}

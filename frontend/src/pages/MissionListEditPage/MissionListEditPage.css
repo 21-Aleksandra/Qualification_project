@@ -1,0 +1,37 @@
+.mission-form-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.mission-form-container h2 {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.mission-form-container .form-group {
+  margin-bottom: 15px;
+}
+
+.mission-form-container textarea {
+  resize: vertical;
+}
+
+.custom-button-primary {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.text-center {
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .mission-form-container {
+    max-width: 100%;
+    padding: 15px;
+  }
+}

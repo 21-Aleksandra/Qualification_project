@@ -1,0 +1,72 @@
+.address-page-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.address-list-container {
+  flex: 3;
+  min-width: 0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.address-additional-components {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.filter-panel-container {
+  width: 100%;
+}
+
+.no-addresses-message {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.2rem;
+}
+
+#address-loading {
+  text-align: center;
+}
+
+#address-error {
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .address-page-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .address-additional-components {
+    width: 100%;
+    margin-top: 20px;
+    order: -1;
+  }
+
+  .address-list-container {
+    width: 100%;
+  }
+
+  .filter-panel-container {
+    width: 100%;
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 768px) {
+  .address-page-wrapper {
+    flex-direction: column;
+  }
+
+  .address-list-container,
+  .address-additional-components {
+    width: 100%;
+  }
+}

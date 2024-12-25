@@ -1,0 +1,2800 @@
+{
+	"info": {
+		"_postman_id": "a79d57f1-1f42-481b-8a24-e5965c5bb0af",
+		"name": "Qualification_project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38778697"
+	},
+	"item": [
+		{
+			"name": "Auth_routes",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "Alex",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "alexawaller666@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "TestTest23!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/auth/verify-email/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3MjkxMDkxNzYsImV4cCI6MTcyOTM2ODM3Nn0.D4THrsIuJ7FRZayDXeY_Y8Se787VLncvLFHelVgzEWQ",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"auth",
+								"verify-email",
+								"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3MjkxMDkxNzYsImV4cCI6MTcyOTM2ODM3Nn0.D4THrsIuJ7FRZayDXeY_Y8Se787VLncvLFHelVgzEWQ"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "luna.stardust@cosmicmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Starlight123!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "alexawaller666@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/auth/forgot-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "newPassword",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api//auth/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJpYXQiOjE3MjkwMjkzMDksImV4cCI6MTcyOTAzMDIwOX0.TzkZgdrNQfUICtnNcZLz7qmO-tHD9U16xXlCSwSVcpQ",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"",
+								"auth",
+								"reset-password",
+								"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0LCJpYXQiOjE3MjkwMjkzMDksImV4cCI6MTcyOTAzMDIwOX0.TzkZgdrNQfUICtnNcZLz7qmO-tHD9U16xXlCSwSVcpQ"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/auth/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"auth",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Address",
+			"item": [
+				{
+					"name": "Get subsidiary address list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/address/list-subsidiary",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"address",
+								"list-subsidiary"
+							],
+							"query": [
+								{
+									"key": "userRoles",
+									"value": "1,2",
+									"disabled": true
+								},
+								{
+									"key": "userId",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add address",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "country",
+									"value": "Latvia",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Riga",
+									"type": "text"
+								},
+								{
+									"key": "street",
+									"value": "Ozola iela,5",
+									"type": "text"
+								},
+								{
+									"key": "lng",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/address/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"address",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event address list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/address/list-event",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"address",
+								"list-event"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "userRoles",
+									"value": "1,2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get address by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/address/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"address",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit address",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "city",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "12",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/address/1/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"address",
+								"1",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all addresses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/address/list-all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"address",
+								"list-all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Main organization",
+			"item": [
+				{
+					"name": "Get main organization list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/main-organization/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"main-organization",
+								"list"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "userRoles",
+									"value": "1,2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add main organization",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Test1w",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/main-organization/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"main-organization",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one main organization",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/main-organization/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"main-organization",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit main organization",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Test",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/main-organization/1/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"main-organization",
+								"1",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mission",
+			"item": [
+				{
+					"name": "Get mission list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/mission/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"mission",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add mission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Heal all 44 people",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/mission/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"mission",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one mission",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/mission/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"mission",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit mission",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "TestTest",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/mission/1/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"mission",
+								"1",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subsidiary",
+			"item": [
+				{
+					"name": "Get filtered subsidiary list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/subsidiary/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"subsidiary",
+								"list"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "cities",
+									"value": "Riga,Kaunas",
+									"disabled": true
+								},
+								{
+									"key": "countries",
+									"value": "Latvia,Lithuania",
+									"disabled": true
+								},
+								{
+									"key": "missions",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "mainOrganizationIds",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get subsidiary by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/subsidiary/9?userId=2&userRoles[]=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"subsidiary",
+								"9"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								},
+								{
+									"key": "userRoles[]",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add subsidiary",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Subsidiary A",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "A description for Subsidiary A",
+									"type": "text"
+								},
+								{
+									"key": "mainOrganizationId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "foundedAt",
+									"value": "2023-01-01",
+									"type": "text"
+								},
+								{
+									"key": "addressId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "subsidiary@example.com",
+									"type": "text"
+								},
+								{
+									"key": "website",
+									"value": "http://example.com",
+									"type": "text"
+								},
+								{
+									"key": "missions",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "bannerPhoto",
+									"type": "file",
+									"src": "/C:/Users/aleks/OneDrive/Рабочий стол/dashboard_banner.png"
+								},
+								{
+									"key": "otherPhotos",
+									"type": "file",
+									"src": [
+										"/C:/Users/aleks/OneDrive/Рабочий стол/test_1_org.png",
+										"/C:/Users/aleks/OneDrive/Рабочий стол/test_2_event.png",
+										"/C:/Users/aleks/OneDrive/Рабочий стол/test_2_org.png"
+									]
+								},
+								{
+									"key": "missions",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "managerId",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/subsidiary/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"subsidiary",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit subsidiary",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Subsidiary B",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "A description for Subsidiary B",
+									"type": "text"
+								},
+								{
+									"key": "mainOrganizationId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "foundedAt",
+									"value": "2023-01-05",
+									"type": "text"
+								},
+								{
+									"key": "addressId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "subsidiary@example.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "website",
+									"value": "http://example.com",
+									"type": "text"
+								},
+								{
+									"key": "bannerPhoto",
+									"type": "file",
+									"src": "/C:/Users/aleks/OneDrive/Рабочий стол/dashboard_banner.png"
+								},
+								{
+									"key": "otherPhotos",
+									"type": "file",
+									"src": "/C:/Users/aleks/OneDrive/Рабочий стол/dashboard_banner.png"
+								},
+								{
+									"key": "missions",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "missions",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "missions",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/subsidiary/7/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"subsidiary",
+								"7",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete subsidiaries",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "ids[]",
+									"value": "11",
+									"type": "text"
+								},
+								{
+									"key": "ids[]",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "ids[]",
+									"value": "13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/subsidiary/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"subsidiary",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get subsidiary names with ids",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/subsidiary/get/names?userId=2&userRoles=1,2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"subsidiary",
+								"get",
+								"names"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								},
+								{
+									"key": "userRoles",
+									"value": "1,2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change managers",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "managerIds[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "managerIds[]",
+									"value": "3",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/subsidiary/1/change-managers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"subsidiary",
+								"1",
+								"change-managers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event type",
+			"item": [
+				{
+					"name": "Get event type list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/event-type/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event-type",
+								"list"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "userRoles",
+									"value": "1,2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add event type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Test",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/event-type/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event-type",
+								"add"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one event type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/event-type/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event-type",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit event type",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Testing",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/event-type/1/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event-type",
+								"1",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event",
+			"item": [
+				{
+					"name": "Get filtered event list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/event/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event",
+								"list"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "userRoles",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "cities",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "countries",
+									"value": "Latvia",
+									"disabled": true
+								},
+								{
+									"key": "subsidiaryIds",
+									"value": "7,1",
+									"disabled": true
+								},
+								{
+									"key": "typeIds",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "dateFrom",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "dateTo",
+									"value": "2024-04-01T12:00:00",
+									"disabled": true
+								},
+								{
+									"key": "applicationDeadline",
+									"value": "2024-12-01T21:59:59.000Z",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "sortOrder",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/event/1?userId=2&userRoles[]=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event",
+								"1"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								},
+								{
+									"key": "userRoles[]",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "New Event Name 2",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "This is a detailed description",
+									"type": "text"
+								},
+								{
+									"key": "subsidiaryId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "typeId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "dateFrom",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "dateTo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "applicationDeadline",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "addressId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "managerId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "bannerPhoto",
+									"type": "file",
+									"src": "/C:/Users/aleks/OneDrive/Рабочий стол/dashboard_banner.png",
+									"disabled": true
+								},
+								{
+									"key": "otherPhotos",
+									"type": "file",
+									"src": [
+										"/C:/Users/aleks/OneDrive/Рабочий стол/login-image.jpeg",
+										"/C:/Users/aleks/OneDrive/Рабочий стол/Screenshot_2024-10-31-19-48-03-84_99c04817c0de5652397fc8b56c3b3817.jpg",
+										"/C:/Users/aleks/OneDrive/Рабочий стол/test_1_org.png"
+									],
+									"disabled": true
+								},
+								{
+									"key": "maxPeopleAllowed",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/event/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Test",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Changed text",
+									"type": "text"
+								},
+								{
+									"key": "typeId",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2024-12-10T12:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "dateTo",
+									"value": "2024-12-10T12:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "publishOn",
+									"value": "2024-12-10T12:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "applicationDeadline",
+									"value": "2024-12-10T12:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "addressId",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "subsidiaryId",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "maxPeopleAllowed",
+									"value": "77",
+									"type": "text"
+								},
+								{
+									"key": "bannerPhoto",
+									"type": "file",
+									"src": "/C:/Users/aleks/OneDrive/Рабочий стол/test_2_org.png"
+								},
+								{
+									"key": "otherPhotos",
+									"type": "file",
+									"src": "/C:/Users/aleks/OneDrive/Рабочий стол/Screenshot_2024-10-31-19-48-03-84_99c04817c0de5652397fc8b56c3b3817.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/event/4/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event",
+								"4",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete events",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "ids[]",
+									"value": "10",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ids[]",
+									"value": "9",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ids[]",
+									"value": "8",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ids[]",
+									"value": "7",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ids[]",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/event/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event names",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/event/get/names?userId=2&userRoles=1,2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event",
+								"get",
+								"names"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								},
+								{
+									"key": "userRoles",
+									"value": "1,2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User's event",
+			"item": [
+				{
+					"name": "Register user for event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "eventId",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/event-user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event-user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unregister user from event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "eventId",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/event-user/unregister",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event-user",
+								"unregister"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/event-user/list/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"event-user",
+								"list",
+								"1"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "pet",
+									"disabled": true
+								},
+								{
+									"key": "dateFrom",
+									"value": "2023-11-25T08:00:00.000",
+									"disabled": true
+								},
+								{
+									"key": "dateTo",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statistics",
+			"item": [
+				{
+					"name": "Get achievement summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/statistics/achievements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"statistics",
+								"achievements"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Change profile picture",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profilePhoto",
+									"type": "file",
+									"src": "/C:/Users/aleks/OneDrive/Рабочий стол/test_1_user.png"
+								},
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/profile/change-profile-pic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"profile",
+								"change-profile-pic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change username",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Kevin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/profile/change-name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"profile",
+								"change-name"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "Kevin",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "oldPassword",
+									"value": "Starlight123!",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "TestTest234!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/profile/change-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"profile",
+								"change-password"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "oldPassword",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send request email to admin(s)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "requestDetails",
+									"value": "Hey admin there is problem with button on this page, please help",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/profile/send-email-request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"profile",
+								"send-email-request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/profile/delete-account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"profile",
+								"delete-account"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "News",
+			"item": [
+				{
+					"name": "Get all subsidiary news",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/news/subsidiary-news/get?subsidiaryIds",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"subsidiary-news",
+								"get"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "training",
+									"disabled": true
+								},
+								{
+									"key": "text",
+									"value": "meetup",
+									"disabled": true
+								},
+								{
+									"key": "dateFrom",
+									"value": "2024-12-31T23:59:59.999Z",
+									"disabled": true
+								},
+								{
+									"key": "dateTo",
+									"value": "2024-12-31T23:59:59.999Z",
+									"disabled": true
+								},
+								{
+									"key": "userId",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "userRoles",
+									"value": "1,2",
+									"disabled": true
+								},
+								{
+									"key": "subsidiaryIds",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one subsiairy news",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/news/subsidiary-news/4/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"subsidiary-news",
+								"4",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add one subdiairy news",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "subsidiaryId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Test news",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "Wow a test!",
+									"type": "text"
+								},
+								{
+									"key": "authorId",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/news/subsidiary-news/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"subsidiary-news",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit one subdiairy news",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "subsidiaryId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Test234",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/news/subsidiary-news/1/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"subsidiary-news",
+								"1",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all event news",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/news/event-news/get?userId=2&userRoles=1,2&content&eventIds",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"event-news",
+								"get"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "userId",
+									"value": "2"
+								},
+								{
+									"key": "userRoles",
+									"value": "1,2"
+								},
+								{
+									"key": "content",
+									"value": null
+								},
+								{
+									"key": "eventIds",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one event news",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/news/event-news/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"event-news",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add one event news",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "eventId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Test event news",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "Test",
+									"type": "text"
+								},
+								{
+									"key": "authorId",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/news/event-news/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"event-news",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit one event news",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "eventId",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "Test",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "TESTEETS",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/news/event-news/2/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"event-news",
+								"2",
+								"edit"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get top 5 newest news",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/news/top-5/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"top-5",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete news by ids",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "ids[]",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "ids[]",
+									"value": "9",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/news/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"news",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Get event comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/comment/event-comments/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"comment",
+								"event-comments",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new event comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "text",
+									"value": "The best event!",
+									"type": "text"
+								},
+								{
+									"key": "rating",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/comment/event-comments/1/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"comment",
+								"event-comments",
+								"1",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get news comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/comment/news-comments/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"comment",
+								"news-comments",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add news comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "text",
+									"value": "Not bad not good",
+									"type": "text"
+								},
+								{
+									"key": "raiting",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/comment/news-comments/1/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"comment",
+								"news-comments",
+								"1",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get subsidiary comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/comment/subsidiary-comments/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"comment",
+								"subsidiary-comments",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ad subsidiary comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "text",
+									"value": "Test sub comment",
+									"type": "text"
+								},
+								{
+									"key": "raiting",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/comment/subsidiary-comments/1/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"comment",
+								"subsidiary-comments",
+								"1",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/comment/get?username=Doe&text=good",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"comment",
+								"get"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "Doe"
+								},
+								{
+									"key": "text",
+									"value": "good"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete multiple comments",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "ids[]",
+									"value": "7",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ids[]",
+									"value": "8",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ids{}",
+									"value": "9",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/comment/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"comment",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/user/get?username=Luna",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"user",
+								"get"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "Luna"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/api/user/1/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"user",
+								"1",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "Test",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123Test456!!!",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "text@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "isVerified",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "roles[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "roles[]",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/user/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"user",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "roles[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "Tiffany_4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/user/3/edit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"user",
+								"3",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user ids",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "ids[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "ids[]",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/api/user/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"api",
+								"user",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

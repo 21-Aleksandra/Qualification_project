@@ -6,6 +6,7 @@ import {
   COMMENT_ADMIN_ROUTE,
   USERS_ROUTE,
   MANAGERS_ROUTE,
+  HELPER_TABLE_ROUTE,
 } from "../utils/routerConsts";
 
 const navigationLinks = [
@@ -37,6 +38,11 @@ const navigationLinks = [
   {
     name: "Manager assignment",
     link: MANAGERS_ROUTE,
+    allowedRoles: [UserRoles.ADMIN],
+  },
+  {
+    name: "Helper table editor",
+    link: HELPER_TABLE_ROUTE,
     allowedRoles: [UserRoles.ADMIN],
   },
 ];

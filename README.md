@@ -570,3 +570,20 @@ In summary:
 - Changed profile links for admins - now no fake ones
 - Changed subsidiary filter so some fields would be hidden if needed
 - Changed styles for news edit, users
+
+### [6.3] - 24-12-2024
+
+#### Added
+
+##### Frontend:
+
+- Added edit and get one routes to Mission, Main Organization, Address and Event Type axios API
+- Added Helper table edit page
+- Added helper table list with filters and edit pages for Mission, Main Organization, Address and Event Type
+-
+
+#### Changed
+
+##### Backend:
+
+- Changed links for Main Organization hepler table

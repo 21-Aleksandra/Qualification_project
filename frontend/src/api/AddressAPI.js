@@ -45,3 +45,21 @@ export const addAddress = async (country, city, street, lat, lng) => {
     throw error.response ? error.response.data : error.message;
   }
 };
+
+export const getOneAddress = async (id) => {
+  try {
+    const response = await api.get(`/address/${id}/get`);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error.message;
+  }
+};
+
+export const editAddress = async (id, updateData) => {
+  try {
+    const response = await api.put(`/address/${id}/edit`, updateData);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : error.message;
+  }
+};

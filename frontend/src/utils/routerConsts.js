@@ -46,6 +46,7 @@ export const HELPER_TABLE_MISSION_ROUTE = "/helper-tables/mission";
 export const HELPER_TABLE_MISSION_EDIT_ROUTE =
   "/helper-tables/mission/:id/edit";
 
-export const HELPER_TABLE_ORGANIZATION_ROUTE = "/helper-tables/organization";
+export const HELPER_TABLE_ORGANIZATION_ROUTE =
+  "/helper-tables/main-organization";
 export const HELPER_TABLE_ORGANIZATION_EDIT_ROUTE =
-  "/helper-tables/organization/:id/edit";
+  "/helper-tables/main-organization/:id/edit";

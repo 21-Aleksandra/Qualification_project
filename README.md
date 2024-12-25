@@ -571,7 +571,7 @@ In summary:
 - Changed subsidiary filter so some fields would be hidden if needed
 - Changed styles for news edit, users
 
-### [6.3] - 24-12-2024
+### [6.3] - 25-12-2024
 
 #### Added
 
@@ -580,10 +580,17 @@ In summary:
 - Added edit and get one routes to Mission, Main Organization, Address and Event Type axios API
 - Added Helper table edit page
 - Added helper table list with filters and edit pages for Mission, Main Organization, Address and Event Type
--
 
 #### Changed
 
 ##### Backend:
 
 - Changed links for Main Organization hepler table
+
+### [7.0] - 25-12-2024
+
+#### Added:
+
+##### Backend:
+
+- Added postman collection with instructions to the backend test folder

@@ -5,6 +5,7 @@ import Statistics from "../../components/Sections/Statistics/Statistics";
 import { REGISTER_ROUTE } from "../../utils/routerConsts";
 import { getAchievementSummary } from "../../api/StatisticsAPI";
 
+// A starting page for unregistered users with some statistics data. Allows to go to login/register page from banner link
 const LandingPage = () => {
   const [statistics, setStatistics] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,8 +18,8 @@ const LandingPage = () => {
         setStatistics(data);
       } catch (err) {
         setError(
-          "Failed to load statistics. Please try again later.Error",
-          err
+          err?.message ||
+            "Failed to load statistics. Please try again later.Error"
         );
       } finally {
         setLoading(false);
@@ -30,6 +31,7 @@ const LandingPage = () => {
 
   return (
     <>
+      {/* Banner component with background image and call-to-action */}
       <Banner
         backgroundImage={homeBannerImage}
         text="Discover the best volunteering events near you!"
@@ -37,6 +39,7 @@ const LandingPage = () => {
         buttonLink={REGISTER_ROUTE}
       />
 
+      {/* Conditional rendering based on loading state or error */}
       {loading ? (
         <p className="text-center my-4">Loading statistics...</p>
       ) : error ? (

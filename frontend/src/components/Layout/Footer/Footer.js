@@ -6,6 +6,8 @@ import facebookIcon from "../../../assets/facebook.png";
 import tiktokIcon from "../../../assets/tiktok.png";
 import "./Footer.css";
 
+// Footer that is present in all aplication without changing
+// Contains template links to company social media
 const Footer = () => {
   return (
     <footer className=" py-3 mt-4">
@@ -14,7 +16,7 @@ const Footer = () => {
         <div className="social-links">
           <a
             href="https://www.instagram.com"
-            target="_blank"
+            target="_blank" // Opens the link in a new tab
             rel="noopener noreferrer"
             className="me-3"
           >
@@ -22,7 +24,7 @@ const Footer = () => {
           </a>
           <a
             href="https://www.twitter.com"
-            target="_blank"
+            target="_blank" // Opens the link in a new tab
             rel="noopener noreferrer"
             className="me-3"
           >
@@ -30,7 +32,7 @@ const Footer = () => {
           </a>
           <a
             href="https://www.facebook.com"
-            target="_blank"
+            target="_blank" // Opens the link in a new tab
             rel="noopener noreferrer"
             className="me-3"
           >
@@ -38,7 +40,7 @@ const Footer = () => {
           </a>
           <a
             href="https://www.tiktok.com"
-            target="_blank"
+            target="_blank" // Opens the link in a new tab
             rel="noopener noreferrer"
           >
             <img src={tiktokIcon} alt="TikTok" className="social-icon" />

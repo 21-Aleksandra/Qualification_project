@@ -3,6 +3,8 @@ import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { HELPER_TABLE_ADDRESS_EDIT_ROUTE } from "../../../../utils/routerConsts";
 
+// The AddressHelperTableList component displays a table with address data
+// Each row contains edit button to lead to address edit page
 const AddressHelperTableList = ({ addresses }) => {
   const navigate = useNavigate();
 

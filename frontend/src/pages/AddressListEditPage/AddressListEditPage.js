@@ -6,6 +6,9 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import { HELPER_TABLE_ADDRESS_ROUTE } from "../../utils/routerConsts";
 import "./AddressListEditPage.css";
 
+// A page for editing single address data
+// May be needed in case of incorrect address addition via google maps api
+// For admin only
 const AddressListEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -22,6 +25,7 @@ const AddressListEditPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Fetch address data if editing e.g. having id
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -34,7 +38,7 @@ const AddressListEditPage = () => {
             street: data.street || "",
             lat: data.lat || "",
             lng: data.lng || "",
-          });
+          }); // Set form data if fetching is successful so user can see what he edits
         })
         .catch((err) => {
           const errorMessage =
@@ -48,10 +52,10 @@ const AddressListEditPage = () => {
   }, [id]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Extract name and value from input
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: value, // Update corresponding form field
     }));
   };
 
@@ -75,7 +79,7 @@ const AddressListEditPage = () => {
 
   return (
     <div className="container mt-3 address-form-container">
-      <h2>{isEditing ? `Edit Address` : `Add Address`}</h2>
+      <h2>{`Edit Address`}</h2>
       {error && <Alert variant="danger">{error}</Alert>}
 
       {loading ? (

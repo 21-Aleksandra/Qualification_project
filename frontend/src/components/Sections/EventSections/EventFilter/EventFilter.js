@@ -9,6 +9,8 @@ import CustomButton from "../../../Common/CustomButton/CustomButton";
 import { Context } from "../../../../index";
 import UserRoles from "../../../../utils/roleConsts";
 
+// This component allows to filter on backend events from context by cities, subsidiaries associated etc
+// Is observable for dynamic store changes (in case of new elemets addition somewhere else and to communicate effectivly with the store)
 const EventFilter = observer(() => {
   const { event, address, eventType, user, subsidiary } = useContext(Context);
 
@@ -18,6 +20,7 @@ const EventFilter = observer(() => {
   const [isManager, setIsManager] = useState(false);
 
   useEffect(() => {
+    // Fetch and store user roles on component mount
     const roles = Array.isArray(user.roles) ? user.roles : [user.roles];
     const validRoles = roles.map(Number).filter((role) => !isNaN(role));
     setUserRoles(validRoles);
@@ -26,11 +29,14 @@ const EventFilter = observer(() => {
 
   const userId = user.id;
 
+  // useCallback for memoization of the fetchFilterData function and avoid uneccesary re-fetch
   const fetchFilterData = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
 
+      // Fetch address data based on user ID and roles
+      // gets only manager authored event addresses if user has role manager
       const addressResponse = await getEventAddresses({
         userId,
         userRoles: userRoles.join(","),
@@ -38,13 +44,13 @@ const EventFilter = observer(() => {
       address.setAddresses(addressResponse || []);
 
       const eventTypeResponse = await getEventTypeList({
-        userId: isManager ? userId : undefined,
+        userId: isManager ? userId : undefined, // Fetch all event types related to managers
         userRoles: userRoles.join(","),
       });
       eventType.setEventTypes(eventTypeResponse || []);
 
       const subsidiaryResponse = await getSubsidiaryNames({
-        userId: isManager ? userId : undefined,
+        userId: isManager ? userId : undefined, // Fetch all subsidiaries types related to  managers
         userRoles: userRoles.join(","),
       });
       subsidiary.setNames(subsidiaryResponse || []);
@@ -56,6 +62,7 @@ const EventFilter = observer(() => {
     }
   }, [userId, userRoles, address, eventType, subsidiary, isManager]);
 
+  // Fetch filter data on component mount and when dependencies change
   useEffect(() => {
     fetchFilterData();
   }, [fetchFilterData]);
@@ -69,11 +76,12 @@ const EventFilter = observer(() => {
     };
     const { sortBy, sortOrder } = sortMapping[event.filters.sortOption] || {};
 
+    // Construct filter parameters(including manager data to fecth only his/her authored events always)
     const filterParams = {
       userId: isManager ? userId : undefined,
-      userRoles: userRoles.join(","),
+      userRoles: userRoles.join(","), // since api takes cities params as comma separated string of numbers (e.g. 1,2,3)
       name: event.filters.searchName,
-      cities: event.filters.selectedCities.join(","),
+      cities: event.filters.selectedCities.join(","), // since api takes cities params as comma separated strings(e.g Riga, Tallin)
       countries: event.filters.selectedCountries.join(","),
       subsidiaryIds: event.filters.selectedSubsidiaryIds.join(","),
       typeIds: event.filters.selectedTypeIds.join(","),
@@ -98,6 +106,7 @@ const EventFilter = observer(() => {
     }
   };
 
+  // Calculate filtered cities based on selected countries (e.h. in order to not search for latvian city if Estonia is selected and so on )
   const filteredCities = address.getFilteredCities(
     address.addresses,
     event.filters.selectedCountries
@@ -121,9 +130,9 @@ const EventFilter = observer(() => {
         userRoles: userRoles.join(","),
       });
       if (isManager) {
-        event.setEvents(response || [], true);
+        event.setEvents(response || [], true); // display even future events for managers
       } else {
-        event.setEvents(response || []);
+        event.setEvents(response || []); // hide future events from regular users(done inside the store)
       }
 
       event.setParams(null);

@@ -7,16 +7,18 @@ import CommentSection from "../../components/Sections/CommentSection/CommentSect
 import { getNewsComments, addNewsComment } from "../../api/CommentAPI";
 import "./NewsItemPage.css";
 
+// Displays signle news item(both event and subsidiary)
 const NewsItemPage = () => {
   const { id } = useParams();
   const [news, setNews] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const isEventNews = window.location.pathname.includes("event-news");
+  const isEventNews = window.location.pathname.includes("event-news"); // allows us to make more generic page and only change data fetch based one news type
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        // Select the correct API based on the type of news
         const fetchFunc = isEventNews ? getOneEventNews : getOneSubsidiaryNews;
         const data = await fetchFunc(id);
         setNews(data);
@@ -28,7 +30,7 @@ const NewsItemPage = () => {
     };
 
     fetchNews();
-  }, [id, isEventNews]);
+  }, [id, isEventNews]); // Refetch news when 'id' or 'isEventNews' changes
 
   if (isLoading) {
     return (
@@ -47,6 +49,7 @@ const NewsItemPage = () => {
     );
   }
 
+  // Render warning if no news is found
   if (!news) {
     return (
       <Alert id="news-not-found" variant="warning" className="text-center">

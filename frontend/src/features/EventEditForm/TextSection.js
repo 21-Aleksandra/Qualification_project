@@ -1,6 +1,7 @@
 import React from "react";
 import TextInputForm from "../../components/Common/TextInputForm/TextInputForm";
 
+// Define the TextSection component. This component renders a section with input fields for 'Name' and 'Description'.
 const TextSection = ({ formData, handleChange }) => (
   <>
     <TextInputForm

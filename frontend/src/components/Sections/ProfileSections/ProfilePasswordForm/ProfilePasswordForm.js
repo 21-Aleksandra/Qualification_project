@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation after logout
-import { changePassword } from "../../../../api/ProfileAPI"; // Assuming an API function for changing the password
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { changePassword } from "../../../../api/ProfileAPI";
 import CustomButton from "../../../Common/CustomButton/CustomButton";
-import { Context } from "../../../../index"; // Access the user context
+import { Context } from "../../../../index";
 import "./ProfilePasswordForm.css";
 
+// ProfilePasswordForm component allows users to change their password
+// The main input validation is on backend
 const ProfilePasswordForm = () => {
-  const { user } = React.useContext(Context);
+  const { user } = useContext(Context);
   const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -16,6 +18,7 @@ const ProfilePasswordForm = () => {
 
   const handleSubmit = async () => {
     if (!oldPassword || !newPassword || !confirmPassword) {
+      // requiring all 3 inputs to make sure user wants to change his/her password
       setErrorMessage("All fields are required.");
       return;
     }
@@ -30,9 +33,9 @@ const ProfilePasswordForm = () => {
       await changePassword(user.id, oldPassword, newPassword);
       alert("Password updated successfully!");
       user.logout();
-      navigate("/");
+      navigate("/"); // redirection to landing page
     } catch (error) {
-      alert("Error updating password: " + error);
+      alert("Error updating password: " + error?.message);
     } finally {
       setIsSubmitting(false);
     }

@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import CustomButton from "../../../Common/CustomButton/CustomButton";
 
+// This component is used to filter the event type based on name on frontend side
+// Is observable for dynamic store changes (in case of new elemets addition somewhere else and to communicate effectivly with the store)
 const EventTypeFilter = observer(({ onFilterChange, eventTypes }) => {
   const [localFilterName, setLocalFilterName] = useState("");
 
   const applyFilter = () => {
+    // Filter the eventTypes array based on the event type name matching the filter text
     const filteredData = eventTypes.filter((eventType) =>
       eventType.name.toLowerCase().includes(localFilterName.toLowerCase())
     );
@@ -27,7 +30,7 @@ const EventTypeFilter = observer(({ onFilterChange, eventTypes }) => {
           id="name"
           type="text"
           value={localFilterName}
-          onChange={(e) => setLocalFilterName(e.target.value)}
+          onChange={(e) => setLocalFilterName(e.target.value)} // Update localFilterName on input change
           placeholder="Enter event name"
         />
       </div>

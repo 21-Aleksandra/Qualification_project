@@ -4,6 +4,8 @@ import { changeName } from "../../../../api/ProfileAPI";
 import CustomButton from "../../../Common/CustomButton/CustomButton";
 import "./ProfileNameForm.css";
 
+// ProfileNameForm component allows users to update their profile name
+// The main input validation is on backend
 const ProfileNameForm = () => {
   const { user } = useContext(Context);
   const [newName, setNewName] = useState(user.user || "");
@@ -12,12 +14,12 @@ const ProfileNameForm = () => {
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
-    setErrorMessage("");
+    setErrorMessage(""); // Clear any previous error message
   };
 
   const handleSubmit = async () => {
     if (!newName.trim()) {
-      setErrorMessage("Name cannot be empty.");
+      setErrorMessage("Name cannot be empty."); // Set error message for empty names
       return;
     }
 

@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import CustomButton from "../../../Common/CustomButton/CustomButton";
 
+// This component is used to filter the missions based on name on frontend side
 const MissionFilter = observer(({ onFilterChange, missions }) => {
   const [localFilterName, setLocalFilterName] = useState("");
 
   const applyFilter = () => {
+    // Filter the missions array based on the event type name matching the filter text
     const filteredData = missions.filter((missionItem) =>
       missionItem.name.toLowerCase().includes(localFilterName.toLowerCase())
     );

@@ -9,12 +9,16 @@ import SubsidiaryManagerList from "../../components/Sections/SubsidiaryManagerSe
 
 import "./SubsidiaryManagerPage.css";
 
+// Page that lists subsidiaries along with its manager list.
+// Has edit button to address to manager assigment form. For admins only.
+
 const SubsidiaryManagerPage = observer(() => {
+  // making page observable for mobx changes
   const { subsidiary, user } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const userId = user._id;
+  const userId = user._id; //  for role-based API calls
 
   useEffect(() => {
     const fetchSubsidiaries = async () => {
@@ -23,29 +27,32 @@ const SubsidiaryManagerPage = observer(() => {
         setError(null);
 
         let params = {};
+        // If the user is a manager, include their user ID and roles in the parameters
         if (user.roles.includes(UserRoles.MANAGER)) {
           params = {
             userId,
-            userRoles: user.roles.join(","),
+            userRoles: user.roles.join(","), // the api takes roles as comma-separated string
           };
         }
-        subsidiary._currentPage = 1;
+        subsidiary._currentPage = 1; // for avoiding errors since originally subsidairy had pagination
         if (subsidiary.params != null) {
-          params = { ...params, ...subsidiary.params };
+          params = { ...params, ...subsidiary.params }; // Merge custom params from the store if available to avoid errors in search
         }
 
         const response = await getSubsidiaryFilteredList(params);
         subsidiary.setSubsidiaries(response || []);
       } catch (err) {
         console.error("Failed to fetch subsidiaries:", err);
-        setError("Failed to load subsidiaries. Please try again later.");
+        setError(
+          err?.message || "Failed to load subsidiaries. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchSubsidiaries();
-  }, [subsidiary.params, userId, user.roles, subsidiary]);
+  }, [subsidiary.params, userId, user.roles, subsidiary]); // Dependencies to trigger effect when parameters change
 
   if (loading) {
     return (

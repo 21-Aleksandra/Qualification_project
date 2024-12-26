@@ -8,6 +8,8 @@ import { USERS_ROUTE } from "../../utils/routerConsts";
 import Select from "react-select";
 import "./UserAddEditPage.css";
 
+// A dynamic form for both ading and editing user, the id presence defines the form state
+// For admin only
 const AddEditUserPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const AddEditUserPage = () => {
     username: "",
     email: "",
     password: "",
-    roles: [],
+    roles: [], // since user potentially can have 1 to many roles in future
     isVerified: false,
   });
 
@@ -24,11 +26,13 @@ const AddEditUserPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Create options for the roles from UserRoles constants
   const roleOptions = Object.entries(UserRoles).map(([roleName, roleId]) => ({
     value: roleId,
     label: roleName,
   }));
 
+  // Fetch user data if editing
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -37,6 +41,7 @@ const AddEditUserPage = () => {
       getOneUser(id)
         .then((data) => {
           setFormData({
+            // set form data so user knows what to edit and what is current state
             username: data.username,
             email: data.email,
             password: "", // Passwords are not fetched for security reasons
@@ -78,7 +83,7 @@ const AddEditUserPage = () => {
     setLoading(true);
     setError("");
 
-    const rolesAsString = formData.roles.map((role) => role.value).join(",");
+    const rolesAsString = formData.roles.map((role) => role.value).join(","); // Convert selected roles to comma-separated string since api requiers such format
 
     try {
       if (isEditing) {

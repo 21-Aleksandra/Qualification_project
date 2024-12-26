@@ -11,6 +11,8 @@ import { Spinner, Alert } from "react-bootstrap";
 import { EVENT_EDIT_ROUTE, EVENT_ADD_ROUTE } from "../../utils/routerConsts";
 import "./EventPage.css";
 
+// A page for all event list with filter that has backend-based filtering
+// If user is a manager, he/she also has access to edit panel with add/delete/edit methods and gets only his/hers authored events
 const EventPage = observer(() => {
   const { event, user } = useContext(Context);
   const [loading, setLoading] = useState(true);
@@ -26,13 +28,15 @@ const EventPage = observer(() => {
         setError(null);
 
         let params = {};
+        // set additional filter params if user is a manager
         if (user.roles.includes(UserRoles.MANAGER)) {
           params = {
             userId,
-            userRoles: user.roles.join(","),
+            userRoles: user.roles.join(","), // The api takes roles as comma-separated string
           };
         }
         let response;
+        // if events were filtered with some params already, keep them
         if (event.params != null) {
           response = await getEventFilteredList(event.params);
         } else {
@@ -45,7 +49,9 @@ const EventPage = observer(() => {
         }
       } catch (err) {
         console.error("Failed to fetch events:", err);
-        setError("Failed to load events. Please try again later.");
+        setError(
+          err?.message || "Failed to load events. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
@@ -54,26 +60,28 @@ const EventPage = observer(() => {
     fetchEvents();
   }, [event._currentPage, event, userId, user.roles]);
 
+  // Handle checkbox change (select/unselect events)
   const handleCheckboxChange = (id, isChecked) => {
     setSelectedIds((prev) =>
       isChecked ? [...prev, id] : prev.filter((selectedId) => selectedId !== id)
     );
   };
 
+  // efectivly unselecting all ids if needed
   const handleUnselectAll = () => {
     setSelectedIds([]);
   };
 
   const handleDelete = async (ids) => {
     try {
-      console.log("Deleting IDs:", ids);
       await deleteEvents(ids);
+      // refetching after the delete to get the most actual data
       const response = await getEventFilteredList({
         userId,
-        userRoles: user.roles.join(","),
+        userRoles: user.roles.join(","), // The api takes roles as comma-separated string
       });
       event.setEvents(response || []);
-      setSelectedIds([]);
+      setSelectedIds([]); // unselecting ids of deleted objects e.g removing them from list of selected
     } catch (err) {
       console.error("Failed to delete events:", err);
       alert("Error deleting events.");

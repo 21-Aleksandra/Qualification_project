@@ -10,6 +10,7 @@ const useFetchSubsidiaryData = (id, missionStore, orgStore, addressStore) => {
   const [error, setError] = useState("");
   const [subsidiaryData, setSubsidiaryData] = useState(null);
 
+  // useCallback ensures the fetchData function is memoized and doesn't get recreated on every render.
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
@@ -23,6 +24,7 @@ const useFetchSubsidiaryData = (id, missionStore, orgStore, addressStore) => {
       const addressResponse = await getAllAddressList();
       addressStore.setAddresses(addressResponse || []);
 
+      // If an `id` is provided (i.e., editing an existing subsidiary), fetch the subsidiary details.
       if (id) {
         const subsidiaryResponse = await getSubsidiaryById(id);
         if (subsidiaryResponse) {
@@ -38,6 +40,7 @@ const useFetchSubsidiaryData = (id, missionStore, orgStore, addressStore) => {
               )
             : null;
 
+          // Fetch other photos (those that are not the banner photo), and create file previews for them.
           const otherPhotos = await Promise.all(
             subsidiaryResponse.Photo_Set.Photos.filter(
               (photo) => !photo.isBannerPhoto
@@ -46,7 +49,7 @@ const useFetchSubsidiaryData = (id, missionStore, orgStore, addressStore) => {
                 `${process.env.REACT_APP_SERVER_URL}/${photo.url}`.replace(
                   /([^:]\/)\/+/g,
                   "$1"
-                );
+                ); // Normalize the URL to avoid double slashes
               const file = await fetchFileFromURL(photoUrl);
               return {
                 file,
@@ -59,7 +62,7 @@ const useFetchSubsidiaryData = (id, missionStore, orgStore, addressStore) => {
             ...subsidiaryResponse,
             bannerPhoto: bannerPhotoFile,
             otherPhotos,
-            otherPhotosPreviews: otherPhotos.map((p) => p.preview),
+            otherPhotosPreviews: otherPhotos.map((p) => p.preview), // Extract the preview URLs for displaying in the UI.
           });
         }
       }
@@ -73,7 +76,7 @@ const useFetchSubsidiaryData = (id, missionStore, orgStore, addressStore) => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData]); // Only re-run fetchData if the fetchData callback changes (which depends on the dependencies above).
 
   return { loading, error, subsidiaryData };
 };

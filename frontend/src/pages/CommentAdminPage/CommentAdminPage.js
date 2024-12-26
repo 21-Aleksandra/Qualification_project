@@ -8,12 +8,15 @@ import EditComponent from "../../components/Sections/EditComponent/EditComponent
 import CommentAdminFilter from "../../components/Sections/CommentAdminListSection/CommentAdminFilter/CommentAdminFilter";
 import "./CommentAdminPage.css";
 
+// A page with list of all comments, checkboxes and delete selected functionality
+// Ensures inappropritae comment management for admin. Allows filtering comments by author and text
 const CommentAdminPage = observer(() => {
   const { comment } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
 
+  // Fetch all comments when the component mounts or comment state changes
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -30,13 +33,14 @@ const CommentAdminPage = observer(() => {
     };
 
     fetchComments();
-  }, [comment]);
+  }, [comment]); // The effect runs when the 'comment' context changes
 
   const handleCheckboxChange = (id) => {
-    setSelectedIds((prev) =>
-      prev.includes(id)
-        ? prev.filter((selectedId) => selectedId !== id)
-        : [...prev, id]
+    setSelectedIds(
+      (prev) =>
+        prev.includes(id)
+          ? prev.filter((selectedId) => selectedId !== id) // Unselect the comment if it is already selected
+          : [...prev, id] // Select the comment if it is not already selected
     );
   };
 
@@ -51,7 +55,7 @@ const CommentAdminPage = observer(() => {
       comment.setComments(response || []);
       setSelectedIds([]);
     } catch (err) {
-      console.error("Failed to delete comments:", err);
+      console.error(err?.message || "Failed to delete comments:");
       alert("Error deleting comments.");
     }
   };

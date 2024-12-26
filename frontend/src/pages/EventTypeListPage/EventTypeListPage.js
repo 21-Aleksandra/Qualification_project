@@ -7,7 +7,8 @@ import EventTypeFilter from "../../components/Sections/EventTypeHelperTableSecti
 import EventTypeHelperTableList from "../../components/Sections/EventTypeHelperTableSections/EventTypeHelperTableList/EventTypeHelperTableList";
 
 import "./EventTypeListPage.css";
-
+// Apage with all event types list and frontend based filtering with a filter panel
+// It also has edit buttons to navigate to specific type edit page, For admins only.
 const EventTypeListPage = observer(() => {
   const { eventType } = useContext(Context);
   const [filteredEventTypes, setFilteredEventTypes] = useState([]);
@@ -21,6 +22,8 @@ const EventTypeListPage = observer(() => {
         setError(null);
         const response = await getEventTypeList();
 
+        // If the event types are different from the state, update the state
+        // It also prevents not needed resetting
         if (
           JSON.stringify(eventType.event_types) !== JSON.stringify(response)
         ) {
@@ -30,14 +33,17 @@ const EventTypeListPage = observer(() => {
         setFilteredEventTypes(response || []);
       } catch (error) {
         console.error("Error fetching event types:", error);
-        setError("Failed to load event types. Please try again later.");
+        setError(
+          error?.message ||
+            "Failed to load event types. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchEventTypes();
-  }, [eventType.event_types, eventType]);
+  }, [eventType.event_types, eventType]); // Re-run the effect if eventType.event_types or eventType changes
 
   const handleFilterChange = (filteredData) => {
     setFilteredEventTypes(filteredData);

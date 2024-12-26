@@ -1,6 +1,8 @@
 import React from "react";
 import TextInputForm from "../../components/Common/TextInputForm/TextInputForm";
 
+// Define the GeneralInfoSection component. This component renders a section with input fields for 'Name' and 'Description'
+// as well as 'Email' and 'Website'.
 const GeneralInfoSection = ({ formData, handleChange }) => (
   <>
     <TextInputForm

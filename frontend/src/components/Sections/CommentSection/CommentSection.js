@@ -5,14 +5,16 @@ import { useLocation } from "react-router-dom";
 import UserRoles from "../../../utils/roleConsts";
 import "./CommentSection.css";
 
+// The CommentSection component allows users to view, add, and rate their comments
 const CommentSection = observer(({ id, getRequest, addRequest }) => {
   const { comment, user } = useContext(Context);
   const location = useLocation();
 
   const [text, setText] = useState("");
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(1); // Default selected rating is 1
   const [loading, setLoading] = useState(false);
 
+  // Function to determine the ID type (event, news, or subsidiary) based on the current path
   const determineIdType = () => {
     const path = location.pathname.toLowerCase();
     if (path.includes("events")) return "eventId";
@@ -22,6 +24,8 @@ const CommentSection = observer(({ id, getRequest, addRequest }) => {
   };
 
   const idType = determineIdType();
+
+  // fetchComments is wrapped in useCallback to prevent unnecessary re-renders
   const fetchComments = useCallback(async () => {
     try {
       setLoading(true);
@@ -66,6 +70,7 @@ const CommentSection = observer(({ id, getRequest, addRequest }) => {
     }
   };
 
+  // profilePicUrl function returns the URL of the profile picture of the comment's user
   const profilePicUrl = (commentUser) =>
     commentUser.User?.Photo?.url
       ? `${process.env.REACT_APP_SERVER_URL}${commentUser.User?.Photo?.url}`
@@ -88,7 +93,7 @@ const CommentSection = observer(({ id, getRequest, addRequest }) => {
               {[1, 2, 3, 4, 5].map((value) => (
                 <span
                   key={value}
-                  className={`star ${rating >= value ? "selected" : ""}`}
+                  className={`star ${rating >= value ? "selected" : ""}`} // Highlight selected stars
                   onClick={() => setRating(value)}
                 >
                   ★
@@ -106,6 +111,7 @@ const CommentSection = observer(({ id, getRequest, addRequest }) => {
         </div>
       )}
 
+      {/* If no comments are available, display a message */}
       {comment.comments.length === 0 && (
         <p className="no-comments">No comments yet. Be the first to comment!</p>
       )}
@@ -113,6 +119,7 @@ const CommentSection = observer(({ id, getRequest, addRequest }) => {
       <ul className="comment-list">
         {comment.comments.map((commentItem) => (
           <li key={commentItem.id} className="comment-item">
+            {/* Comment header containing user profile picture, username, and rating */}
             <div className="comment-header">
               <img
                 src={profilePicUrl(commentItem)}

@@ -1,3 +1,10 @@
+/**
+ * Fetches latitude and longitude for a given address using the Google Maps Geocoding API.
+ *
+ * @param {string} address - The address for which to fetch the latitude and longitude.
+ * @returns {Promise<Object|null>} - A Promise that resolves to an object containing `lat` and `lng` if successful, or `null` if there's an error or no results.
+ */
+
 export const fetchLatLng = async (address) => {
   try {
     const response = await fetch(

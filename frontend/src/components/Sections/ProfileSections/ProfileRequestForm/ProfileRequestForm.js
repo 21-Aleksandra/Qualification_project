@@ -4,6 +4,7 @@ import CustomButton from "../../../Common/CustomButton/CustomButton";
 import { Context } from "../../../../index";
 import "./ProfileRequestForm.css";
 
+// A form for sending inportant reu=quests to all users with role admin
 const ProfileRequestForm = () => {
   const { user } = React.useContext(Context);
   const [request, setRequest] = useState("");

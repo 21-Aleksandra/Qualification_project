@@ -11,6 +11,7 @@ import CustomButton from "../../../Common/CustomButton/CustomButton";
 import UserRoles from "../../../../utils/roleConsts";
 import "./SubsidiaryFilter.css";
 
+// This component allows to filter on backend subsidiaries from context by cities, missions associated etc
 const FilterPanel = observer(({ hideFields = false }) => {
   const { subsidiary, address, mission, mainOrganization, user } =
     useContext(Context);
@@ -21,6 +22,7 @@ const FilterPanel = observer(({ hideFields = false }) => {
   const [isManager, setIsManager] = useState(false);
 
   useEffect(() => {
+    // Fetch and store user roles on component mount
     const roles = Array.isArray(user.roles) ? user.roles : [user.roles];
     const validRoles = roles.map(Number).filter((role) => !isNaN(role));
     setUserRoles(validRoles);
@@ -29,22 +31,25 @@ const FilterPanel = observer(({ hideFields = false }) => {
 
   const userId = user.id;
 
+  // useCallback for memoization of the fetchFilterData function and avoid uneccesary re-fetch
   const fetchAddressesAndOptions = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
 
+      // Fetch address data based on user ID and roles
+      // gets only manager managed subsidiaries addresses if user has role manager
       const addressResponse = await getSubsidiaryAddressList({
         userId,
         userRoles: userRoles.join(","),
       });
-      address.setAddresses(addressResponse || []);
+      address.setAddresses(addressResponse || []); // Fetch all addresses related to managers subsidiaries
 
       const orgResponse = await getMainOrganizationList({
         userId,
         userRoles: userRoles.join(","),
       });
-      mainOrganization.setOrganizations(orgResponse?.organizations || []);
+      mainOrganization.setOrganizations(orgResponse?.organizations || []); // Fetch all organization related to managers
 
       const missionResponse = await getMissionList();
       mission.setMissions(missionResponse?.missions || []);
@@ -59,6 +64,7 @@ const FilterPanel = observer(({ hideFields = false }) => {
   }, [userId, userRoles, address, mainOrganization, mission]);
 
   useEffect(() => {
+    // Create a reaction to re-fetch data when subsidiary.subsidiaries changes
     fetchAddressesAndOptions();
     const disposeSubsidiaryReaction = reaction(
       () => subsidiary.subsidiaries.slice(),
@@ -67,6 +73,7 @@ const FilterPanel = observer(({ hideFields = false }) => {
       }
     );
 
+    // Cleanup function to dispose of the reaction
     return () => disposeSubsidiaryReaction();
   }, [fetchAddressesAndOptions, subsidiary]);
 
@@ -119,6 +126,7 @@ const FilterPanel = observer(({ hideFields = false }) => {
     }
   };
 
+  // Calculate filtered cities based on selected countries (e.h. in order to not search for latvian city if Estonia is selected and so on )
   const handleCountryChange = (selectedCountries) => {
     subsidiary.setFilters({
       ...subsidiary.filters,

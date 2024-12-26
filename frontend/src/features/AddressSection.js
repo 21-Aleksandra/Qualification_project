@@ -5,7 +5,11 @@ import DropdownSelectOneSearch from "../components/Common/DropdownSelectOneSearc
 import AddNewAddressDropdownElement from "../components/SmallForms/AddNewAddressDropdownElement/AddNewAddressDropdownElement";
 import { getAllAddressList, addAddress } from "../api/AddressAPI";
 
+// Defining the AddressSection component, wrapped in MobX's observer for reactivity.
+// e.g. when we add one element the dropdown should re-render
+// used both in subsidiary and event forms
 const AddressSection = observer(({ formData, setFormData, address }) => {
+  // Handler to update the selected address in formData when a user selects an address from the dropdown
   const handleAddressChange = (selectedOption) => {
     setFormData((prevState) => ({
       ...prevState,

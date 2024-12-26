@@ -4,6 +4,7 @@ import { Context } from "../../../../index";
 import CustomButton from "../../../Common/CustomButton/CustomButton";
 import { getUsers } from "../../../../api/UserAPI";
 
+// User filter for filtering all the users on backend by their ids or usernames
 const UserAdminFilter = observer(() => {
   const { adminUsers } = useContext(Context);
   const [filters, setFilters] = useState({
@@ -13,7 +14,7 @@ const UserAdminFilter = observer(() => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+    setFilters((prev) => ({ ...prev, [name]: value })); // Update specific filter property
   };
 
   const applyFilters = async () => {

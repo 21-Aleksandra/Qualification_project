@@ -3,6 +3,8 @@ import CustomButton from "../../../Common/CustomButton/CustomButton";
 import { listUserEvents } from "../../../../api/EventUserAPI";
 import "./MyEventSimpleFilter.css";
 
+// Simple my event filter that allows user to filter his/her events by dates and names
+// The filtering happens on backend
 const MyEventSimpleFilter = ({ setEvents, userId }) => {
   const [filters, setFilters] = useState({
     name: null,
@@ -18,6 +20,7 @@ const MyEventSimpleFilter = ({ setEvents, userId }) => {
       setLoading(true);
       setError(null);
 
+      // Function to apply the set filters and fetch matching events
       const filteredEvents = await listUserEvents(userId, {
         name: filters.name,
         dateFrom: filters.dateFrom,
@@ -26,7 +29,9 @@ const MyEventSimpleFilter = ({ setEvents, userId }) => {
 
       setEvents(filteredEvents || []);
     } catch (err) {
-      setError("Failed to fetch filtered events. Please try again.");
+      setError(
+        err.message || "Failed to fetch filtered events. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -40,7 +45,7 @@ const MyEventSimpleFilter = ({ setEvents, userId }) => {
       const allEvents = await listUserEvents(userId);
       setEvents(allEvents || []);
     } catch (err) {
-      setError("Failed to reset filters. Please try again.");
+      setError(err.message || "Failed to reset filters. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -16,12 +16,14 @@ import {
 import NewsFilter from "../../components/Sections/NewsSections/NewsFilter/NewsFilter";
 import "./NewsPage.css";
 
+// Displays news list with filter panel with backend-based filtering (can select event or subsidiary news)
+// For manager displays only his/her authored news along with add/delete/edit panel
 const NewsPage = observer(() => {
   const { news, user } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
-  const [filter, setFilter] = useState("event");
+  const [filter, setFilter] = useState("event"); // fetch event news as default news
 
   const userId = user._id;
 
@@ -32,10 +34,11 @@ const NewsPage = observer(() => {
         setError(null);
 
         let params = {};
+        // If the user has a manager role, include additional query parameters
         if (user.roles.includes(UserRoles.MANAGER)) {
           params = {
             userId,
-            userRoles: user.roles.join(","),
+            userRoles: user.roles.join(","), // Send roles as a comma-separated string as needed for api
           };
         }
 
@@ -49,21 +52,22 @@ const NewsPage = observer(() => {
         news.setNews(response || []);
       } catch (err) {
         console.error("Failed to fetch news:", err);
-        setError("Failed to load news. Please try again later.");
+        setError(
+          "Failed to load news. Please try again later.",
+          err?.message || ""
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchNews();
-  }, [filter, userId, user.roles, news]);
+  }, [filter, userId, user.roles, news]); // Dependencies: refetch when these change
 
   const handleCheckboxChange = (id, isChecked) => {
-    console.log("Before:", selectedIds);
     setSelectedIds((prev) =>
       isChecked ? [...prev, id] : prev.filter((selectedId) => selectedId !== id)
     );
-    console.log("After:", selectedIds);
   };
 
   const handleUnselectAll = () => {
@@ -72,10 +76,10 @@ const NewsPage = observer(() => {
 
   const handleDelete = async (ids) => {
     try {
-      console.log("Deleting IDs:", ids);
       await deleteNews(ids);
       const params = { userId, userRoles: user.roles.join(",") };
       let response;
+      // re-fetch data to get the mewest after deleting
       if (filter === "event") {
         response = await getEventNews(params);
       } else {
@@ -85,7 +89,7 @@ const NewsPage = observer(() => {
       setSelectedIds([]);
     } catch (err) {
       console.error("Failed to delete news:", err);
-      alert("Error deleting news.");
+      alert("Error deleting news.", err?.message);
     }
   };
 
@@ -110,6 +114,7 @@ const NewsPage = observer(() => {
     selectedIds.includes(newsItem.id)
   );
 
+  // Determine routes for adding and editing news based on the filter
   const addRoute =
     filter === "event" ? EVENT_NEWS_ADD_ROUTE : SUBSIDIARY_NEWS_ADD_ROUTE;
   const editRoute =
@@ -133,6 +138,7 @@ const NewsPage = observer(() => {
         <div className="edit-filter-box-news">
           {user.roles.includes(UserRoles.MANAGER) && (
             <div className="edit-panel-container">
+              {/* Show edit panel if the user has a manager role */}
               <EditComponent
                 addPath={addRoute}
                 editPath={editRoute}

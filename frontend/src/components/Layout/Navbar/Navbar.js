@@ -24,6 +24,9 @@ import {
   LANDING_ROUTE,
 } from "../../../utils/routerConsts";
 
+// Navbar component that contains no links for unreqistered users and specific links for authorized users
+// Those links are stored in /utils/profileLinks and utils/navigationLinks
+// Is observable for dynamic user info changes
 const NavigationBar = observer(() => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
@@ -45,6 +48,7 @@ const NavigationBar = observer(() => {
 
   const toggleOffcanvas = () => setShowOffcanvas(!showOffcanvas);
 
+  // Checking if the user has permission to access certain links based on their roles
   const hasPermission = (allowedRoles) => {
     return allowedRoles.some((role) => user.roles.includes(role));
   };
@@ -53,15 +57,16 @@ const NavigationBar = observer(() => {
     <Navbar expand="lg" className="navbar-custom shadow-sm">
       <Container fluid>
         <Navbar.Brand
-          href={user.isAuth ? DASHBOARD_ROUTE : LANDING_ROUTE}
+          href={user.isAuth ? DASHBOARD_ROUTE : LANDING_ROUTE} // Redirect to Dashboard if authenticated, otherwise Landing page
           className="navbar-brand-custom"
         >
           <img src={logoImage} alt="Goodspire Logo" className="navbar-logo" />
           <span className="navbar-brand-name">Goodspire</span>
         </Navbar.Brand>
-
+        {/* Toggle button for collapsing the navbar (hidden on large screens) */}
         <Navbar.Toggle className="d-none" aria-controls="basic-navbar-nav" />
 
+        {/* Navbar Links for Authenticated Users */}
         <Navbar.Collapse
           id="basic-navbar-nav"
           className="justify-content-center"
@@ -83,6 +88,7 @@ const NavigationBar = observer(() => {
           )}
         </Navbar.Collapse>
 
+        {/* Navbar Actions for Authenticated Users (Profile and Logout) */}
         {user.isAuth ? (
           <div className="d-none d-lg-block">
             <NavDropdown
@@ -147,6 +153,7 @@ const NavigationBar = observer(() => {
           onHide={toggleOffcanvas}
           placement="end"
         >
+          {/* Offcanvas Menu (Mobile View) */}
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>Menu</Offcanvas.Title>
           </Offcanvas.Header>

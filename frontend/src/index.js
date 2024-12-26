@@ -12,7 +12,7 @@ import NewsStore from "./store/NewsStore";
 import CommentStore from "./store/CommentStore";
 import UserStore from "./store/UserStore";
 
-export const Context = createContext(null);
+export const Context = createContext(null); // This context will hold our store instances
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

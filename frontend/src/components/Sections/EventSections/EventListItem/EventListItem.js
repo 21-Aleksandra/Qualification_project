@@ -8,6 +8,8 @@ import UserRoles from "../../../../utils/roleConsts";
 import { formatDateTime } from "../../../../utils/dateUtils";
 import "./EventListItem.css";
 
+// One event element of events list. If user is a manager than contains a checkbox for selection
+// opens a detailed event page on click
 const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
       }`
     : defaultImage;
 
+  // Utility function to generate route paths with parameters )e.g. for replacing id in some links with actual id)
   const generatePath = (route, params) => {
     let path = route;
     Object.keys(params).forEach((key) => {
@@ -87,6 +90,7 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
         <div className="event-card-section" onClick={handleCardClick}>
           <Card.Text className="event-card-text text-muted">
             <strong> Date: </strong>
+            {/* Normalizing datetime format to human readable */}
             {formatDateTimeRange(event.dateFrom, event.dateTo)}
           </Card.Text>
         </div>
@@ -94,6 +98,7 @@ const EventListItem = ({ event, onCheckboxChange, isSelected }) => {
         <div className="event-card-section" onClick={handleCardClick}>
           <Card.Text className="event-card-text text-muted">
             <strong> Application Deadline:</strong>{" "}
+            {/* Normalizing datetime format to human readable */}
             {formatDateTime(event.applicationDeadline)}
           </Card.Text>
         </div>

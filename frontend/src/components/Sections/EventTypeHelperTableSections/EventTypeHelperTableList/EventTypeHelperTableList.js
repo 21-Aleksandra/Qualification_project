@@ -3,6 +3,8 @@ import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { HELPER_TABLE_EVENTTYPE_EDIT_ROUTE } from "../../../../utils/routerConsts";
 
+// The EventTypeHelperTableList component displays a table with event type data
+// Each row contains edit button to lead to event type edit page
 const EventTypeHelperTableList = ({ eventTypes }) => {
   const navigate = useNavigate();
 

@@ -15,12 +15,15 @@ import useFetchSubsidiaryAddEditData from "../../hooks/useFetchSubsidiaryAddEdit
 import { SUBSIDIARIES_ROUTE } from "../../utils/routerConsts";
 import "./AddEditSubsidiaryPage.css";
 
+// A dynamic form for editing or adding event that determines its state by id presence
+// For managers only
 const AddEditSubsidiaryPage = observer(() => {
   const { mission, mainOrganization, address, user } = useContext(Context);
   const { id } = useParams();
-  const managerId = user._id;
+  const managerId = user._id; // for assigning the author of the event
   const navigate = useNavigate();
 
+  // Initial state for form data (used for addition)
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -40,6 +43,7 @@ const AddEditSubsidiaryPage = observer(() => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Fetch data if we are editing an existing subsidiary
   const {
     loading: fetchLoading,
     error: fetchError,
@@ -55,6 +59,8 @@ const AddEditSubsidiaryPage = observer(() => {
     }
     if (subsidiaryData) {
       setFormData({
+        // If subsidiary data exists, populate form fields for editing so user sees what he is editing
+        // Some field are optional so they are set to empty strings if absent
         name: subsidiaryData.name || "",
         description: subsidiaryData.description || "",
         mainOrganizationId: subsidiaryData.mainOrganizationId || "",
@@ -70,7 +76,7 @@ const AddEditSubsidiaryPage = observer(() => {
       });
       setIsEditing(true);
     }
-  }, [fetchLoading, fetchError, setError, setLoading, subsidiaryData]);
+  }, [fetchLoading, fetchError, setError, setLoading, subsidiaryData]); // Re-run the effect if fetch state or subsidiary data changes
 
   const handleFileChange = (e, fieldName) => {
     const files = e.target.files;
@@ -79,13 +85,15 @@ const AddEditSubsidiaryPage = observer(() => {
       preview: URL.createObjectURL(file),
     }));
 
+    //We update the otherPhotos array by adding the newly selected files (newFiles)
+    //We also update the otherPhotosPreviews array, which holds the preview URLs, so that the preview images can be displayed in the UI.
     if (fieldName === "otherPhotos") {
       setFormData((prevState) => ({
         ...prevState,
         otherPhotos: [...prevState.otherPhotos, ...newFiles],
         otherPhotosPreviews: [
           ...prevState.otherPhotosPreviews,
-          ...newFiles.map((f) => f.preview),
+          ...newFiles.map((f) => f.preview), // Append preview URLs for displaying images
         ],
       }));
     } else if (fieldName === "bannerPhoto") {
@@ -96,6 +104,9 @@ const AddEditSubsidiaryPage = observer(() => {
     }
   };
 
+  // Function to visually remove a selected photo from the form
+  //After modifying these arrays, the updated state is returned,
+  //  causing the component to re-render with the updated list of photos and previews.
   const handleRemovePhoto = (index) => {
     setFormData((prevState) => {
       const updatedPhotos = [...prevState.otherPhotos];
@@ -129,7 +140,7 @@ const AddEditSubsidiaryPage = observer(() => {
     }
 
     if (!id) {
-      submitData.append("managerId", managerId);
+      submitData.append("managerId", managerId); // appending author for newly created events
     }
 
     try {
@@ -140,9 +151,7 @@ const AddEditSubsidiaryPage = observer(() => {
       }
       navigate(SUBSIDIARIES_ROUTE);
     } catch (err) {
-      setError(
-        "Failed to submit the form: " + err.message + ". Please try again."
-      );
+      setError(err?.message || "Failed to submit the form: Please try again.");
     } finally {
       setLoading(false);
     }

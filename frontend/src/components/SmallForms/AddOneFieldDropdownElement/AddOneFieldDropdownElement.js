@@ -4,6 +4,9 @@ import { Button, Modal, Form, Alert } from "react-bootstrap";
 import { runInAction } from "mobx";
 import CustomButton from "../../Common/CustomButton/CustomButton";
 
+// This component is used to open a modal for adding a new item to a dropdown, using a single field input.
+// It communicates with APIs to add the new value and refresh the data.
+// Is observable for dynamic store changes (otherwise elements won't appear in dropdown immidiately after addition)
 const AddOneFieldDropdownElement = observer(
   ({ label, fieldType, updateStore, apiAddRequest, apiReloadRequest }) => {
     const [showModal, setShowModal] = useState(false);
@@ -11,6 +14,9 @@ const AddOneFieldDropdownElement = observer(
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    // Function to process the response data and return the expected data structure
+    // the response can potentially have 1 to keys in our system so we need different processing for generic component
+    // for example it can be message + data, or just array of objects
     function getResponseDataElement(response) {
       if (response && typeof response === "object") {
         const keys = Object.keys(response);
@@ -36,8 +42,10 @@ const AddOneFieldDropdownElement = observer(
       try {
         await apiAddRequest(inputValue);
 
+        // After adding, reload the list of items by making another API request
         const reloadResponse = await apiReloadRequest();
 
+        // Process the response data to extract the list of items
         const data = getResponseDataElement(reloadResponse);
 
         if (Array.isArray(data)) {
@@ -52,6 +60,7 @@ const AddOneFieldDropdownElement = observer(
           throw new Error("Second property is not an array.");
         }
 
+        // Close the modal and reset the input value after successful addition
         setShowModal(false);
         setInputValue("");
       } catch (err) {
@@ -82,7 +91,7 @@ const AddOneFieldDropdownElement = observer(
                 <Form.Label>Input your new value here</Form.Label>
                 <Form.Control
                   type={fieldType}
-                  value={inputValue}
+                  value={inputValue} // Bind the value to the input state
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder={`Text...`}
                 />

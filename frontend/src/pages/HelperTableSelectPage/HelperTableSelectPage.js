@@ -8,6 +8,8 @@ import {
 } from "../../utils/routerConsts";
 import "./HelperTableSelectPage.css";
 
+//A page for navigationg to lists with object edits - address, mission, main organization and event type
+// Needed for that naviagation to data editing if manager suddenly makes mistake
 const HelperTableSelectPage = () => {
   const navigate = useNavigate();
 

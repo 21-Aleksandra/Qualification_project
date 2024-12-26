@@ -8,11 +8,12 @@ import { Context } from "../index";
 
 const MyAppRouter = observer(() => {
   const { user } = useContext(Context);
-  console.log(user);
+  //console.log(user);
 
   const isAuth = user.isAuth;
   const userRoles = user.roles;
 
+  // Helper function to check if the user has one of the required roles to access a route
   const hasPermission = (routeRoles) => {
     return routeRoles.some((role) => userRoles.includes(role));
   };
@@ -21,6 +22,8 @@ const MyAppRouter = observer(() => {
 
   return (
     <Routes>
+      {/* Default route: redirects to either dashboard or landing page based on authentication and block status */}
+      {/* If the user is authenticated and not blocked, they go to the dashboard. Otherwise, they are redirected to the landing page */}
       <Route
         path="/"
         element={
@@ -30,10 +33,12 @@ const MyAppRouter = observer(() => {
         }
       />
 
+      {/* Mapping through public routes (accessible by all users including unauthenticated ones) */}
       {publicRoutes.map(({ path, Component }, index) => (
         <Route key={index} path={path} element={<Component />} />
       ))}
 
+      {/* Rendering registered routes (only accessible to authenticated users who are not blocked) */}
       {isAuth &&
         !isBlocked &&
         registeredRoutes.map(({ path, Component, roles }, index) => (
@@ -41,7 +46,7 @@ const MyAppRouter = observer(() => {
             key={index}
             path={path}
             element={
-              hasPermission(roles) ? (
+              hasPermission(roles) ? ( // Check if the user has permission to access the route based on their roles
                 <Component />
               ) : (
                 <Navigate to={DASHBOARD_ROUTE} />
@@ -50,9 +55,11 @@ const MyAppRouter = observer(() => {
           />
         ))}
 
+      {/* If the user is blocked, they are redirected to the landing page for any route */}
       {isBlocked && (
         <Route path="*" element={<Navigate to={LANDING_ROUTE} />} />
       )}
+      {/* Catch-all(fallback) route: redirects the user to either the dashboard (if authenticated) or the landing page (if unauthenticated) */}
       <Route
         path="*"
         element={<Navigate to={isAuth ? DASHBOARD_ROUTE : LANDING_ROUTE} />}

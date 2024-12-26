@@ -1,6 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { Table } from "react-bootstrap";
 
+// The CommentAdminList component displays a table with comment data
+// Each row contains checkbox for selectiong ids for further requests
 const CommentAdminList = observer(
   ({ comments, selectedComments, onCheckboxChange }) => {
     const handleCheckboxChange = (commentId) => {

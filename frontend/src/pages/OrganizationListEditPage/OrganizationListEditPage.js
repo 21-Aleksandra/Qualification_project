@@ -9,18 +9,20 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import { HELPER_TABLE_ORGANIZATION_ROUTE } from "../../utils/routerConsts";
 import "./OrganizationListEditPage.css";
 
+// displays the edit form for one main organization
 const OrganizationListEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
+    name: "", // here we can change only name
   });
 
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Effect to fetch organization details when `id` is present
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -41,7 +43,7 @@ const OrganizationListEditPage = () => {
         })
         .finally(() => setLoading(false));
     }
-  }, [id]);
+  }, [id]); // Dependency on `id` ensures this runs when the `id` changes
 
   const handleChange = (e) => {
     const { name, value } = e.target;

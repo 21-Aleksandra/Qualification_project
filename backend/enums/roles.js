@@ -4,6 +4,7 @@
 
   Please add new roles here and make use
   it matches the similar frontend enum
+  Ensure consistency with database
 */
 
 const Roles = Object.freeze({

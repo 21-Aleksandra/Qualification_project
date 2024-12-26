@@ -9,40 +9,45 @@ import UserAdminFilter from "../../components/Sections/UserSections/UserFilter/U
 import { USERS_ADD_ROUTE, USERS_EDIT_ROUTE } from "../../utils/routerConsts";
 import "./UserPage.css";
 
+// Page with user list for adding/ eleting/editing user info. For admins only. Has a filter with user id and username
 const UserAdminPage = observer(() => {
-  const { adminUsers } = useContext(Context);
+  // making page observable for mobx changes
+  const { adminUsers } = useContext(Context); // using global user context
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
 
+  // Fetch all users when the component is mounted
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
         setLoading(true);
-        setError(null);
+        setError(null); // Reset any existing errors
         const response = await getUsers();
         adminUsers.setUsers(response || []);
       } catch (err) {
         console.error("Failed to fetch users:", err);
-        setError("Failed to load users. Please try again later.");
+        setError("Failed to load users. Please try again later.", err?.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchAllUsers();
-  }, [adminUsers]);
+  }, [adminUsers]); // Only re-fetch users if the `adminUsers` store changes
 
+  // Toggle the selection state for the user with the given id
   const handleCheckboxChange = (id) => {
-    setSelectedIds((prev) =>
-      prev.includes(id)
-        ? prev.filter((selectedId) => selectedId !== id)
-        : [...prev, id]
+    setSelectedIds(
+      (prev) =>
+        prev.includes(id)
+          ? prev.filter((selectedId) => selectedId !== id) // Remove id if already selected
+          : [...prev, id] // Add id if not already selected
     );
   };
 
   const handleUnselectAll = () => {
-    setSelectedIds([]);
+    setSelectedIds([]); // Reset selectedIds to an empty array, effectively unselecting all
   };
 
   const handleDelete = async (ids) => {
@@ -52,7 +57,7 @@ const UserAdminPage = observer(() => {
       adminUsers.setUsers(response || []);
       setSelectedIds([]);
     } catch (err) {
-      console.error("Failed to delete users:", err);
+      console.error(err?.message || "Failed to delete users:");
       alert("Error deleting users.");
     }
   };
@@ -74,6 +79,7 @@ const UserAdminPage = observer(() => {
     );
   }
 
+  // Filter users based on selectedIds (used for operations like deleting)
   const selectedItems = adminUsers.users.filter((user) =>
     selectedIds.includes(user.id)
   );

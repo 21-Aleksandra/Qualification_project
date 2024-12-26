@@ -61,6 +61,11 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: "subsidiaryId",
     });
 
+    /* 
+    The following associations require aliases to prevent
+    potential querying errors in Sequelize.
+   */
+
     User.belongsToMany(models.Event, {
       through: models.Event_User,
       as: "ParticipatedEvents",

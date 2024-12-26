@@ -1,3 +1,5 @@
+//This page is not accessible by default and used for testing new access features
+
 import React from "react";
 
 const TestPage = () => (

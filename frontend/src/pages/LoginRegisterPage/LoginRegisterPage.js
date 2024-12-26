@@ -13,6 +13,7 @@ import {
 } from "../../utils/routerConsts";
 import { Spinner } from "react-bootstrap";
 
+// A form that serves both the login and register form roles based on link provided
 const LoginRegisterPage = observer(() => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ const LoginRegisterPage = observer(() => {
     setIsLoading(true);
 
     if (isRegisterPage) {
+      // Registration logic: Check if passwords match before proceeding to be sure about users input
       if (formState.password !== formState.confirmPassword) {
         setError("Passwords do not match.");
         setIsLoading(false);
@@ -60,9 +62,11 @@ const LoginRegisterPage = observer(() => {
         setError(err?.message || "Registration failed.");
       }
     } else {
+      // Login logic: Attempt to log the user in
       try {
         const response = await loginUser(formState.email, formState.password);
         if (response.roles.length > 0) {
+          // If user has roles, they are authenticated and logged in
           user.setAuth(true);
           user.setUser(response.username);
           user.setRoles(response.roles);
@@ -84,10 +88,12 @@ const LoginRegisterPage = observer(() => {
     }
   };
 
+  // Clear any error messages when the page (login or register) changes
   useEffect(() => {
     clearMessages();
   }, [isRegisterPage]);
 
+  // Set up fields for the form based on whether it's for login or registration
   const fields = isRegisterPage
     ? [
         {

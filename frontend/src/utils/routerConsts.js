@@ -1,3 +1,8 @@
+// This file stores all the route constants for the application.
+// These constants ensure consistency and avoid hardcoding URLs throughout the application.
+// Please add new routes here as the application grows, ensuring all route paths are defined
+// in one place for easier maintenance and better readability.
+
 export const LOGIN_ROUTE = "/login";
 export const REGISTER_ROUTE = "/register";
 export const LANDING_ROUTE = "/home";

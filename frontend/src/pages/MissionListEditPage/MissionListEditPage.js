@@ -6,6 +6,8 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import { HELPER_TABLE_MISSION_ROUTE } from "../../utils/routerConsts";
 import "./MissionListEditPage.css";
 
+// A form for editing the existing mission name
+// For admins only
 const MissionListEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -18,12 +20,14 @@ const MissionListEditPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Fetch mission data if an ID is present (i.e., when editing an existing mission)
   useEffect(() => {
     if (id) {
       setLoading(true);
       setIsEditing(true);
       getOneMission(id)
         .then((data) => {
+          // If the mission is found, populate the form fields with the existing mission data
           setFormData({
             name: data.name || "",
             description: data.description || "",
@@ -38,7 +42,7 @@ const MissionListEditPage = () => {
         })
         .finally(() => setLoading(false));
     }
-  }, [id]);
+  }, [id]); // This useEffect runs whenever the mission ID changes (for editing).
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,6 +75,7 @@ const MissionListEditPage = () => {
       <h2>{isEditing ? `Edit Mission` : `Add Mission`}</h2>
       {error && <Alert variant="danger">{error}</Alert>}
 
+      {/* Show loading spinner while data is being fetched or form is being submitted */}
       {loading ? (
         <div className="text-center my-5">
           <Spinner animation="border" />

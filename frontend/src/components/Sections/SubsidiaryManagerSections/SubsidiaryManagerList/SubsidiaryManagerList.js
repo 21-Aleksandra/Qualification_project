@@ -3,6 +3,9 @@ import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { MANAGERS_EDIT_ROUTE } from "../../../../utils/routerConsts";
 
+// The SubsidiaryManagerList component displays a table with subsidiaries and managers
+// Each row contains edit button to lead to manager edit page
+// For data getting and filtering, analready existent subsiary section solution used
 const SubsidiaryManagerList = ({ subsidiaries }) => {
   const navigate = useNavigate();
 
@@ -39,7 +42,7 @@ const SubsidiaryManagerList = ({ subsidiaries }) => {
               <td>{formatAddress(subsidiary.Address)}</td>
               <td>
                 {subsidiary.Users && subsidiary.Users.length > 0
-                  ? subsidiary.Users.map((user) => user.username).join(", ")
+                  ? subsidiary.Users.map((user) => user.username).join(", ") // for displaying multiple managers
                   : "No Managers"}
               </td>
               <td>

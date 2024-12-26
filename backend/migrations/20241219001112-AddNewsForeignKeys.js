@@ -1,3 +1,5 @@
+//Adding foreign key after news table
+//and foreign key field inicialization to avoid validation errors
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {

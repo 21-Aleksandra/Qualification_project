@@ -19,11 +19,15 @@ import {
 } from "../../api/CommentAPI";
 import "./SubsidiaryItemPage.css";
 
+// Page for displaying detailed information about one subsidiary along with an address displaing map
 const SubsidiaryItemPage = () => {
   const { id } = useParams();
-  const [subsidiary, setSubsidiary] = useState(null);
+  const [subsidiary, setSubsidiary] = useState(null); // using local state since do not expect dynamic change
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // State for latitude and longitude since
+  //  we may retrieve them from GoogleMaps API if unknown
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
 
   useEffect(() => {
@@ -32,6 +36,8 @@ const SubsidiaryItemPage = () => {
         const data = await getSubsidiaryById(id);
         setSubsidiary(data);
 
+        // If latitude and longitude are not available in the subsidiary data,
+        //  fetch them using the address from Google geocodel API
         if (!data?.Address?.lat || !data?.Address?.lng) {
           const { country, city, street } = data.Address || {};
           if (country && city && street) {
@@ -54,7 +60,7 @@ const SubsidiaryItemPage = () => {
       }
     };
     fetchSubsidiary();
-  }, [id]);
+  }, [id]); // Dependency array to trigger effect when `id` changes
 
   if (isLoading) {
     return (
@@ -81,6 +87,7 @@ const SubsidiaryItemPage = () => {
     );
   }
 
+  // Destructure subsidiary data for easy access
   const {
     name,
     description,
@@ -111,7 +118,7 @@ const SubsidiaryItemPage = () => {
               <Carousel.Item key={index}>
                 <img
                   className="d-block w-100"
-                  src={`${serverUrl}${photo.url}`}
+                  src={`${serverUrl}${photo.url}`} // Use the server URL to load the image
                   alt={`Slide ${index + 1}`}
                 />
               </Carousel.Item>
@@ -119,7 +126,7 @@ const SubsidiaryItemPage = () => {
           ) : (
             <img
               className="d-block w-100"
-              src={defaultImage}
+              src={defaultImage} // Use default image if no images available
               alt="Default subsidiary"
             />
           )}
@@ -208,7 +215,7 @@ const SubsidiaryItemPage = () => {
           )}
         </Card.Body>
       </Card>
-
+      {/* Google Map section - only show if coordinates are available */}
       {coordinates.lat && coordinates.lng && (
         <Card id="subsidiary-map" className="mb-4">
           <Card.Body>
@@ -219,6 +226,7 @@ const SubsidiaryItemPage = () => {
       )}
       <Card id="subsidiary-comments" className="mb-4">
         <Card.Body>
+          {/* Comment section */}
           <CommentSection
             id={id}
             getRequest={getSubsidiaryComments}

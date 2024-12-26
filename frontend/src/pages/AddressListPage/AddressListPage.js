@@ -7,6 +7,8 @@ import AddressFilter from "../../components/Sections/AddressHelperTableSections/
 import AddressHelperTableList from "../../components/Sections/AddressHelperTableSections/AddressHelperTableList/AddressHelperTableList";
 import "./AddressListPage.css";
 
+// A page with all addresses, frontend-based filter for addresses by city, country
+// Has edit pages to edit the address infomation. For admin only.
 const AddressListPage = observer(() => {
   const { address } = useContext(Context);
   const [loading, setLoading] = useState(true);
@@ -14,29 +16,33 @@ const AddressListPage = observer(() => {
   const [filters, setFilters] = useState({
     selectedCountries: [],
     selectedCities: [],
-    street: "",
+    street: "", // Filter for street name, free input since might be a lot of variability for a dropdown
   });
 
+  // Fetch addresses when the component mounts or the address state changes
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
         setLoading(true);
-        setError(null);
+        setError(null); // Reset error state on each fetch
 
         const response = await getAllAddressList();
 
         address.setAddresses(response || []);
       } catch (error) {
         console.error("Error fetching addresses:", error);
-        setError("Failed to load addresses. Please try again later.");
+        setError(
+          error?.message || "Failed to load addresses. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchAddresses();
-  }, [address]);
+  }, [address]); // This effect depends on the `address` context
 
+  // Filter addresses by country, city and street and ensuring we get all matches for combinations
   const filteredAddresses = address.addresses.filter((addr) => {
     const matchesCountry =
       !filters.selectedCountries.length ||

@@ -8,10 +8,12 @@ import { ckeckStatus } from "./api/AuthAPI";
 import { Spinner } from "react-bootstrap";
 import { BrowserRouter } from "react-router-dom";
 
+// App component wrapped in observer to react to state changes from MobX stores
 const App = observer(() => {
   const { user } = useContext(Context);
   const [isLoading, setIsLoading] = useState(true);
 
+  // useEffect hook to check user authentication status for each request in the app
   useEffect(() => {
     ckeckStatus()
       .then((data) => {
@@ -22,7 +24,7 @@ const App = observer(() => {
         user.setUrl(data.url);
       })
       .finally(() => setIsLoading(false));
-  }, [user]);
+  }, [user]); // Effect runs only when `user` changes
 
   if (isLoading) {
     return (

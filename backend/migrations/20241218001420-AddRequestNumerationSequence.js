@@ -1,5 +1,6 @@
 "use strict";
 
+//This table plays similar role to numuration sequences in ms sql
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {

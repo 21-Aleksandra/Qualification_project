@@ -4,22 +4,26 @@ import { Context } from "../../../../index";
 import MultiSelectInput from "../../../Common/MultiSelectInput/MultiSelectInput";
 import CustomButton from "../../../Common/CustomButton/CustomButton";
 
+// This component is used to filter the addresses based on country, city, and street on frontend side
+// Is observable for dynamic store changes (in case of new elemets addition somewhere else and to communicate effectivly with the store)
 const AddressFilter = observer(({ onFilterChange }) => {
   const { address } = useContext(Context);
 
+  // State to hold the selected filters
+  // The selected
   const [filters, setFilters] = useState({
-    selectedCountries: [],
-    selectedCities: [],
-    searchCountry: "",
-    searchCity: "",
-    street: "",
+    selectedCountries: [], // Selected countries for filtering
+    selectedCities: [], // Selected cities for filtering
+    searchCountry: "", // Search value for countries
+    searchCity: "", // Search value for cities
+    street: "", // Street filter (just a scring since might be too much options for dropdown)
   });
 
   const handleCountryChange = (selectedCountries) => {
     setFilters((prev) => ({
       ...prev,
       selectedCountries,
-      selectedCities: [],
+      selectedCities: [], // Reset selected cities when countries change
     }));
   };
 

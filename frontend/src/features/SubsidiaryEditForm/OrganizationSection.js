@@ -8,8 +8,11 @@ import {
   addMainOrganization,
 } from "../../api/MainOrganizationAPI";
 
+// OrganizationSection component, wrapped in MobX's observer to ensure it reacts to store updates
+// e.g. when we add one element the dropdown should re-render
 const OrganizationSection = observer(
   ({ formData, setFormData, mainOrganization }) => {
+    // Handler for updating the mainOrganizationId field in the formData when a new organization is selected
     const handleOrganizationChange = (selectedOption) => {
       setFormData((prevState) => ({
         ...prevState,
@@ -30,6 +33,7 @@ const OrganizationSection = observer(
             valueKey="id"
           />
         </Form.Group>
+        {/* Component for adding a new organization to the list */}
         <AddOneFieldDropdownElement
           label="Add new main organization"
           fieldType="text"

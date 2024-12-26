@@ -4,9 +4,12 @@ import MultiSelectInput from "../../components/Common/MultiSelectInput/MultiSele
 import AddOneFieldDropdownElement from "../../components/SmallForms/AddOneFieldDropdownElement/AddOneFieldDropdownElement";
 import { getMissionList, addMission } from "../../api/MissionAPI";
 
+// MissionSection Wrapped with MobX observer to react to state changes in missionStore
+// e.g. when we add one element the dropdown should re-render
 const MissionSection = observer(({ formData, setFormData, missionStore }) => {
   const [searchValue, setSearchValue] = useState("");
 
+  // Handler function that updates the `missions` field in formData when missions are selected
   const handleMissionChange = (selectedMissions) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -16,6 +19,7 @@ const MissionSection = observer(({ formData, setFormData, missionStore }) => {
 
   return (
     <>
+      {/* MultiSelectInput component allows the user to select multiple missions */}
       <MultiSelectInput
         label="Missions"
         searchValue={searchValue}
@@ -24,6 +28,7 @@ const MissionSection = observer(({ formData, setFormData, missionStore }) => {
         selectedValues={formData.missions}
         setSelectedValues={handleMissionChange}
       />
+      {/* AddOneFieldDropdownElement allows users to add a new mission */}
       <AddOneFieldDropdownElement
         label="Add new mission"
         fieldType="text"

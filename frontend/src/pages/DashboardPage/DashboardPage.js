@@ -14,10 +14,12 @@ import {
 import NewsBlock from "../../components/Sections/NewsBlock/NewsBlock";
 import CustomButton from "../../components/Common/CustomButton/CustomButton";
 
+// A starting(dashboard) page for registered users. The content and links of banner depend on user highest role
 const DashboardPage = () => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
 
+  // Extract user roles and determine the highest role
   const userRoles = Array.isArray(user.roles)
     ? user.roles.map(Number)
     : [Number(user.role)];
@@ -26,6 +28,7 @@ const DashboardPage = () => {
 
   let text, buttonText, buttonLink;
 
+  // Determine the content based on highest user role (if multiple)
   switch (highestRole) {
     case UserRoles.REGULAR:
       text = `Welcome ${username}, browse all our events!`;
@@ -54,6 +57,7 @@ const DashboardPage = () => {
     navigate(NEWS_ROUTE);
   };
 
+  // useEffect hook to fetch the top five news items when the component is mounted
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -70,7 +74,7 @@ const DashboardPage = () => {
       }
     };
     fetchNews();
-  }, []);
+  }, []); // Empty dependency array means this runs only once when the component mounts
 
   return (
     <>
@@ -80,6 +84,7 @@ const DashboardPage = () => {
         buttonText={buttonText}
         buttonLink={buttonLink}
       />
+      {/* Conditionally render the NewsBlock and "More News" button if the user is not an admin */}
       {!userRoles.includes(UserRoles.ADMIN) && (
         <>
           <NewsBlock newsItems={newsItems} />

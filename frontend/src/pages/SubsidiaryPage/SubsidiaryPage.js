@@ -17,13 +17,18 @@ import {
 } from "../../utils/routerConsts";
 import "./SubsidiaryPage.css";
 
+// Page for listing all the subsidiaries with filter that uses backend-based filtering.
+// Allows manager to add/delete/edit its subsidiaries as well
+// For regular users gets all subsidiaries
+
 const SubsidiaryPage = observer(() => {
+  // making page observable for mobx changes
   const { subsidiary, user } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
 
-  const userId = user._id;
+  const userId = user._id; //  for role-based API calls
 
   useEffect(() => {
     const fetchSubsidiaries = async () => {
@@ -32,13 +37,16 @@ const SubsidiaryPage = observer(() => {
         setError(null);
 
         let params = {};
+
+        // If user has manager role, include their user ID and roles in the API call
         if (user.roles.includes(UserRoles.MANAGER)) {
           params = {
             userId,
-            userRoles: user.roles.join(","),
+            userRoles: user.roles.join(","), // the api takes roles as comma-separated string
           };
         }
         let response;
+        // Fetch subsidiaries based on the current filter params if filtering already happened or default ones
         if (subsidiary.params != null) {
           response = await getSubsidiaryFilteredList(subsidiary.params);
         } else {
@@ -48,18 +56,24 @@ const SubsidiaryPage = observer(() => {
         subsidiary.setSubsidiaries(response || []);
       } catch (err) {
         console.error("Failed to fetch subsidiaries:", err);
-        setError("Failed to load subsidiaries. Please try again later.");
+        setError(
+          err?.message || "Failed to load subsidiaries. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchSubsidiaries();
-  }, [subsidiary._currentPage, subsidiary, userId, user.roles]);
+  }, [subsidiary._currentPage, subsidiary, userId, user.roles]); // Dependencies to trigger re-fetch on their change
 
+  // Handle checkbox changes for selecting/unselecting subsidiaries
   const handleCheckboxChange = (id, isChecked) => {
-    setSelectedIds((prev) =>
-      isChecked ? [...prev, id] : prev.filter((selectedId) => selectedId !== id)
+    setSelectedIds(
+      (prev) =>
+        isChecked
+          ? [...prev, id] // Add the ID if it's checked
+          : prev.filter((selectedId) => selectedId !== id) // Remove the ID if it's unchecked
     );
   };
 
@@ -73,7 +87,7 @@ const SubsidiaryPage = observer(() => {
       await deleteSubsidiaries(ids);
       const response = await getSubsidiaryFilteredList({
         userId,
-        userRoles: user.roles.join(","),
+        userRoles: user.roles.join(","), // the api takes roles as comma-separated string
       });
       subsidiary.setSubsidiaries(response || []);
       setSelectedIds([]);
@@ -104,6 +118,7 @@ const SubsidiaryPage = observer(() => {
     );
   }
 
+  // Filter subsidiaries based on selectedIds for deletion
   const selectedItems = subsidiary.subsidiaries.filter((subsidiaryItem) =>
     selectedIds.includes(subsidiaryItem.id)
   );

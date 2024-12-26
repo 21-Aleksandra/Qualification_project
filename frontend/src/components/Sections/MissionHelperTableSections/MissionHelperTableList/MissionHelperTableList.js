@@ -3,6 +3,8 @@ import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { HELPER_TABLE_MISSION_EDIT_ROUTE } from "../../../../utils/routerConsts";
 
+// The MissionHelperTableList component displays a table with mission data
+// Each row contains edit button to lead to mission edit page
 const MissionHelperTableList = ({ missions }) => {
   const navigate = useNavigate();
   const handleEditClick = (missionId) => {

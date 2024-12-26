@@ -7,6 +7,8 @@ import "./SubsidiaryListItem.css";
 import { SUBSIDIARY_ITEM_ROUTE } from "../../../../utils/routerConsts";
 import UserRoles from "../../../../utils/roleConsts";
 
+// One subsidiary element of events list. If user is a manager than contains a checkbox for selection
+// Opens a detailed event subsidiary on click
 const SubsidiaryListItem = ({ subsidiary, onCheckboxChange, isSelected }) => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const SubsidiaryListItem = ({ subsidiary, onCheckboxChange, isSelected }) => {
       }`
     : defaultImage;
 
+  // Utility function to generate route paths with parameters )e.g. for replacing id in some links with actual id)
   const generatePath = (route, params) => {
     let path = route;
     Object.keys(params).forEach((key) => {
@@ -28,6 +31,7 @@ const SubsidiaryListItem = ({ subsidiary, onCheckboxChange, isSelected }) => {
     return path;
   };
 
+  // decomposition for easier management
   const address = subsidiary?.Address || {};
   const mainOrganization = subsidiary?.Main_Organization || {};
   const missions = subsidiary?.Missions || [];
@@ -83,6 +87,7 @@ const SubsidiaryListItem = ({ subsidiary, onCheckboxChange, isSelected }) => {
         <div className="subsidiary-card-section" onClick={handleCardClick}>
           {missions.length > 0 ? (
             <div className="d-flex flex-wrap gap-2">
+              {/*Displaying only 2 cropped missions, for 3 or more - dotted block*/}
               {missions.slice(0, 2).map((mission) => (
                 <OverlayTrigger
                   key={mission.id}

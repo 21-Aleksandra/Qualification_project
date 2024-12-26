@@ -16,6 +16,7 @@ const useFetchEventData = (
   const [error, setError] = useState("");
   const [eventData, setEventData] = useState(null);
 
+  // useCallback ensures that this function is memoized and only recreated when dependencies change.
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
@@ -33,6 +34,7 @@ const useFetchEventData = (
       console.log(subsidiaryResponse);
       subsidiaryStore.setNames(subsidiaryResponse || []);
 
+      // If an `id` is provided (i.e., editing an existing event), fetch the event details.
       if (id) {
         const eventResponse = await getEventById(
           id,
@@ -52,6 +54,7 @@ const useFetchEventData = (
               )
             : null;
 
+          // Fetch other photos (those that are not the banner photo), and create file previews for them.
           const otherPhotos = await Promise.all(
             eventResponse.Photo_Set.Photos.filter(
               (photo) => !photo.isBannerPhoto
@@ -60,11 +63,11 @@ const useFetchEventData = (
                 `${process.env.REACT_APP_SERVER_URL}/${photo.url}`.replace(
                   /([^:]\/)\/+/g,
                   "$1"
-                );
+                ); // Normalize the URL to avoid double slashes
               const file = await fetchFileFromURL(photoUrl);
               return {
                 file,
-                preview: photoUrl,
+                preview: photoUrl, // The URL that can be used as a preview image.
               };
             })
           );
@@ -73,13 +76,13 @@ const useFetchEventData = (
             ...eventResponse,
             bannerPhoto: bannerPhotoFile,
             otherPhotos,
-            otherPhotosPreviews: otherPhotos.map((p) => p.preview),
+            otherPhotosPreviews: otherPhotos.map((p) => p.preview), // Extract the preview URLs for displaying in the UI.
           });
         }
       }
     } catch (err) {
       console.error("Error fetching data:", err);
-      setError("Failed to load data. Please try again.");
+      setError(err.message || "Failed to load data. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -91,10 +94,10 @@ const useFetchEventData = (
     userStore.id,
     userStore.roles,
   ]);
-
+  // useEffect hook to invoke the fetchData function when the component is mounted or dependencies change.
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData]); // Only re-run fetchData if the fetchData callback changes (which depends on the dependencies above).
 
   return { loading, error, eventData };
 };

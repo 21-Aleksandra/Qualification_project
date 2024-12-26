@@ -10,8 +10,10 @@ import {
 import { useJsApiLoader } from "@react-google-maps/api";
 import CustomButton from "../../Common/CustomButton/CustomButton";
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-const MAP_LIBRARIES = ["places"];
+const MAP_LIBRARIES = ["places"]; // 'places' library is required to get place suggestions and details
 
+// This is an address adding form with specific functionality connected to goople places api
+// It is used for more consistent address formats in system as well as lng and lat parametr automatic getting
 const AddNewAddressDropdownElement = ({
   title,
   addRequest,
@@ -23,6 +25,7 @@ const AddNewAddressDropdownElement = ({
     libraries: MAP_LIBRARIES,
   });
 
+  // Fields required from Google Places API to fetch detailed information about the selected address
   const requestSelectArray = [
     "address_components",
     "geometry",
@@ -37,8 +40,10 @@ const AddNewAddressDropdownElement = ({
   const autocompleteService = useRef(null);
   const placesService = useRef(null);
 
+  // Effect hook to initialize Google Maps services when the API is loaded
   useEffect(() => {
     if (isLoaded) {
+      // Initialize Google Maps Autocomplete and Places Service
       autocompleteService.current =
         new window.google.maps.places.AutocompleteService();
       placesService.current = new window.google.maps.places.PlacesService(
@@ -48,6 +53,7 @@ const AddNewAddressDropdownElement = ({
   }, [isLoaded]);
 
   const fetchSuggestions = async (query) => {
+    // Only fetch suggestions if the query has more than 2 characters
     if (autocompleteService.current && query.length > 2) {
       setLoading(true);
       try {
@@ -74,6 +80,7 @@ const AddNewAddressDropdownElement = ({
     }
   };
 
+  // Handle changes in the input field and fetch suggestions when the value changes
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
@@ -106,6 +113,7 @@ const AddNewAddressDropdownElement = ({
           let lat = place.geometry.location.lat();
           let lng = place.geometry.location.lng();
 
+          // Loop through address components to find the relevant address parts
           addressComponents.forEach((component) => {
             const types = component.types;
             if (types.includes("street_number")) {
@@ -142,6 +150,7 @@ const AddNewAddressDropdownElement = ({
     }
   };
 
+  // Handle the process of adding the selected address to the system
   const handleAddAddress = async () => {
     if (selectedAddress && addRequest && LoadRequest && StoresetMethod) {
       try {
@@ -156,7 +165,7 @@ const AddNewAddressDropdownElement = ({
         const data = reloadResponse;
         if (Array.isArray(data)) {
           if (StoresetMethod) {
-            StoresetMethod(data);
+            StoresetMethod(data); // Update the store with the new address data
           } else {
             throw new Error("StoresetMethod function is not defined.");
           }
@@ -231,7 +240,7 @@ const AddNewAddressDropdownElement = ({
           <CustomButton
             onClick={handleAddAddress}
             size="md"
-            disabled={loading || !inputValue}
+            disabled={loading || !inputValue} // Disable the button if loading or no input
           >
             Done
           </CustomButton>

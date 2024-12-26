@@ -16,12 +16,16 @@ import useFetchEventData from "../../hooks/useFetchEventData";
 import { EVENTS_ROUTE } from "../../utils/routerConsts";
 import "./AddEditEventPage.css";
 
+// A dynamic form page for adding or editing signle event based on id presence
+// Includes both numeric, text and file input for photos and requires several api requests for fetching needed dropdown data
+// For managers only
 const AddEditEventPage = observer(() => {
   const { eventType, subsidiary, address, user } = useContext(Context);
   const { id } = useParams();
-  const managerId = user.id;
+  const managerId = user.id; // Manager's user ID to associate with the event
   const navigate = useNavigate();
 
+  // initial form state that is changed if form is for edit
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -42,20 +46,23 @@ const AddEditEventPage = observer(() => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Fetching event data using custom hook
   const {
     loading: fetchLoading,
     error: fetchError,
     eventData,
   } = useFetchEventData(id, eventType, subsidiary, user, address);
 
+  // Effect hook to handle state updates based on fetched event data or errors
   useEffect(() => {
     if (fetchLoading !== undefined) {
-      setLoading(fetchLoading);
+      setLoading(fetchLoading); // Update loading state when fetch status changes
     }
     if (fetchError) {
-      setError(fetchError);
+      setError(fetchError); // Capture and display any errors from the fetch operation
     }
     if (eventData) {
+      // Populate formData with the fetched event data if in edit mode
       setFormData({
         name: eventData.name || "",
         description: eventData.description || "",
@@ -76,12 +83,14 @@ const AddEditEventPage = observer(() => {
   }, [fetchLoading, fetchError, eventData]);
 
   const handleFileChange = (e, fieldName) => {
-    const files = e.target.files;
+    const files = e.target.files; // Get the selected files from the file input
     const newFiles = Array.from(files).map((file) => ({
       file,
-      preview: URL.createObjectURL(file),
+      preview: URL.createObjectURL(file), // Generate a preview URL for image files
     }));
 
+    //We update the otherPhotos array by adding the newly selected files (newFiles)
+    //We also update the otherPhotosPreviews array, which holds the preview URLs, so that the preview images can be displayed in the UI.
     if (fieldName === "otherPhotos") {
       setFormData((prevState) => ({
         ...prevState,
@@ -91,6 +100,9 @@ const AddEditEventPage = observer(() => {
           ...newFiles.map((f) => f.preview),
         ],
       }));
+      //If the fieldName is "bannerPhoto", we update the bannerPhoto property
+      // in formData with the first file selected.
+      // The assumption here is that the banner photo can only be one file, so we take files[0]
     } else if (fieldName === "bannerPhoto") {
       setFormData((prevState) => ({
         ...prevState,
@@ -99,6 +111,9 @@ const AddEditEventPage = observer(() => {
     }
   };
 
+  // Function to visually remove a selected photo from the form
+  //After modifying these arrays, the updated state is returned,
+  //  causing the component to re-render with the updated list of photos and previews.
   const handleRemovePhoto = (index) => {
     setFormData((prevState) => {
       const updatedPhotos = [...prevState.otherPhotos];
@@ -141,9 +156,7 @@ const AddEditEventPage = observer(() => {
       }
       navigate(EVENTS_ROUTE);
     } catch (err) {
-      setError(
-        "Failed to submit the form: " + err.message + ". Please try again."
-      );
+      setError(err?.message || "Failed to submit the form:Please try again.");
     } finally {
       setLoading(false);
     }

@@ -3,9 +3,12 @@ import { observer } from "mobx-react-lite";
 import { Form } from "react-bootstrap";
 import DropdownSelectOneSearch from "../../components/Common/DropdownSelectOneSearch/DropdownSelectOneSearch";
 
+// Defining the SubsidiaryNameSection component, wrapped in MobX's observer for reactivity.
+// e.g. if subsidiary will be added it should re-render
 const SubsidiaryNameSection = observer(
   ({ formData, setFormData, subsidiary }) => {
     const handleOrganizationChange = (selectedOption) => {
+      // Updates the subsidiaryId in formData when a new subsidiary is selected or resets to empty if no selection.
       setFormData((prevState) => ({
         ...prevState,
         subsidiaryId: selectedOption ? selectedOption.value : "",

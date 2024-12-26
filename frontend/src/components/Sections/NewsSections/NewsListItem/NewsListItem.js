@@ -9,6 +9,9 @@ import {
 } from "../../../../utils/routerConsts";
 import UserRoles from "../../../../utils/roleConsts";
 
+// A single element of news list contraining name of the news , content, dates, the object news is about
+// For managers there is a checbox for selecting item for deletion/editing
+// Can be both about event and subsidiary
 const NewsListItem = ({ news, onCheckboxChange, isSelected }) => {
   const navigate = useNavigate();
   const { user } = useContext(Context);
@@ -21,16 +24,20 @@ const NewsListItem = ({ news, onCheckboxChange, isSelected }) => {
     return path;
   };
 
+  // Decomponizing response for easyer management
+
+  // Shorten the news content since t can be way larger
   const trimmedContent =
     news.content.length > 50 ? `${news.content.slice(0, 50)}...` : news.content;
   const event = news.News_Set?.Event;
   const subsidiary_item = news.News_Set?.Subsidiary;
   const author = news.User?.username;
-  const publishedAt = new Date(news.createdAt).toLocaleDateString();
+  const publishedAt = new Date(news.createdAt).toLocaleDateString(); // formattion date to human-readable format
   const about = event
     ? event.name
     : subsidiary_item?.name || "No related information";
 
+  // Function to handle card clicks and navigate to the appropriate news item details page
   const handleCardClick = () => {
     event
       ? navigate(generatePath(EVENT_NEWS_ITEM_ROUTE, { id: news.id }))

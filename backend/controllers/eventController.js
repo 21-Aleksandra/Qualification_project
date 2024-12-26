@@ -1,9 +1,25 @@
 const eventService = require("../services/eventService");
 const AppError = require("../utils/errorClass");
 
+/**
+ * Controller for handling event crud operations
+ * @class EventController
+ */
 class EventController {
+  /**
+   * Retrieves a filtered list of events based on query parameters.
+   * If user is gaving manager role, he will recieve only his authored events
+   * On success, it returns a 200 status with the events details.
+   *
+   * @async
+   * @param {Object} req - Express request object containing query parameters for filters.
+   * @param {Object} res - Express response object.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @returns {Promise<void>}
+   */
   async getEventFilteredList(req, res, next) {
     try {
+      // Build the filter object from query parameters
       const filters = {
         name: req.query.name || "",
         cities: req.query.cities
@@ -38,6 +54,18 @@ class EventController {
     }
   }
 
+  /**
+   * Retrieves a single event by its ID.
+   * On success, it returns a 200 status with the event details.
+   * User roles and user ID are primary needed for disabling manager access to not their events
+   *
+   * @async
+   * @param {Object} req - Express request object containing the event ID in the parameters.
+   * @param {Object} res - Express response object.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @throws {AppError} -  Error of status 400 If no id provided
+   * @returns {Promise<void>}
+   */
   async getEventById(req, res, next) {
     try {
       const { id } = req.params;
@@ -56,6 +84,17 @@ class EventController {
     }
   }
 
+  /**
+   * Retrieves a list of event names based on the user ID and roles.
+   * On success, it returns a 200 status with the event details.
+   * If user is gaving manager role, he will recieve only his authored event names
+   *
+   * @async
+   * @param {Object} req - Express request object containing user information in the query.
+   * @param {Object} res - Express response object.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @returns {Promise<void>}
+   */
   async getEventNamesList(req, res, next) {
     try {
       const { userId, userRoles } = req.query;
@@ -71,9 +110,20 @@ class EventController {
     }
   }
 
+  /**
+   * Allows clients to create a new event, including event details such as
+   * name, description, dates, and associated photos.
+   * On success, it returns a 201 status with the event details.
+   *
+   * @async
+   * @param {Object} req - Express request object containing event data in the body and photo files.
+   * @param {Object} res - Express response object.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @throws {AppError} -  Error of status 400 If no name or managerId provided
+   * @returns {Promise<void>}
+   */
   async addEvent(req, res, next) {
     try {
-      console.log(req.files);
       const {
         managerId,
         name,
@@ -120,6 +170,18 @@ class EventController {
     }
   }
 
+  /**
+   * Allows clients to update an existing event by its ID, modifying its details like
+   * name, type, description, dates, and photos.
+   * On success, it returns a 200 status with the event details.
+   *
+   * @async
+   * @param {Object} req - Express request object containing event ID in the parameters and updated data in the body.
+   * @param {Object} res - Express response object.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @throws {AppError} -  Error of status 400 If no name or id provided
+   * @returns {Promise<void>}
+   */
   async editEvent(req, res, next) {
     try {
       const { id } = req.params;
@@ -171,6 +233,17 @@ class EventController {
     }
   }
 
+  /**
+   * Allows clients to delete one or more events by providing an array of event IDs.
+   * On success, it returns a 200 status with the deleted event count message.
+   *
+   * @async
+   * @param {Object} req - Express request object containing the list of event IDs in the body.
+   * @param {Object} res - Express response object.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @throws {AppError} -  Error of status 400  If no ids provided or ids are not array
+   * @returns {Promise<void>}
+   */
   async deleteEvents(req, res, next) {
     try {
       const { ids } = req.body;

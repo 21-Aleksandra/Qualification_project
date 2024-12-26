@@ -2,7 +2,17 @@ const { Mission } = require("../models");
 const AppError = require("../utils/errorClass");
 const { MISSION_NAME_REGEX } = require("../utils/regexConsts");
 
+/**
+ * Service for managing missions.
+ * Provides operations like fetching, creating, and updating mission entries.
+ * @class MissionService
+ */
 class MissionService {
+  /**
+   * Retrieves the list of all missions ordered alphabetically by name.
+   * @async
+   * @returns {Promise<Array>} - List of missions.
+   */
   async getMissionList() {
     const missions = await Mission.findAll({
       order: [["name", "ASC"]],
@@ -10,6 +20,14 @@ class MissionService {
     return missions;
   }
 
+  /**
+   * Adds a new mission to the database.
+   * Validates the mission name against a predefined regular expression.
+   * @async
+   * @param {string} name - The name of the new mission.
+   * @returns {Promise<Object>} - The newly created mission.
+   * @throws {AppError} - If the name is invalid or the mission already exists.
+   */
   async addMission(name) {
     if (!MISSION_NAME_REGEX.test(name)) {
       throw new AppError(
@@ -30,19 +48,28 @@ class MissionService {
     return newMission;
   }
 
+  /**
+   * Updates an existing mission's details.
+   * Only applies changes if the provided fields are different from the existing ones.
+   * @async
+   * @param {string} id - ID of the mission to update.
+   * @param {Object} updateData - Object containing the fields to update.
+   * @returns {Promise<Object|null>} - The updated mission, or null if not found.
+   */
   async editMission(id, updateData) {
     const existingMission = await Mission.findByPk(id);
     if (!existingMission) {
-      return null;
+      return null; // Return null if the mission doesn't exist
     }
 
+    // Prepare an object to hold the changed fields
     const changedFields = {};
     for (const key in updateData) {
       if (
         updateData[key] !== undefined &&
         updateData[key] !== existingMission[key]
       ) {
-        changedFields[key] = updateData[key];
+        changedFields[key] = updateData[key]; // Add only changed fields to the object
       }
     }
 

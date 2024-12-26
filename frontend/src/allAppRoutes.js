@@ -1,3 +1,8 @@
+// This file defines the routing configuration for the application,
+// including public routes (accessible without authentication) and registered routes
+// (accessible by authenticated users with specific roles).
+// It maps paths to corresponding page components and assigns role-based access where necessary.
+
 import LandingPage from "./pages/LandingPage/LandingPage";
 import LoginRegisterPage from "./pages/LoginRegisterPage/LoginRegisterPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
@@ -36,7 +41,7 @@ import MissionListEditPage from "./pages/MissionListEditPage/MissionListEditPage
 import OrganizationListPage from "./pages/OrganizationListPage/OrganizationListPage";
 import OrganizationListEditPage from "./pages/OrganizationListEditPage/OrganizationListEditPage";
 
-import TestPage from "./pages/TestPage";
+//import TestPage from "./pages/TestPage";
 import UserRoles from "./utils/roleConsts";
 
 import {
@@ -46,7 +51,7 @@ import {
   DASHBOARD_ROUTE,
   RESET_PASSWORD_MAIL_ROUTE,
   RESET_PASSWORD_FORM_ROUTE,
-  TEST_ROUTE,
+  //TEST_ROUTE,
   SUBSIDIARIES_ROUTE,
   SUBSIDIARY_ITEM_ROUTE,
   SUBSIDIARY_EDIT_ROUTE,
@@ -81,6 +86,7 @@ import {
   HELPER_TABLE_ORGANIZATION_EDIT_ROUTE,
 } from "./utils/routerConsts";
 
+// Defining public routes (accessible without authentication)
 export const publicRoutes = [
   {
     path: LOGIN_ROUTE,
@@ -104,16 +110,12 @@ export const publicRoutes = [
   },
 ];
 
+// Defining registered routes (accessible for logged-in users with specific roles)
 export const registeredRoutes = [
   {
     path: DASHBOARD_ROUTE,
     Component: DashboardPage,
     roles: [UserRoles.REGULAR, UserRoles.MANAGER, UserRoles.ADMIN],
-  },
-  {
-    path: TEST_ROUTE,
-    Component: TestPage,
-    roles: [UserRoles.ADMIN],
   },
   {
     path: SUBSIDIARIES_ROUTE,

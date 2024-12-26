@@ -1,3 +1,7 @@
+// This file defines the navigation links for the application, including their names, URLs,
+// and the roles that are allowed to see each link. These links will be used to generate
+// the navigation menu, ensuring role-based access control.
+
 import UserRoles from "./roleConsts";
 import {
   SUBSIDIARIES_ROUTE,

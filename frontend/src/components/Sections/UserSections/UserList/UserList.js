@@ -1,6 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { Table } from "react-bootstrap";
 
+// List with information about all users with checkboxes for edit/delete actions
+// Is observable for dynamic store changes (in case of new elemets addition somewhere else and to communicate effectivly with the store)
 const UserList = observer(({ users, selectedUsers, onCheckboxChange }) => {
   const handleCheckboxChange = (userId) => {
     onCheckboxChange(userId);
@@ -42,7 +44,7 @@ const UserList = observer(({ users, selectedUsers, onCheckboxChange }) => {
                   type="checkbox"
                   checked={selectedUsers.includes(user.id)}
                   onChange={() => handleCheckboxChange(user.id)}
-                  style={{ transform: "scale(1.5)" }}
+                  style={{ transform: "scale(1.5)" }} // making a checkbox a but larger for easier access
                 />
               </td>
             </tr>

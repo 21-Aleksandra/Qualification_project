@@ -8,6 +8,7 @@ import { generatePath } from "react-router-dom";
 import { formatDateTime } from "../../../../utils/dateUtils";
 import "./MyEventListItem.css";
 
+// A single element of the list of events to which user is registered. Contains name, shortened description, image, deadlines
 const MyEventListItem = ({ event, onDelete, isDeleting }) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL || "";
   const bannerPhoto = event?.Photo_Set?.Photos?.find(
@@ -20,6 +21,7 @@ const MyEventListItem = ({ event, onDelete, isDeleting }) => {
 
   const navigate = useNavigate();
 
+  // Variable to track if the application deadline has passed
   const [isDeadlinePassed, setIsDeadlinePassed] = useState(false);
 
   useEffect(() => {
@@ -32,8 +34,9 @@ const MyEventListItem = ({ event, onDelete, isDeleting }) => {
     } else {
       setIsDeadlinePassed(false);
     }
-  }, [event.applicationDeadline]);
+  }, [event.applicationDeadline]); // Re-run effect only when applicationDeadline changes
 
+  // Utility function to shorten text if it exceeds the specified length ( in order not to display full description on card)
   const shortenText = (text, maxLength) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
@@ -91,6 +94,7 @@ const MyEventListItem = ({ event, onDelete, isDeleting }) => {
             : "Unknown"}
         </Card.Text>
 
+        {/* Conditionally render the unregister button if the deadline hasn't passed */}
         {!isDeadlinePassed && (
           <div className="button-container">
             <CustomButton

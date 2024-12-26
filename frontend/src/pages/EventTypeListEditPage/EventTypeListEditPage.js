@@ -6,18 +6,20 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import { HELPER_TABLE_EVENTTYPE_ROUTE } from "../../utils/routerConsts";
 import "./EventTypeListEditPage.css";
 
+// A page with form for editing one event type name. For admin only.
 const EventTypeListEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
+    name: "", // name is only input we can have
   });
 
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Fetch the event type details if we are editing e.g. having id
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -25,7 +27,7 @@ const EventTypeListEditPage = () => {
       getOneEventType(id)
         .then((data) => {
           setFormData({
-            name: data.name || "",
+            name: data.name || "", // Set the name of the event type if fetched
           });
         })
         .catch((err) => {
@@ -37,8 +39,9 @@ const EventTypeListEditPage = () => {
         })
         .finally(() => setLoading(false));
     }
-  }, [id]);
+  }, [id]); // Depend on the id to re-run the effect if the id changes
 
+  // Handle input changes in the form
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -68,8 +71,8 @@ const EventTypeListEditPage = () => {
   return (
     <div className="container mt-3 event-type-form-container">
       <h2>{isEditing ? `Edit Event Type` : `Add Event Type`}</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-
+      {/* Show error if it exists */}
+      {error && <Alert variant="danger">{error}</Alert>}{" "}
       {loading ? (
         <div className="text-center my-5">
           <Spinner animation="border" />

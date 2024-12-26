@@ -19,11 +19,16 @@ import DropdownSelectOneSearch from "../../components/Common/DropdownSelectOneSe
 import { Spinner } from "react-bootstrap";
 import { NEWS_ROUTE } from "../../utils/routerConsts";
 import "./AddEditNewsPage.css";
+
+// A page with dynamic form that allows to add both event and subsidiary news
+// Deciced weather the assigment be to event or subsidiary by the link text
+// For managers only
 const AddEditNewsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(Context);
 
+  // Form state to manage user inputs, with defaults set for both 'add' and 'edit' modes
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -37,7 +42,7 @@ const AddEditNewsPage = () => {
   const [eventNames, setEventNames] = useState([]);
   const [subsidiaryNames, setSubsidiaryNames] = useState([]);
 
-  let path = window.location.pathname;
+  let path = window.location.pathname; // for deciding which form to show - subsidiary or event
 
   useEffect(() => {
     const loadEventNames = async () => {
@@ -58,12 +63,14 @@ const AddEditNewsPage = () => {
       }
     };
 
+    // Depending on the path, fetch event or subsidiary names to avoid unneccessary data
     if (path.includes("event")) {
       loadEventNames();
     } else if (path.includes("subsidiary")) {
       loadSubsidiaryNames();
     }
 
+    // if id present, loading form data based on path
     if (id) {
       setLoading(true);
       if (path.includes("event")) {
@@ -78,7 +85,7 @@ const AddEditNewsPage = () => {
             setLoading(false);
           })
           .catch((err) => {
-            setError("Failed to fetch event news details.");
+            setError(err?.message || "Failed to fetch event news details.");
             setLoading(false);
           });
       } else if (path.includes("subsidiary")) {
@@ -93,13 +100,16 @@ const AddEditNewsPage = () => {
             setLoading(false);
           })
           .catch((err) => {
-            setError("Failed to fetch subsidiary news details.");
+            setError(
+              err?.message || "Failed to fetch subsidiary news details."
+            );
             setLoading(false);
           });
       }
     }
-  }, [id, path]);
+  }, [id, path]); // Dependency array ensures this effect runs when 'id' or 'path' changes
 
+  // submitting based on what current path we have - event or subsidiary
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -122,11 +132,12 @@ const AddEditNewsPage = () => {
 
       navigate(NEWS_ROUTE);
     } catch (err) {
-      setError("Failed to submit the form. Please try again.");
+      setError(err?.message || "Failed to submit the form. Please try again.");
       setLoading(false);
     }
   };
 
+  // Generic handler for form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({

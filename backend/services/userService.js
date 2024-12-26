@@ -11,7 +11,18 @@ const { Op } = require("sequelize");
 const filter = new Filter();
 const authService = require("./authService");
 
+/**
+ * Service for managing users.
+ * Provides operations like filtering, fetching by ID, adding, editing, deleting users
+ * @class UserService
+ */
 class UserService {
+  /**
+   * Retrieves all users based on the optional provided filters including their associated roles..
+   *
+   * @param {Object} filters - The filters to be applied (id, username).
+   * @returns {Promise<Array>} - A list of users matching the filters, excluding password.
+   */
   async getAllUsers(filters = {}) {
     const whereConditions = {};
 
@@ -38,6 +49,12 @@ class UserService {
     });
   }
 
+  /**
+   * Retrieves a user by its ID, including their associated roles.
+   *
+   * @param {number} id - The ID of the user.
+   * @returns {Promise<Object|null>} - The user object with roles or null if not found.
+   */
   async getUserById(id) {
     const user = await User.findByPk(id, {
       include: [
@@ -51,6 +68,7 @@ class UserService {
 
     if (!user) return null;
 
+    //hides the hashed version of password for privacy
     const maskedPassword = "*".repeat(user.password.length);
     return {
       ...user.toJSON(),
@@ -58,6 +76,13 @@ class UserService {
     };
   }
 
+  /**
+   * Adds a new user to User table after validating the input.
+   *
+   * @param {Object} userData - The data for the new user (username, password, email, roles, etc.).
+   * @returns {Promise<Object>} - The created user with roles.
+   * @throws {AppError} - Throws errors if validation fails or user already exists.
+   */
   async addUser({ username, password, email, roles, isVerified }) {
     if (!USERNAME_REGEX.test(username)) {
       throw new AppError(
@@ -77,10 +102,12 @@ class UserService {
       );
     }
 
+    // Checking if username has any inappropriate language
     if (filter.isProfane(username)) {
       throw new AppError("Username contains inappropriate language", 400);
     }
 
+    // ensuring usernames and emails are unique
     const existingUserByEmail = await authService.checkUserExistanceByEmail(
       email
     );
@@ -112,6 +139,14 @@ class UserService {
     return await this.getUserById(user.id);
   }
 
+  /**
+   * Edits an existing user's details after validating the inpu.
+   *
+   * @param {number} id - The ID of the user to be edited.
+   * @param {Object} userData - The updated data for the user(username, email, password, roles).
+   * @returns {Promise<Object>} - The updated user object.
+   * @throws {AppError} - Throws errors if user does not exist, validation fails, or roles conflict.
+   */
   async editUser(id, { username, email, password, roles, isVerified }) {
     const user = await User.findByPk(id);
 
@@ -137,10 +172,12 @@ class UserService {
       );
     }
 
+    // Checking if username has any inappropriate language
     if (username && filter.isProfane(username)) {
       throw new AppError("Username contains inappropriate language", 400);
     }
 
+    // ensuring usernames and emails are unique
     if (email && email !== user.email) {
       const existingUserByEmail = await authService.checkUserExistanceByEmail(
         email
@@ -199,6 +236,12 @@ class UserService {
     return await this.getUserById(id);
   }
 
+  /**
+   * Deletes users by their IDs.
+   *
+   * @param {Array<number>} ids - The list of user IDs to delete.
+   * @returns {Promise<number>} - The number of users deleted.
+   */
   async deleteUsers(ids) {
     const deletedCount = await User.destroy({
       where: { id: { [Op.in]: ids } },

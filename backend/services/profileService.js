@@ -11,7 +11,24 @@ const path = require("path");
 const filter = new Filter();
 const SequenceCodes = require("../enums/sequenceCodes");
 
+/**
+ * Service for managing user profiles.
+ * Provides operations like updating profile pictures, changing usernames and passwords,
+ * sending email requests to administrators, and deleting user accounts.
+ * Handles validation, security checks, and error handling for all profile-related operations.
+ * @class ProfileService
+ */
+
 class ProfileService {
+  /**
+   * Changes the user's profile picture.
+   * Deletes the old photo if it exists, uploads the new photo, and updates the user's record.
+   * @async
+   * @param {number} userId - ID of the user updating their profile picture.
+   * @param {Object} profilePhoto - New profile photo file object.
+   * @returns {Promise<Object>} - Message and URL of the updated profile photo.
+   * @throws {AppError} - If the user is not found or no photo is provided.
+   */
   async changeProfilePic(userId, profilePhoto) {
     const user = await User.findOne({ where: { id: userId } });
     if (!user) {
@@ -26,16 +43,19 @@ class ProfileService {
       ? await Photo.findOne({ where: { id: user.photoId } })
       : null;
 
+    // Case when a new photo is provided.
     if (profilePhoto) {
       if (existingPhoto) {
+        // If there is an existing photo, delete the file and the photo record.
         await fs.promises.unlink(path.join(parentDir, existingPhoto.url));
         await existingPhoto.destroy();
       }
-
+      // Save the new photo and update the user's photoId.
       const newPhoto = await saveOnePhoto(profilePhoto, profileImagePath);
       user.photoId = newPhoto.id;
       newPhotoUrl = newPhoto.url;
     } else if (existingPhoto) {
+      // Case when no new photo provided, but an existing photo exists.
       await fs.promises.unlink(path.join(parentDir, existingPhoto.url));
       await existingPhoto.destroy();
       user.photoId = null;
@@ -53,6 +73,15 @@ class ProfileService {
     };
   }
 
+  /**
+   * Changes the username of the user.
+   * Validates the username format and checks for profanity or duplication.
+   * @async
+   * @param {number} userId - ID of the user updating their username.
+   * @param {string} username - New username.
+   * @returns {Promise<Object>} - Message indicating success.
+   * @throws {AppError} - If the user is not found, username is invalid, or already taken.
+   */
   async changeUsername(userId, username) {
     const user = await User.findOne({ where: { id: userId } });
     if (!user) {
@@ -66,10 +95,12 @@ class ProfileService {
       );
     }
 
+    // Checking if username has any inappropriate language
     if (filter.isProfane(username)) {
       throw new AppError("Username contains inappropriate language.", 400);
     }
 
+    // ensuring usernames are unique
     const existingUser = await User.findOne({ where: { username } });
     if (existingUser && existingUser.id !== userId) {
       throw new AppError(
@@ -84,6 +115,16 @@ class ProfileService {
     return { message: "Username updated successfully." };
   }
 
+  /**
+   * Changes the user's password.
+   * Verifies the old password and validates the new password format.
+   * @async
+   * @param {number} userId - ID of the user changing their password.
+   * @param {string} oldPassword - Current password for verification.
+   * @param {string} newPassword - New password to set.
+   * @returns {Promise<Object>} - Message indicating success.
+   * @throws {AppError} - If the user is not found, old password is incorrect, or new password is invalid.
+   */
   async changePassword(userId, oldPassword, newPassword) {
     const user = await User.findOne({ where: { id: userId } });
     if (!user) {
@@ -110,12 +151,21 @@ class ProfileService {
     return { message: "Password updated successfully." };
   }
 
+  /**
+   * Constructs the request message and sends it to all users with admin roles.
+   * @async
+   * @param {number} userId - ID of the user making the request.
+   * @param {string} requestDetails - Details of the request to send to admins.
+   * @returns {Promise<Object>} - Message indicating success.
+   * @throws {AppError} - If the user or admin users are not found, or sequence record is missing.
+   */
   async sendEmailRequestToAdmin(userId, requestDetails) {
     const user = await User.findOne({ where: { id: userId } });
     if (!user) {
       throw new AppError("User not found.", 404);
     }
 
+    // making the right format for emails
     const modifiedDetails = `The user ${user.username} (id: ${user.id}) says:\n${requestDetails}`;
 
     const adminUsers = await User.findAll({
@@ -151,13 +201,20 @@ class ProfileService {
         admin.email,
         "adminRequest",
         modifiedDetails,
-        `Request ${sequenceNumber}`
+        `Request ${sequenceNumber}` // for unique number of each request
       );
     }
 
     return { message: "Request sent to admin successfully." };
   }
 
+  /**
+   * Deletes a user's account permanently.
+   * @async
+   * @param {number} userId - ID of the user to delete.
+   * @returns {Promise<Object>} - Message indicating success.
+   * @throws {AppError} - If the user is not found.
+   */
   async deleteAccount(userId) {
     const user = await User.findOne({ where: { id: userId } });
     if (!user) {

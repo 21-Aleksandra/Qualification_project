@@ -9,6 +9,10 @@ import { getEventNews } from "../../../../api/NewsAPI";
 import { getSubsidiaryNews } from "../../../../api/NewsAPI";
 //import "./NewsFilter.css";
 
+// A more complex filter that allows user to decide weather to get event or subsidiary data
+// Than allows  to filter both on bakcend by title, content, dates ect.
+// For manager only magager authored news will appear
+// Is observable for dynamic store changes (in case of new elemets addition somewhere else and to communicate effectivly with the store)
 const NewsFilter = observer(({ setFilter, filter }) => {
   const { news, event, subsidiary, user } = useContext(Context);
   const [loading, setLoading] = useState(false);
@@ -19,7 +23,7 @@ const NewsFilter = observer(({ setFilter, filter }) => {
       try {
         const filterParams = {
           userId: user._id,
-          userRoles: user._roles.join(","),
+          userRoles: user._roles.join(","), // since api requires roles as comma-separated string
         };
         if (filter === "event") {
           const eventResponse = await getEventNames(filterParams);
@@ -28,8 +32,6 @@ const NewsFilter = observer(({ setFilter, filter }) => {
           const subsidiaryResponse = await getSubsidiaryNames(filterParams);
           subsidiary.setNames(subsidiaryResponse || []);
         }
-        console.log(event);
-        console.log(subsidiary);
       } catch (error) {
         console.error("Failed to fetch data", error);
       } finally {
@@ -74,7 +76,7 @@ const NewsFilter = observer(({ setFilter, filter }) => {
       text: news.filters.text,
       dateFrom: news.filters.dateFrom,
       dateTo: news.filters.dateTo,
-      ...(filter === "event"
+      ...(filter === "event" // deciding to which specific filter turn selectedIds by filter type
         ? { eventIds: news.filters.selectedIds.join(",") }
         : { subsidiaryIds: news.filters.selectedIds.join(",") }),
       userId: user.id,
@@ -99,6 +101,7 @@ const NewsFilter = observer(({ setFilter, filter }) => {
     }
   };
 
+  // resetting data and always taking into account managers role
   const resetFilters = async () => {
     news.resetFilters();
     const filterParams = {

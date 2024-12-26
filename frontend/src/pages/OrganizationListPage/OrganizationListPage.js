@@ -8,12 +8,16 @@ import MainOrganizationHelperTableList from "../../components/Sections/MainOrgan
 
 import "./OrganizationListPage.css";
 
+// Page with all main organization list. Has a name filter that uses frontend filtering
+// Has an edit buttons to edit organization data.
 const OrganizationListPage = observer(() => {
-  const { mainOrganization } = useContext(Context);
+  // making page observable for mobx dynamic changes
+  const { mainOrganization } = useContext(Context); // Accessing the MobX store context
   const [filteredOrganizations, setFilteredOrganizations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Effect hook to fetch organization data when the component mounts
   useEffect(() => {
     const fetchOrganizations = async () => {
       try {
@@ -24,15 +28,19 @@ const OrganizationListPage = observer(() => {
         setFilteredOrganizations(response.organizations || []);
       } catch (error) {
         console.error("Error fetching organizations:", error);
-        setError("Failed to load organizations. Please try again later.");
+        setError(
+          error?.message ||
+            "Failed to load organizations. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchOrganizations();
-  }, [mainOrganization]);
+  }, [mainOrganization]); // Dependency on `mainOrganization` ensures updates if its reference changes
 
+  // Handler to update the filtered organization list using frontend filter
   const handleFilterChange = (filteredData) => {
     setFilteredOrganizations(filteredData);
   };

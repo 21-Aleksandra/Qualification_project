@@ -17,20 +17,42 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import { formatDateTime } from "../../utils/dateUtils";
 import CommentSection from "../../components/Sections/CommentSection/CommentSection";
 import { getEventComments, addEventComment } from "../../api/CommentAPI";
+import { fetchLatLng } from "../../api/ExternalApiRequests/ExternalApiRequests";
+import GoogleMapComponent from "../../components/Sections/GoogleMapComponent/GoogleMapComponent";
 import "./EventItemPage.css";
 
+// A page to display detailed information about the event along with the map
+// Show a list of participans if user is a manager
 const EventItemPage = () => {
   const { id } = useParams();
   const { user } = useContext(Context);
   const [event, setEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
         const data = await getEventById(id, user.id, user.roles);
         setEvent(data);
+        // If latitude and longitude are not available in the subsidiary data,
+        //  fetch them using the address from Google geocodel API
+        if (!data?.Address?.lat || !data?.Address?.lng) {
+          const { country, city, street } = data.Address || {};
+          if (country && city && street) {
+            const fullAddress = `${street}, ${city}, ${country}`;
+            const fetchedCoordinates = await fetchLatLng(fullAddress);
+            if (fetchedCoordinates) {
+              setCoordinates(fetchedCoordinates);
+            }
+          }
+        } else {
+          setCoordinates({
+            lat: data.Address.lat,
+            lng: data.Address.lng,
+          });
+        }
       } catch (err) {
         setError(err?.message || "Failed to fetch event data.");
       } finally {
@@ -38,7 +60,7 @@ const EventItemPage = () => {
       }
     };
     fetchEvent();
-  }, [id, user.id, user.roles]);
+  }, [id, user.id, user.roles]); // Dependency array ensures refetching when ID or user changes
 
   const handleRegister = async () => {
     try {
@@ -48,7 +70,7 @@ const EventItemPage = () => {
         ...prevEvent,
         Participants: [
           ...prevEvent.Participants,
-          { id: user.id, username: user.username },
+          { id: user.id, username: user.username }, // Add the user to the event's participants if regular user registers
         ],
       }));
     } catch (err) {
@@ -81,6 +103,7 @@ const EventItemPage = () => {
     );
   }
 
+  // destructurization for easier management
   const {
     name,
     description,
@@ -99,12 +122,12 @@ const EventItemPage = () => {
 
   const photos = Photo_Set?.Photos
     ? Photo_Set.Photos.sort((a, b) => b.isBannerPhoto - a.isBannerPhoto)
-    : [];
+    : []; // Sort photos to display the banner photo first
   const serverUrl = process.env.REACT_APP_SERVER_URL || "";
   const placesLeft = maxPeopleAllowed - registeredUserCount;
   const isParticipant = Participants.some(
     (participant) => participant.id === user.id
-  );
+  ); // Check if the current user is a participant
 
   return (
     <Container id="event-container" className="mt-4">
@@ -200,6 +223,15 @@ const EventItemPage = () => {
             ) : (
               <p>No participants registered yet.</p>
             )}
+          </Card.Body>
+        </Card>
+      )}
+      {/* Google Map section - only show if coordinates are available */}
+      {coordinates.lat && coordinates.lng && (
+        <Card id="subsidiary-map" className="mb-4">
+          <Card.Body>
+            <h5>Location for this subsidiary</h5>
+            <GoogleMapComponent lat={coordinates.lat} lng={coordinates.lng} />
           </Card.Body>
         </Card>
       )}

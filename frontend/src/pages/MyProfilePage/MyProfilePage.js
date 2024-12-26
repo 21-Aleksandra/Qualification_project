@@ -8,6 +8,9 @@ import CustomButton from "../../components/Common/CustomButton/CustomButton";
 import { deleteAccount } from "../../api/ProfileAPI";
 import { Context } from "../../index";
 import "./MyProfilePage.css";
+
+// user profile management page for updating profile information,
+// making requests, and deleting the account.
 const MyProfilePage = () => {
   const navigate = useNavigate();
   const { user } = useContext(Context);
@@ -22,18 +25,26 @@ const MyProfilePage = () => {
         user.logout();
         navigate("/");
       } catch (error) {
-        alert("Error deleting account: " + error.message);
+        alert("Error deleting account: " + (error?.message || " "));
       }
     }
   };
 
   return (
     <div>
+      {/* Form to update the profile picture */}
       <ProfilePictureForm />
+
+      {/* Form to edit the user's name */}
       <ProfileNameForm />
+
+      {/* Form to update the user's password */}
       <ProfilePasswordForm />
+
+      {/* Form for users to make specific requests related to their profile */}
       <ProfileRequestForm />
 
+      {/* Button to delete the user's account */}
       <div style={{ marginTop: "100px" }}>
         <CustomButton
           onClick={handleDeleteAccount}

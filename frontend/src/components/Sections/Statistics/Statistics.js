@@ -3,6 +3,7 @@ import "./Statistics.css";
 import { Container, Row, Col } from "react-bootstrap";
 import CountUp from "react-countup";
 
+// displays titles and numbers for 3 passed objects. Used for main page total user/event/subsidiary statistics
 const Statistics = ({ caption, text1, text2, text3, num1, num2, num3 }) => {
   return (
     <Container fluid className="statistics-block">

@@ -4,6 +4,9 @@ import { Context } from "../../../../index";
 import CustomButton from "../../../Common/CustomButton/CustomButton";
 import { getAllComments } from "../../../../api/CommentAPI";
 
+// CommentAdminFilter component for managing the filter and display of comments
+// Filters comment on backend with such params as user id, user name and comment text
+// Is observable for dynamic store changes (in case of new elemets addition somewhere else and to communicate effectivly with the store)
 const CommentAdminFilter = observer(() => {
   const { comment } = useContext(Context);
   const [filters, setFilters] = useState({
@@ -12,6 +15,7 @@ const CommentAdminFilter = observer(() => {
     text: comment.filters.text || "",
   });
 
+  // Handle changes in the input fields and update the filters state
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -24,16 +28,18 @@ const CommentAdminFilter = observer(() => {
       text: filters.text,
     };
 
+    // Update the global state with the new filters
     comment.setFilters(filters);
 
     try {
       const response = await getAllComments(filterParams);
       comment.setComments(response || []);
     } catch (err) {
-      console.error("Error fetching filtered comments:", err);
+      console.error(err?.message || "Error fetching filtered comments:");
     }
   };
 
+  // Reset the filters and fetch all comments from the server
   const resetFilters = async () => {
     comment.resetFilters();
     setFilters({

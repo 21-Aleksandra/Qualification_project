@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import FormContainer from "../../components/SmallForms/FormContainer/FormContainer";
 import { LOGIN_ROUTE } from "../../utils/routerConsts";
 import { Spinner } from "react-bootstrap";
+
+// a form to send password reset link to user's email if user exists in system
 const PasswordResetEmailPage = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -11,7 +13,7 @@ const PasswordResetEmailPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const clearMessages = () => setError("");
   const handleInputChange = (name, value) => {
-    if (name === "email") setEmail(value);
+    if (name === "email") setEmail(value); // Update the email state if the input is for "email"
   };
 
   const handleSubmit = async (e) => {
@@ -39,6 +41,7 @@ const PasswordResetEmailPage = () => {
     );
   }
 
+  // custom form container for united style
   return (
     <FormContainer
       title="Password Reset"

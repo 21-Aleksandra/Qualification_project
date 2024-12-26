@@ -10,6 +10,8 @@ const upload = multer();
 router.get("/list", authChecker, eventController.getEventFilteredList);
 router.get("/:id", authChecker, eventController.getEventById);
 
+// Supports file upload only for 'bannerPhoto' and 'otherPhotos'
+// for security and readability reasons
 router.post(
   "/add",
   authChecker,
@@ -19,6 +21,8 @@ router.post(
   eventController.addEvent
 );
 
+// Supports file upload only for 'bannerPhoto' and 'otherPhotos'
+// for security and readability reasons
 router.put(
   "/:id/edit",
   authChecker,

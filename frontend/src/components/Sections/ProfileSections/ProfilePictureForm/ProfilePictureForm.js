@@ -4,6 +4,9 @@ import { changeProfilePic } from "../../../../api/ProfileAPI";
 import CustomButton from "../../../Common/CustomButton/CustomButton";
 import "./ProfilePictureForm.css";
 
+// A form for changing profile picture of the user
+// It shows the preview and if user saves the photo than updates and refetches it on backend and frontn=end
+// The validation is performed on backend as well
 const ProfilePictureForm = () => {
   const { user } = useContext(Context);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -11,11 +14,12 @@ const ProfilePictureForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Construct the profile picture URL based on user data or default image
   let profilePicUrl = user?.url
     ? `${process.env.REACT_APP_SERVER_URL}${user.url}`
     : require("../../../../assets/default_user_big.png");
 
-  const MAX_FILE_SIZE = 5 * 1024 * 1024;
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -32,6 +36,7 @@ const ProfilePictureForm = () => {
     setErrorMessage("");
   };
 
+  // avoid accidental changes
   const handleSubmit = async () => {
     const confirmSubmit = window.confirm(
       "Are you sure you want to submit the form?"

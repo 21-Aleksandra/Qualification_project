@@ -8,9 +8,12 @@ import MissionHelperTableList from "../../components/Sections/MissionHelperTable
 
 import "./MissionListPage.css";
 
+//Fetches, displays, and filters the list of missions along with edit buttons for each mission
+// The filter is front-end based and allows to filter mission by name
+// making page observable for mobx dynamic changes and for sharing data among components
 const MissionListPage = observer(() => {
-  const { mission } = useContext(Context);
-  const [filteredMissions, setFilteredMissions] = useState([]);
+  const { mission } = useContext(Context); // Accesses global mission state from context.
+  const [filteredMissions, setFilteredMissions] = useState([]); // Stores the list of missions after filtering.
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,18 +23,20 @@ const MissionListPage = observer(() => {
         setLoading(true);
         setError(null);
         const response = await getMissionList();
-        mission.setMissions(response.missions || []);
-        setFilteredMissions(response.missions || []);
+        mission.setMissions(response.missions || []); // updates global store for multi-component access
+        setFilteredMissions(response.missions || []); // initial filtered list state (no filters)
       } catch (error) {
         console.error("Error fetching missions:", error);
-        setError("Failed to load missions. Please try again later.");
+        setError(
+          error?.message || "Failed to load missions. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchMissions();
-  }, [mission]);
+  }, [mission]); // Dependency on 'mission' ensures that the effect re-runs if the context changes.
 
   const handleFilterChange = (filteredData) => {
     setFilteredMissions(filteredData);
@@ -67,8 +72,8 @@ const MissionListPage = observer(() => {
         <div className="mission-additional-components">
           <div className="filter-panel-container">
             <MissionFilter
-              onFilterChange={handleFilterChange}
-              missions={mission.missions}
+              onFilterChange={handleFilterChange} // Passes the filter change handler to the filter component.
+              missions={mission.missions} // Provides the original list of missions for filtering.
             />
           </div>
         </div>

@@ -3,6 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // To avoid code repetition and creating autonumurated comment_sets
     const commentSets = Array.from({ length: 21 }, () => ({
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -8,12 +8,14 @@ import Select from "react-select";
 import { MANAGERS_ROUTE } from "../../utils/routerConsts";
 import "./SubsidiaryManagerEditPage.css";
 
+// A form to edit manager list of a single subsidiary
+// For admins only
 const SubsidiaryManagerEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [subsidiary, setSubsidiary] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [selectedManagers, setSelectedManagers] = useState([]);
+  const [users, setUsers] = useState([]); // All users fetched from the API
+  const [selectedManagers, setSelectedManagers] = useState([]); // IDs of currently selected managers
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -23,16 +25,20 @@ const SubsidiaryManagerEditPage = () => {
         const subsidiaryData = await getSubsidiaryById(id);
         setSubsidiary(subsidiaryData);
         const userData = await getUsers();
+
+        // Filter users to get only those with the "MANAGER" role
         const managerUsers = userData.filter((user) =>
           user.Roles.some((role) => role.rolename === "MANAGER")
         );
-        setUsers(managerUsers);
+        setUsers(managerUsers); // Set the filtered users as manager candidates
+
+        // Set the initial selected managers based on the subsidiary's current manager list from API
         const currentManagerIds = subsidiaryData.Users.map((user) => user.id);
         setSelectedManagers(currentManagerIds);
 
         setLoading(false);
       } catch (error) {
-        setError("Failed to fetch data. Please try again.", error.message);
+        setError(error?.message || "Failed to fetch data. Please try again.");
         setLoading(false);
       }
     };
@@ -44,7 +50,7 @@ const SubsidiaryManagerEditPage = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevent default form submission behavior
     try {
       await updateManagers(id, selectedManagers);
       navigate(MANAGERS_ROUTE);
@@ -62,6 +68,7 @@ const SubsidiaryManagerEditPage = () => {
     );
   }
 
+  // The selected options for the React Select dropdown need to be mapped from manager IDs to user data
   const selectedOptions = selectedManagers.map((id) => ({
     value: id,
     label: users.find((user) => user.id === id)?.username || "Unknown",

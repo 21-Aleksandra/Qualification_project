@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import "./MultiSelectInput.css";
-
+// MultiSelectInput component provides a searchable
+// multi-select input field with the ability to select and deselect items
 const MultiSelectInput = ({
-  label,
-  searchValue,
-  setSearchValue,
-  options,
-  selectedValues,
-  setSelectedValues,
+  label, // Label to be displayed above the input field
+  searchValue, // Current search value (for filtering options)
+  setSearchValue, // Function to update the search value
+  options, // List of available options to be displayed in the dropdown
+  selectedValues, // List of selected values
+  setSelectedValues, // Function to update the selected values
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -19,6 +20,7 @@ const MultiSelectInput = ({
     setDropdownOpen(!dropdownOpen);
   };
 
+  // Function to handle selecting/deselecting an option
   const handleOptionSelect = (selectedOption) => {
     if (selectedValues.includes(selectedOption)) {
       setSelectedValues(selectedValues.filter((val) => val !== selectedOption));
@@ -57,11 +59,14 @@ const MultiSelectInput = ({
           </ul>
         )}
       </div>
+      {/* Display the selected items below the input */}
       <div className="selected-items">
         {selectedValues.map((value) => (
           <span key={value} className="selected-item">
+            {/* Find the name of the selected option using 'id' or 'name' */}
             {options.find((opt) => opt.id === value || opt.name === value)
               ?.name || value}
+            {/* Button to remove the selected item */}
             <button
               type="button"
               onClick={() => {

@@ -6,11 +6,26 @@ const { createClient } = require("redis");
 const authService = require("../services/authService");
 const redisClient = createClient();
 
+// To further ensure that user will have only 1 sessions at time
 redisClient
   .connect()
   .catch((e) => console.log("Could not connect to Redis", e));
 
+/**
+ * Controller for handling user authentication actions such as register, login, logout, etc.
+ * @class AuthController
+ */
 class AuthController {
+  /**
+   * Registers a new user in the database without being verified.
+   * On success, returns a 201 status with a success message and the username.
+   *
+   * @async
+   * @param {Object} req - Express request object, containing user data (username, email, password).
+   * @param {Object} res - Express response object, which will return the message "User registered successfully" and the username.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @returns {Promise<void>}
+   */
   async registerUser(req, res, next) {
     try {
       const { username, email, password } = req.body;
@@ -26,17 +41,29 @@ class AuthController {
     }
   }
 
+  /**
+   * Logs in the user and starts a session with user data such as id, username, and roles.
+   * Ensures the user will only have one active session at a time, even in different browsers.
+   * On success, returns a 200 status with a success message and user data
+   * @async
+   * @param {Object} req - Express request object containing user credentials (email, password)
+   * @param {Object} res - Express response object, which will return a message "Login successful", username, roles, id, and profile picture URL.
+   * @param {Function} next - Express next middleware function (typically error handler)
+   * @returns {Promise<void>}
+   */
   async loginUser(req, res, next) {
     try {
       const { email, password } = req.body;
 
       const { user, roles } = await AuthService.loginUser(email, password);
 
+      // Check if a previous session exists and delete it if so
       const previousSessionId = await redisClient.get(`user:${user.id}`);
       if (previousSessionId) {
         await redisClient.del(`sess:${previousSessionId}`);
       }
 
+      // Regenerate session for the re-logged-in user
       req.session.regenerate(async (err) => {
         if (err) {
           return res
@@ -67,6 +94,17 @@ class AuthController {
       next(err);
     }
   }
+
+  /**
+   * Logs out the user by destroying their session and clearing cookies.
+   * On success, returns a 200 status with a success message.
+   * @async
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object, which will return the message "Logout successful".
+   * @param {Function} next - Express next middleware function (typically error handler)
+   * @throws {AppError} - Status 500 if logout fails and session cannot be destroyed.
+   * @returns {Promise<void>}
+   */
   async logoutUser(req, res, next) {
     try {
       req.session.destroy((err) => {
@@ -85,6 +123,15 @@ class AuthController {
     }
   }
 
+  /**
+   * Sends a password reset email to the user with a unique token in the reset link.
+   * On success, returns a 200 status with a success message.
+   * @async
+   * @param {Object} req - Express request object containing user's email
+   * @param {Object} res - Express response object, which will return the message "Password email sent!".
+   * @param {Function} next - Express next middleware function (typically error handler)
+   * @returns {Promise<void>}
+   */
   async forgotPassword(req, res, next) {
     try {
       const { email } = req.body;
@@ -95,6 +142,16 @@ class AuthController {
     }
   }
 
+  /**
+   * Resets the user's password using the provided valid token and new password.
+   * On success, returns a 200 status with a success message.
+   *
+   * @async
+   * @param {Object} req - Express request object containing reset token and new password
+   * @param {Object} res - Express response object, which will return the message "Password updated!".
+   * @param {Function} next - Express next middleware function (typically error handler)
+   * @returns {Promise<void>}
+   */
   async resetPassword(req, res, next) {
     try {
       const token = req.params.token;
@@ -106,6 +163,16 @@ class AuthController {
     }
   }
 
+  /**
+   * Verifies the user's email by validating the provided token.
+   * On success, it redirects the user to the frontend URL.
+   *
+   * @async
+   * @param {Object} req - Express request object containing the verification token
+   * @param {Object} res - Express response object, which will redirect to the frontend URL.
+   * @param {Function} next - Express next middleware function (typically error handler)
+   * @returns {Promise<void>}
+   */
   async verifyEmail(req, res, next) {
     try {
       const token = req.params.token;
@@ -116,6 +183,18 @@ class AuthController {
     }
   }
 
+  /**
+   * Checks the current authentication status of the user.
+   * If the user is logged in, returns the user information (username, roles, id, and profile picture URL).
+   * If the user is not authenticated, returns a response indicating the user is not authenticated.
+   * @async
+   * @param {Object} req - Express request object
+   * @param {Object} res - Express response object, which will return:
+   *   - If authenticated: user data including isAuthenticated, username, id, roles, and profile picture URL.
+   *   - If not authenticated: isAuthenticated set to false and other fields set to null.
+   * @param {Function} next - Express next middleware function (typically error handler)
+   * @returns {Promise<void>}
+   */
   async checkStatus(req, res, next) {
     try {
       if (req.session.user) {

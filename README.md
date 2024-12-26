@@ -594,3 +594,16 @@ In summary:
 ##### Backend:
 
 - Added postman collection with instructions to the backend test folder
+
+### [7.1] - 25-12-2024
+
+#### Added:
+
+##### Backend:
+
+- Added detailed backend comments
+- Added code line statistics and example error log
+
+##### Frontend:
+
+- Added detailed frontend comments

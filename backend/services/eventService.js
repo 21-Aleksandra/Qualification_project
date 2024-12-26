@@ -19,7 +19,21 @@ const path = require("path");
 const fs = require("fs");
 const { savePhoto } = require("../utils/photoUtils");
 
+/**
+ * A service class for managing events in the application.
+ * This class includes logic for creating, retrieving,
+ * updating, and deleting event-related data.
+ * @class EventService
+ */
 class EventService {
+  /**
+   * Retrieves a filtered list of events based on the provided filters.
+   * If the user is a manager, only returns events related to that specific user.
+   * @async
+   * @param {Object} filters - The filters to apply when querying events.
+   * @returns {Promise<Array>} - A list of events matching the given filters(name, cities, countries, subsidiary IDs, type IDs etc.).
+   * @throws {Error} - If manager user do not exist in databases for some reason.
+   */
   async getEventFilteredList(filters = {}) {
     const {
       name,
@@ -41,6 +55,7 @@ class EventService {
     const typeConditions = {};
     const subsidiaryConditions = {};
 
+    // Applying filters to the query conditions.
     if (name) whereConditions.name = { [Op.like]: `%${name}%` };
     if (cities?.length) addressConditions.city = { [Op.in]: cities };
     if (countries?.length) addressConditions.country = { [Op.in]: countries };
@@ -126,6 +141,15 @@ class EventService {
     return events;
   }
 
+  /**
+   * Fetches detailed information about a specific event by its ID.
+   * @async
+   * @param {number} id - The ID of the event to fetch.
+   * @param {number} userId - The ID of the currently authenticated user.
+   * @param {Array} userRoles - The roles of the current user.
+   * @returns {Promise<Object>} - Detailed event information, including registered users count.
+   * @throws {Error} - If the event does not exist or user does not have permission.
+   */
   async getEventById(id, userId, userRoles) {
     const event = await Event.findOne({
       where: { id },
@@ -154,14 +178,14 @@ class EventService {
         },
         {
           model: User,
-          as: "Participants",
+          as: "Participants", // finding regular users that participate in event
           through: {
             attributes: [],
           },
           attributes: ["id", "username"],
         },
         {
-          model: User,
+          model: User, // finding event authors
           as: "Author",
           attributes: ["id", "username"],
         },
@@ -192,6 +216,7 @@ class EventService {
       }
     }
 
+    // Count the number of users registered for the event to manage registration to it further
     const registeredUserCount = await Event_User.count({
       where: { eventId: id },
     });
@@ -202,6 +227,28 @@ class EventService {
     };
   }
 
+  /**
+   * Adds a new event to the database.
+   * Handles event creation, photo processing (banner and other photos), and validation of datetime fields.
+   *
+   * @async
+   * @param {number} managerId - The ID of the manager creating the event.
+   * @param {string} name - The name of the event.
+   * @param {string} description - A detailed description of the event.
+   * @param {number} typeId - The ID of the event type.
+   * @param {Date} dateFrom - The start date and time of the event.
+   * @param {Date} dateTo - The end date and time of the event.
+   * @param {Date} publishOn - The date and time when the event should be published.
+   * @param {Date} applicationDeadline - The cutoff date and time for event registrations or applications.
+   * @param {number} addressId - The ID of the address where the event will take place.
+   * @param {number} subsidiaryId - The ID of the subsidiary organizing or hosting the event.
+   * @param {number} maxPeopleAllowed - The maximum number of participants allowed for the event.
+   * @param {Object} bannerPhoto - A URL or file path for the main banner photo of the event.
+   * @param {Array<Object>} otherPhotos - A list of additional photos related to the event.
+   *
+   * @returns {Promise<Object>} - The newly created event object.
+   * @throws {Error} - If there are issues during event creation or photo processing (e.g., exceeding the maximum count of photos).
+   */
   async addEvent({
     managerId,
     name,
@@ -291,6 +338,30 @@ class EventService {
     return newEvent;
   }
 
+  /**
+   * Updates an existing event in the database.
+   * Handles detecting changes in the event's fields and appropriately updates them.
+   * If new photos are provided, they are uploaded, and old photos are deleted.
+   * After updating the event, all registered users are notified via email about the update.
+   *
+   * @async
+   * @param {string} id - The unique identifier of the event to be updated.
+   * @param {string} [name] - The updated name of the event.
+   * @param {string} [description] - The updated description of the event.
+   * @param {number} [typeId] - The updated ID of the event type.
+   * @param {Date} [dateFrom] - The updated start date and time of the event.
+   * @param {Date} [dateTo] - The updated end date and time of the event.
+   * @param {Date} [publishOn] - The updated date and time for publishing the event.
+   * @param {Date} [applicationDeadline] - The updated cutoff date and time for registrations.
+   * @param {number} [addressId] - The updated ID of the event location.
+   * @param {number} [subsidiaryId] - The updated ID of the subsidiary organizing the event.
+   * @param {number} [maxPeopleAllowed] - The updated maximum number of participants allowed.
+   * @param {Object} [bannerPhoto] - A new banner photo file  for the event.
+   * @param {Array<Object>} [otherPhotos] - A list of new additional photos for the event.
+   *
+   * @returns {Promise<Object>} - The updated event object.
+   * @throws {AppError} - If the event is not found or issues occur during photo uploads or updates.
+   */
   async editEvent(
     id,
     {
@@ -338,7 +409,7 @@ class EventService {
     ) {
       throw new AppError("Invalid datetime values provided", 400);
     }
-
+    // Preparing the update fields object dynamically by filtering out undefined or null values
     const updateFields = {};
     Object.entries({
       name,
@@ -356,12 +427,14 @@ class EventService {
 
     const parentDir = path.resolve(__dirname, "..");
 
+    // If a new banner photo is provided, check if it needs to be replaced
     if (bannerPhoto) {
       if (
         !existingBannerPhoto ||
         existingBannerPhoto.filename !== bannerPhoto.originalname
       ) {
         if (existingBannerPhoto) {
+          // if new photo
           await fs.promises.unlink(
             path.join(parentDir, `${existingBannerPhoto.url}`)
           );
@@ -375,6 +448,7 @@ class EventService {
         );
       }
     } else if (existingBannerPhoto) {
+      // if banner was deleted
       await fs.promises.unlink(
         path.join(parentDir, `${existingBannerPhoto.url}`)
       );
@@ -385,6 +459,7 @@ class EventService {
       where: { photoSetId: event.photoSetId, isBannerPhoto: false },
     });
 
+    // Extract the filenames of existing and incoming photos to determine what needs to be deleted or added
     const existingFilenames = existingOtherPhotos.map(
       (photo) => photo.filename
     );
@@ -392,6 +467,7 @@ class EventService {
       ? otherPhotos.map((photo) => photo.originalname)
       : [];
 
+    // Identify photos that should be deleted (those that are no longer in the incoming list)
     const photosToDelete = existingOtherPhotos.filter(
       (photo) => !incomingFilenames.includes(photo.filename)
     );
@@ -400,12 +476,14 @@ class EventService {
       await photo.destroy();
     }
 
+    // Identify photos that should be added (those that are not already in the existing list)
     const photosToAdd = otherPhotos
       ? otherPhotos.filter(
           (photo) => !existingFilenames.includes(photo.originalname)
         )
       : [];
 
+    // Ensure no more than 3 photos are uploaded (if there are more than 3 photos after the update)
     if (
       existingOtherPhotos.length - photosToDelete.length + photosToAdd.length >
       3
@@ -451,6 +529,14 @@ class EventService {
     return event;
   }
 
+  /**
+   * Deletes events and associated photos based on the provided IDs.
+   * This method also sends email notifications to participants about event cancellation.
+   * @async
+   * @param {Array} ids - List of event IDs to be deleted.
+   * @returns {Promise<number>} - The number of deleted events.
+   * @throws {AppError} - Throws an error if no events are found for the provided IDs.
+   */
   async deleteEvents(ids) {
     const events = await Event.findAll({
       where: { id: { [Op.in]: ids } },
@@ -463,6 +549,7 @@ class EventService {
 
     const parentDir = path.resolve(__dirname, "..");
 
+    // Delete the photos associated with the events
     for (const event of events) {
       if (event.Photo_Set && event.Photo_Set.Photos) {
         for (const photo of event.Photo_Set.Photos) {
@@ -470,7 +557,7 @@ class EventService {
           if (fs.existsSync(photoPath)) {
             await fs.promises.unlink(photoPath);
           }
-          await photo.destroy();
+          await photo.destroy(); // Delete the photo record from the DB
         }
       }
     }
@@ -513,6 +600,13 @@ class EventService {
     return deletedCount;
   }
 
+  /**
+   * Retrieves the comment set associated with a specific event by its ID.
+   * @async
+   * @param {string} id - ID of the event.
+   * @returns {Promise<Comment_Set>} - The comment set associated with the event.
+   * @throws {AppError} - Throws an error if the event or comment set is not found.
+   */
   async getEventCommentSetById(id) {
     const event = await Event.findByPk(id);
     if (!event) {
@@ -527,6 +621,13 @@ class EventService {
     return commentSet;
   }
 
+  /**
+   * Retrieves the news set associated with a specific event by its ID.
+   * @async
+   * @param {string} id - ID of the event.
+   * @returns {Promise<News_Set>} - The news set associated with the event.
+   * @throws {AppError} - Throws an error if the event or news set is not found.
+   */
   async getEventNewsSetById(id) {
     const event = await Event.findByPk(id);
 
@@ -543,6 +644,14 @@ class EventService {
     return newsSet;
   }
 
+  /**
+   * Finds event names based on the user's ID and roles.
+   * If the user is a manager, only events they authored are returned.
+   * @async
+   * @param {string} userId - ID of the user requesting the data.
+   * @param {Array} userRoles - Array of roles associated with the user.
+   * @returns {Promise<Array>} - List of event names matching the filters.
+   */
   async findEventNames(userId, userRoles) {
     if (
       userId != null &&
@@ -552,7 +661,7 @@ class EventService {
       return await Event.findAll({
         attributes: ["id", "name"],
         where: {
-          authorId: userId,
+          authorId: userId, // Filter events by the user's author ID if they are a manager
         },
       });
     }

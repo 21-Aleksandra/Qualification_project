@@ -3,6 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // To avoid code repetition and creating autonumurated photo_sets
     const photoSets = Array.from({ length: 14 }, () => ({
       createdAt: new Date(),
       updatedAt: new Date(),

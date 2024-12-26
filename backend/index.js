@@ -18,6 +18,8 @@ const redisClient = createClient({
   password: null,
   database: process.env.REDIS_DB || 0,
 });
+
+//connects to redis to store user's sessions
 redisClient
   .connect()
   .catch((e) => console.log("Could not connect to Redis", e));
@@ -32,6 +34,8 @@ const corsOptions = {
 const my_app = express();
 my_app.use(express.json());
 my_app.use(express.urlencoded({ extended: true }));
+
+// Ensures file getting and saving into static folder without breaking cors policy
 my_app.use(
   "/static",
   express.static(path.join(__dirname, "static"), {
@@ -65,6 +69,7 @@ my_app.use(
 
 my_app.use("/api", router);
 
+// Should always be the last one to avoid conflicts and missed errors
 my_app.use(errorHandlerMiddleware);
 
 const start = async () => {

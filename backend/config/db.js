@@ -1,3 +1,11 @@
+/* 
+   This file is meant for initializing a Sequelize instance
+   for managing database connections.
+   
+   Includes options like disabling logging and enforcing 
+   consistent table naming conventions.
+*/
+
 const { Sequelize } = require("sequelize");
 const config = require("./config");
 
@@ -15,8 +23,8 @@ const sequelize = new Sequelize(
     logging: false,
     timezone: dbConfig.timezone,
     define: {
-      underscored: true,
-      freezeTableName: true,
+      underscored: true, // Allows snake_case for column names
+      freezeTableName: true, // Prevent Sequelize from pluralizing table names
     },
   }
 );

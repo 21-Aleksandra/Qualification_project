@@ -12,7 +12,21 @@ const {
 } = require("../utils/regexConsts");
 const filter = new Filter();
 
+/**
+ * Service for handling user authentication-related actions like registration, login, password reset, etc.
+ * @class AuthService
+ */
 class AuthService {
+  /**
+   * Registers a new user by validating input fields, checking if the user already exists,
+   * hashing the password, creating the user, assigning roles, and sending a verification email.
+   * @async
+   * @param {string} username - The username of the user.
+   * @param {string} email - The email address of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Promise<Object>} - The newly created user.
+   * @throws {AppError} - If any validation fails or user already exists.
+   */
   async registerUser(username, email, password) {
     if (!username || !email || !password) {
       throw AppError.badRequest("Username, email, and password are required");
@@ -62,6 +76,7 @@ class AuthService {
       roleId: Roles.REGULAR,
     });
 
+    //generates jwt token to ensure secure and validatable link
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "3d",
     });
@@ -71,6 +86,14 @@ class AuthService {
     return newUser;
   }
 
+  /**
+   * Logs in a user by validating credentials (email, password) and returning roles if successful.
+   * @async
+   * @param {string} email - The email address of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Promise<Object>} - The authenticated user and their roles.
+   * @throws {AppError} - If any validation fails or user does not exist.
+   */
   async loginUser(email, password) {
     if (!email || !password) {
       throw AppError.badRequest("Email, and password are required");
@@ -103,6 +126,13 @@ class AuthService {
     return { user: existingUser, roles: roleIds };
   }
 
+  /**
+   * Verifies the user's email using the token sent via email.
+   * @async
+   * @param {string} tokenFromLink - The token received from the verification link.
+   * @returns {Promise<void>} - Marks the user as verified if the token is valid.
+   * @throws {AppError} - If the token is expired or user cannot be found.
+   */
   async verifyEmail(tokenFromLink) {
     await this.checkExpirationForToken(tokenFromLink);
     const decoded = jwt.verify(tokenFromLink, process.env.JWT_SECRET);
@@ -121,6 +151,12 @@ class AuthService {
     await User.update({ isVerified: true }, { where: { id: userId } });
   }
 
+  /**
+   * Sends a password reset email to the user.
+   * @async
+   * @param {string} email - The email address of the user.
+   * @throws {AppError} - If no user exists with the given email or if the email is unverified.
+   */
   async passwordMail(email) {
     const newUser = await this.checkUserExistanceByEmail(email);
     if (!newUser) {
@@ -138,6 +174,13 @@ class AuthService {
     await EmailService.SendMail(email, "passwordReset", passwordLink);
   }
 
+  /**
+   * Resets the password of the user using the provided token.
+   * @async
+   * @param {string} token - The token used to verify the password reset request.
+   * @param {string} newPassword - The new password.
+   * @throws {AppError} - If the token is expired, user not found, or password is invalid.
+   */
   async resetPassword(token, newPassword) {
     await this.checkExpirationForToken(token);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -158,18 +201,42 @@ class AuthService {
     await User.update({ password: passwordHash }, { where: { id: userId } });
   }
 
+  /**
+   * Checks if a user exists by email.
+   * @async
+   * @param {string} email - The email of the user.
+   * @returns {Promise<Object|null>} - The user if found, otherwise null.
+   */
   async checkUserExistanceByEmail(email) {
     return User.findOne({ where: { email } });
   }
 
+  /**
+   * Checks if a user exists by their ID.
+   * @async
+   * @param {string} id - The ID of the user.
+   * @returns {Promise<Object|null>} - The user if found, otherwise null.
+   */
   async checkUserExistanceById(id) {
     return User.findOne({ where: { id } });
   }
 
+  /**
+   * Checks if a user exists by username.
+   * @async
+   * @param {string} username - The username of the user.
+   * @returns {Promise<Object|null>} - The user if found, otherwise null.
+   */
   async checkUserExistanceByUsername(username) {
     return await User.findOne({ where: { username } });
   }
 
+  /**
+   * Checks if a token has expired by decoding and comparing the expiration time.
+   * @async
+   * @param {string} token - The token to check.
+   * @throws {AppError} - If the token has expired.
+   */
   async checkExpirationForToken(token) {
     const decoded = jwt.decode(token, { complete: true });
     const currentTime = Math.floor(Date.now() / 1000);
@@ -179,6 +246,13 @@ class AuthService {
     }
   }
 
+  /**
+   * Retrieves the profile picture URL for a user.
+   * @async
+   * @param {string} userId - The ID of the user.
+   * @returns {Promise<string|null>} - The URL of the user's profile picture, or null if not set.
+   * @throws {Error} - If the user is not found.
+   */
   async getUsersProfilePic(userId) {
     const user = await User.findOne({
       where: { id: userId },

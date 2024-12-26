@@ -20,7 +20,23 @@ const path = require("path");
 const fs = require("fs");
 const { savePhoto } = require("../utils/photoUtils");
 
+/**
+ * Service for managing subsidiaries.
+ * Provides operations like filtering, fetching by ID,adding,editing,
+ * deleting and checking subsidiary, getting names.
+ * Includes additional user-based filters for managers for get requests.
+ * @class SubsidiaryService
+ */
 class SubsidiaryService {
+  /**
+   * Retrieves a filtered list of subsidiaries based on the provided filters.
+   * If the user is a manager, it further filters the subsidiaries to only those the manager manages.
+   * @async
+   * @param {Object} filters - The filters to apply to the subsidiary search(name, cities, countries, missions, and main organizations).
+   *                           Supports orting the results based on specified fields and order.
+   * @returns {Promise<Array>} - A list of filtered subsidiaries.
+   *  @throws {AppError} - If the user that is manager is not found
+   */
   async getSubsidiaryFilteredList(filters = {}) {
     const {
       name,
@@ -39,6 +55,7 @@ class SubsidiaryService {
     const missionConditions = {};
     const mainOrgConditions = {};
 
+    // checking the lenght if we expect multiple parametrs of the cathegory
     if (name) whereConditions.name = { [Op.like]: `%${name}%` };
     if (cities?.length) addressConditions.city = { [Op.in]: cities };
     if (countries?.length) addressConditions.country = { [Op.in]: countries };
@@ -125,6 +142,17 @@ class SubsidiaryService {
     return subsidiaries;
   }
 
+  /**
+   * Retrieves a subsidiary by its ID, including detailed information like address,
+   * photo set, missions, and users. If the user is a manager, it ensures the user has
+   * permission to access the subsidiary.
+   * @async
+   * @param {number} id - The ID of the subsidiary to retrieve.
+   * @param {number} userId - The ID of the user making the request.
+   * @param {Array<string>} userRoles - Roles associated with the user.
+   * @returns {Promise<Object>} - The subsidiary details.
+   * @throws {AppError} - If the subsidiary is not found or if the user does not have access.
+   */
   async getSubsidiaryById(id, userId, userRoles) {
     const subsidiary = await Subsidiary.findOne({
       attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -196,6 +224,14 @@ class SubsidiaryService {
     return subsidiary;
   }
 
+  /**
+   * Retrieves a list of subsidiary names. If the user is a manager, only subsidiaries
+   * they are associated with are returned.
+   * @async
+   * @param {number} userId - The ID of the user requesting the subsidiary names.
+   * @param {Array<string>} userRoles - Roles associated with the user.
+   * @returns {Promise<Array>} - A list of subsidiary names.
+   */
   async findSubsidiaryNames(userId, userRoles) {
     if (userId && userRoles && userRoles.includes(Roles.MANAGER)) {
       return await Subsidiary.findAll({
@@ -218,6 +254,28 @@ class SubsidiaryService {
       attributes: ["id", "name"],
     });
   }
+
+  /**
+   * Adds a new subsidiary to the database, setting up its details, photo set, news set, and comment set.
+   * Handles uploading banner and other photos to the server and initializes related resources.
+   *
+   * @async
+   * @param {number} managerId - The ID of the manager creating the subsidiary.
+   * @param {string} name - The name of the subsidiary.
+   * @param {string} description - A detailed description of the subsidiary.
+   * @param {number} mainOrganizationId - The ID of the main organization to which the subsidiary belongs.
+   * @param {Date} foundedAt - The date when the subsidiary was founded.
+   * @param {number} addressId - The ID of the address where the subsidiary is located.
+   * @param {string} email - The contact email of the subsidiary.
+   * @param {string} website - The website URL of the subsidiary.
+   * @param {number} staffCount - The number of staff members in the subsidiary.
+   * @param {Array<Object>} missions - A list of missions associated with the subsidiary.
+   * @param {Object} bannerPhoto - A file  for the main banner photo of the subsidiary.
+   * @param {Array<Object>} otherPhotos - A list of additional photos for the subsidiary.
+   *
+   * @returns {Promise<Object>} - The created subsidiary object.
+   * @throws {AppError} - If required data is missing, invalid, or if there are issues with photo uploads.
+   */
 
   async addSubsidiary({
     managerId,
@@ -311,6 +369,29 @@ class SubsidiaryService {
     return newSubsidiary;
   }
 
+  /**
+   * Updates an existing subsidiary, including its details, associated photos, and missions.
+   * Handles correct behavior when photos or missions are added or removed, ensuring updates are reflected
+   * in the server's filesystem and database.
+   *
+   * @async
+   * @param {number} subsidiaryId - The ID of the subsidiary to update.
+   * @param {string} [name] - The updated name of the subsidiary.
+   * @param {string} [description] - The updated description of the subsidiary.
+   * @param {number} [mainOrganizationId] - The updated ID of the main organization to which the subsidiary belongs.
+   * @param {Date} [foundedAt] - The updated date when the subsidiary was founded.
+   * @param {number} [addressId] - The updated ID of the subsidiary's address.
+   * @param {string} [email] - The updated contact email of the subsidiary.
+   * @param {string} [website] - The updated website URL of the subsidiary.
+   * @param {number} [staffCount] - The updated number of staff members in the subsidiary.
+   * @param {Array<Object>} [missions] - The updated list of missions associated with the subsidiary.
+   * @param {Object} [bannerPhoto] - The updated banner photo for the subsidiary.
+   * @param {Array<Object>} [otherPhotos] - The updated list of additional photos for the subsidiary.
+   *
+   * @returns {Promise<Object>} - The updated subsidiary object.
+   * @throws {AppError} - If the subsidiary is not found, invalid data is provided, or updates fail.
+   */
+
   async editSubsidiary(
     id,
     {
@@ -368,6 +449,7 @@ class SubsidiaryService {
     if (missions) {
       const missionsArray = Array.isArray(missions) ? missions : [missions];
 
+      //Determine whitch missions were deleted from list and whitch added
       const existingMissionIds = await Subsidiary_Mission.findAll({
         where: { subsidiaryId: id },
         attributes: ["missionId"],
@@ -412,6 +494,7 @@ class SubsidiaryService {
         existingBannerPhoto.filename !== bannerPhoto.originalname
       ) {
         if (existingBannerPhoto) {
+          // if new photo - recreate the photo
           await fs.promises.unlink(
             path.join(parentDir, `${existingBannerPhoto.url}`)
           );
@@ -425,6 +508,7 @@ class SubsidiaryService {
         );
       }
     } else if (existingBannerPhoto) {
+      // if photo was removed
       await fs.promises.unlink(
         path.join(parentDir, `${existingBannerPhoto.url}`)
       );
@@ -475,6 +559,13 @@ class SubsidiaryService {
     return subsidiary;
   }
 
+  /**
+   * Deletes subsidiaries by their IDs, including associated files and records (e.g. photos)
+   *
+   * @param {Array} ids - The IDs of the subsidiaries to delete.
+   * @returns {Promise<void>} - Resolves when the deletion is complete.
+   * @throws {AppError} - Throws an error if any subsidiary cannot be deleted.
+   */
   async deleteSubsidiaries(ids) {
     const subsidiaries = await Subsidiary.findAll({
       where: { id: { [Op.in]: ids } },
@@ -487,6 +578,7 @@ class SubsidiaryService {
 
     const parentDir = path.resolve(__dirname, "..");
 
+    // deleteing photos in file system and datavase if subsidiary is deleted
     for (const subsidiary of subsidiaries) {
       if (subsidiary.Photo_Set && subsidiary.Photo_Set.Photos) {
         for (const photo of subsidiary.Photo_Set.Photos) {
@@ -505,7 +597,14 @@ class SubsidiaryService {
 
     return deletedCount;
   }
-
+  /**
+   * Retrieves the comment set associated with a subsidiary by its ID.
+   * If the subsidiary or its comment set is not found, an error is thrown.
+   *
+   * @param {number} id - The ID of the subsidiary whose comment set is to be fetched.
+   * @returns {Promise<Object>} - The comment set associated with the subsidiary.
+   * @throws {AppError} - Throws an error if the subsidiary or comment set is not found.
+   */
   async getSubsidiaryCommentSetById(id) {
     const subsidiary = await Subsidiary.findByPk(id);
 
@@ -522,6 +621,14 @@ class SubsidiaryService {
     return commentSet;
   }
 
+  /**
+   * Retrieves the news set associated with a subsidiary by its ID.
+   * If the subsidiary or its news set is not found, an error is thrown.
+   *
+   * @param {number} id - The ID of the subsidiary whose news set is to be fetched.
+   * @returns {Promise<Object>} - The news set associated with the subsidiary.
+   * @throws {AppError} - Throws an error if the subsidiary or news set is not found.
+   */
   async getSubsidiaryNewsSetById(id) {
     const subsidiary = await Subsidiary.findByPk(id);
 
@@ -538,6 +645,15 @@ class SubsidiaryService {
     return newsSet;
   }
 
+  /**
+   * Updates the managers of a subsidiary by comparing the current list with the new list.
+   * Adds new managers and removes old managers as necessary.
+   *
+   * @param {number} subsidiaryId - The ID of the subsidiary whose managers need to be updated.
+   * @param {Array<number>} newManagerIds - The list of manager IDs to be set for the subsidiary.
+   * @returns {Promise<Object>} - The added and removed manager IDs.
+   * @throws {AppError} - Throws an error if the operation fails.
+   */
   async updateManagers(subsidiaryId, newManagerIds) {
     const existingManagerIds = await Subsidiary_Manager.findAll({
       where: { subsidiaryId },

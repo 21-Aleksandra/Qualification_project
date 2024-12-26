@@ -8,7 +8,21 @@ redisClient
   .connect()
   .catch((e) => console.log("Could not connect to Redis", e));
 
+/**
+ * Controller for handling news-related actions such as retrieving, adding, editing, and deleting users
+ * @class UserController
+ */
 class UserController {
+  /**
+   * Retrieves a list of all users, optionally filtered by user ID and username.
+   * Sends a status 200 response with the list of users.
+   *
+   * @async
+   * @param {Object} req - Express request object, containing optional filters in the query.
+   * @param {Object} res - Express response object used to return the list of users.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @returns {Promise<void>}
+   */
   async getAllUsers(req, res, next) {
     try {
       const { id, username } = req.query;
@@ -19,6 +33,18 @@ class UserController {
     }
   }
 
+  /**
+   * Retrieves a single user by their ID.
+   * Sends a status 200 response with the user details.
+   *
+   * @async
+   * @param {Object} req - Express request object, containing the user ID in the URL parameters.
+   * @param {Object} res - Express response object used to return the user details.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @throws {AppError} - Status 400 if the user ID is missing.
+   * @throws {AppError} - Status 404 if the user with the given ID is not found.
+   * @returns {Promise<void>}
+   */
   async getUserById(req, res, next) {
     try {
       const { id } = req.params;
@@ -39,6 +65,17 @@ class UserController {
     }
   }
 
+  /**
+   * Adds a new user to the system.
+   * Sends a status 201 response with the newly created user details.
+   *
+   * @async
+   * @param {Object} req - Express request object, containing the user data in the body.
+   * @param {Object} res - Express response object used to return the newly created user data.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @throws {AppError} - Status 400 if any required field (username, password, email, roles) is missing.
+   * @returns {Promise<void>}
+   */
   async addUser(req, res, next) {
     try {
       const { username, password, email, roles, isVerified } = req.body;
@@ -69,6 +106,18 @@ class UserController {
     }
   }
 
+  /**
+   * Edits an existing user's details.
+   * Updates the user and sends a status 200 response with the updated user details.
+   * If the user is updated, the previous session is also deleted from Redis.
+   *
+   * @async
+   * @param {Object} req - Express request object, containing the user ID in the URL parameters and the updated user data in the body.
+   * @param {Object} res - Express response object used to return the updated user data.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @throws {AppError} - Status 400 if username, email, or roles are missing.
+   * @returns {Promise<void>}
+   */
   async editUser(req, res, next) {
     try {
       const { id } = req.params;
@@ -102,6 +151,18 @@ class UserController {
     }
   }
 
+  /**
+   * Deletes multiple users based on their IDs.
+   * Deletes users and removes their session data from Redis.
+   * Sends a status 200 response with the count of deleted users.
+   *
+   * @async
+   * @param {Object} req - Express request object, containing the IDs of users to delete in the body.
+   * @param {Object} res - Express response object used to return the result of the deletion operation.
+   * @param {Function} next - Express next middleware function (typically error handler).
+   * @throws {AppError} - Status 400 if the `ids` parameter is invalid or missing.
+   * @returns {Promise<void>}
+   */
   async deleteUsers(req, res, next) {
     try {
       const { ids } = req.body;

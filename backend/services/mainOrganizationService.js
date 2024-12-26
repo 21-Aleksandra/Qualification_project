@@ -2,7 +2,20 @@ const { Main_Organization, Subsidiary, User } = require("../models");
 const AppError = require("../utils/errorClass");
 const Roles = require("../enums/roles");
 
+/**
+ * Service for managing main organizations .
+ * Handles operations like fetching, creating, and updating main organizations.
+ * @class MainOrganizationService
+ */
 class MainOrganizationService {
+  /**
+   * Retrieves a list of main organizations.
+   * If the user has a manager role, only returns organizations related to that user.
+   * @async
+   * @param {string} userId - ID of the user requesting the organizations.
+   * @param {Array} userRoles - Array of roles assigned to the user.
+   * @returns {Promise<Array>} - List of main organizations.
+   */
   async getMainOrganizationList(userId, userRoles) {
     let organizations;
     if (userRoles && userRoles.includes(Roles.MANAGER)) {
@@ -14,7 +27,7 @@ class MainOrganizationService {
             include: [
               {
                 model: User,
-                where: { id: userId },
+                where: { id: userId }, // Filters subsidiaries for the specific user
                 attributes: [],
               },
             ],
@@ -32,6 +45,13 @@ class MainOrganizationService {
     return organizations;
   }
 
+  /**
+   * Adds a new main organization by getting its name.
+   * @async
+   * @param {string} name - The name of the new organization.
+   * @returns {Promise<Object>} - The created main organization.
+   * @throws {AppError} - If the name is too long or the organization already exists.
+   */
   async addMainOrganization(name) {
     const MAX_LENGTH = 255;
 
@@ -56,6 +76,15 @@ class MainOrganizationService {
     const newOrganization = await Main_Organization.create({ name });
     return newOrganization;
   }
+
+  /**
+   * Edits an existing main organization.
+   * Updates only the fields that have changed, and returns the updated organization.
+   * @async
+   * @param {string} id - ID of the organization to update.
+   * @param {Object} updateData - Object containing the fields to be updated.
+   * @returns {Promise<Object|null>} - The updated organization, or null if not found.
+   */
   async editMainOrganization(id, updateData) {
     const existingOrganization = await Main_Organization.findByPk(id);
     if (!existingOrganization) {
@@ -63,6 +92,7 @@ class MainOrganizationService {
     }
 
     const changedFields = {};
+    // Prepare an object to hold the changed fields
     for (const key in updateData) {
       if (
         updateData[key] !== undefined &&
@@ -80,6 +110,12 @@ class MainOrganizationService {
     return existingOrganization;
   }
 
+  /**
+   * Retrieves a single main organization by its ID.
+   * @async
+   * @param {string} id - ID of the organization to retrieve.
+   * @returns {Promise<Object|null>} - The main organization, or null if not found.
+   */
   async getOneMainOrganization(id) {
     return await Main_Organization.findByPk(id);
   }

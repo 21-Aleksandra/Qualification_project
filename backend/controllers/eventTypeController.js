@@ -31,7 +31,6 @@ class EventTypeController {
         eventTypes,
       });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

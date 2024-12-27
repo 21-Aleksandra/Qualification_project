@@ -191,7 +191,6 @@ class ProfileService {
     }
 
     const sequenceNumber = sequenceRecord.number;
-    console.log(sequenceRecord);
 
     sequenceRecord.number += 1;
     await sequenceRecord.save();

@@ -29,7 +29,6 @@ class MainOrganizationController {
         organizations,
       });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

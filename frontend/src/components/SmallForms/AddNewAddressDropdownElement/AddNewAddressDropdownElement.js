@@ -175,7 +175,6 @@ const AddNewAddressDropdownElement = ({
         setShowModal(false);
         setInputValue("");
       } catch (err) {
-        console.log(err);
         setError(
           "Failed to add or reload the address. Check if it has country,city and street in it"
         );

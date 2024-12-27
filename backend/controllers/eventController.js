@@ -79,7 +79,6 @@ class EventController {
 
       res.status(200).json(event);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -165,7 +164,6 @@ class EventController {
 
       res.status(201).json(newEvent);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -228,7 +226,6 @@ class EventController {
 
       res.status(200).json(updatedEvent);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -257,7 +254,6 @@ class EventController {
         .status(200)
         .json({ message: `Successfully deleted ${result} events` });
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

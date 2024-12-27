@@ -83,7 +83,6 @@ class SubsidiaryController {
 
       res.status(200).json(subsidiary);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -132,7 +131,6 @@ class SubsidiaryController {
    */
   async addSubsidiary(req, res, next) {
     try {
-      console.log(req.files);
       const {
         managerId,
         name,
@@ -146,13 +144,9 @@ class SubsidiaryController {
         missions,
       } = req.body;
 
-      console.log(missions);
-
       if (!name || !managerId) {
         throw new AppError("ManagedId and name are required", 400);
       }
-
-      console.log(req.files);
 
       const bannerPhoto = req.files.bannerPhoto
         ? req.files.bannerPhoto[0]
@@ -176,7 +170,6 @@ class SubsidiaryController {
 
       res.status(201).json(newSubsidiary);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -237,7 +230,6 @@ class SubsidiaryController {
 
       res.status(200).json(updatedSubsidiary);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

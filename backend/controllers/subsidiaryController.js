@@ -83,7 +83,6 @@ class SubsidiaryController {
 
       res.status(200).json(subsidiary);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -132,7 +131,6 @@ class SubsidiaryController {
    */
   async addSubsidiary(req, res, next) {
     try {
-      console.log(req.files);
       const {
         managerId,
         name,
@@ -146,19 +144,22 @@ class SubsidiaryController {
         missions,
       } = req.body;
 
-      console.log(missions);
-
       if (!name || !managerId) {
         throw new AppError("ManagedId and name are required", 400);
       }
 
-      console.log(req.files);
+      let bannerPhoto = null;
+      let otherPhotos = [];
 
-      const bannerPhoto = req.files.bannerPhoto
-        ? req.files.bannerPhoto[0]
-        : null;
-      const otherPhotos = req.files.otherPhotos || [];
-
+      // Ensure req.files is defined before accessing it
+      if (req.files) {
+        if (req.files.bannerPhoto) {
+          bannerPhoto = req.files.bannerPhoto[0]; // First file for 'bannerPhoto'
+        }
+        if (req.files.otherPhotos) {
+          otherPhotos = req.files.otherPhotos; // Array of 'otherPhotos'
+        }
+      }
       const newSubsidiary = await subsidiaryService.addSubsidiary({
         managerId,
         name,
@@ -176,7 +177,6 @@ class SubsidiaryController {
 
       res.status(201).json(newSubsidiary);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
@@ -208,11 +208,18 @@ class SubsidiaryController {
         missions,
       } = req.body;
 
-      const bannerPhoto = req.files.bannerPhoto
-        ? req.files.bannerPhoto[0]
-        : null;
-      const otherPhotos = req.files.otherPhotos || [];
+      let bannerPhoto = null;
+      let otherPhotos = [];
 
+      // Ensure req.files is defined before accessing it
+      if (req.files) {
+        if (req.files.bannerPhoto) {
+          bannerPhoto = req.files.bannerPhoto[0]; // First file for 'bannerPhoto'
+        }
+        if (req.files.otherPhotos) {
+          otherPhotos = req.files.otherPhotos; // Array of 'otherPhotos'
+        }
+      }
       if (!id) {
         throw new AppError("Subsidiary ID is required", 400);
       }
@@ -220,6 +227,8 @@ class SubsidiaryController {
       if (!name || name == "") {
         throw new AppError("Name is required", 400);
       }
+
+      let userId = req.session.user.id;
 
       const updatedSubsidiary = await subsidiaryService.editSubsidiary(id, {
         name,
@@ -233,11 +242,11 @@ class SubsidiaryController {
         missions,
         bannerPhoto,
         otherPhotos,
+        userId,
       });
 
       res.status(200).json(updatedSubsidiary);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

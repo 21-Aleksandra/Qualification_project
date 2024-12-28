@@ -389,7 +389,7 @@ class SubsidiaryService {
    * @param {Array<Object>} [otherPhotos] - The updated list of additional photos for the subsidiary.
    *
    * @returns {Promise<Object>} - The updated subsidiary object.
-   * @throws {AppError} - If the subsidiary is not found, invalid data is provided, or updates fail.
+   * @throws {AppError} - If the subsidiary is not found, invalid data is provided, or updates fail or user not allowed to edit.
    */
 
   async editSubsidiary(
@@ -406,11 +406,25 @@ class SubsidiaryService {
       missions,
       bannerPhoto,
       otherPhotos,
+      userId = null,
     }
   ) {
     const subsidiary = await Subsidiary.findByPk(id);
     if (!subsidiary) {
       throw new AppError(`Subsidiary with ID ${id} not found`, 404);
+    }
+
+    if (userId != null) {
+      const managers = await Subsidiary_Manager.findAll({
+        where: { subsidiaryId: subsidiary.id },
+        attributes: ["managerId"],
+      });
+
+      const managerIds = managers.map((manager) => manager.managerId);
+
+      if (!managerIds.includes(userId)) {
+        throw new AppError(`You are not a manager of this subsidiary`, 403);
+      }
     }
 
     if (email && !EMAIL_REGEX.test(email)) {
@@ -655,6 +669,11 @@ class SubsidiaryService {
    * @throws {AppError} - Throws an error if the operation fails.
    */
   async updateManagers(subsidiaryId, newManagerIds) {
+    const subsidiary = await Subsidiary.findByPk(subsidiaryId);
+
+    if (!subsidiary) {
+      throw new AppError("Subsidiary not found", 404);
+    }
     const existingManagerIds = await Subsidiary_Manager.findAll({
       where: { subsidiaryId },
       attributes: ["managerId"],

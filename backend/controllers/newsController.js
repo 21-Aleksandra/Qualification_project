@@ -158,13 +158,19 @@ class NewsController {
         );
       }
 
+      let userId = req.session.user.id;
+
       const updateData = {
         newsSetId: subsidiaryNewsSet.id,
         title,
         content,
       };
 
-      const updatedNews = await newsService.editSubsidiaryNews(id, updateData);
+      const updatedNews = await newsService.editSubsidiaryNews(
+        id,
+        updateData,
+        userId
+      );
 
       res.status(200).json({
         message: "News for subsidiary edited successfully",
@@ -323,7 +329,13 @@ class NewsController {
         content,
       };
 
-      const updatedNews = await newsService.editEventNews(id, updateData);
+      let userId = req.session.user.id;
+
+      const updatedNews = await newsService.editEventNews(
+        id,
+        updateData,
+        userId
+      );
 
       res.status(200).json({
         message: "News for event edited successfully",

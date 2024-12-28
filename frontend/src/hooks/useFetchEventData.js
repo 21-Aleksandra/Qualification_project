@@ -31,7 +31,6 @@ const useFetchEventData = (
         userId: userStore.id,
         userRoles: userStore.roles.join(","),
       });
-      console.log(subsidiaryResponse);
       subsidiaryStore.setNames(subsidiaryResponse || []);
 
       // If an `id` is provided (i.e., editing an existing event), fetch the event details.

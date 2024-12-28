@@ -83,7 +83,6 @@ const SubsidiaryPage = observer(() => {
 
   const handleDelete = async (ids) => {
     try {
-      console.log("Deleting IDs:", ids);
       await deleteSubsidiaries(ids);
       const response = await getSubsidiaryFilteredList({
         userId,

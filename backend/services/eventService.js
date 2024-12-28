@@ -196,7 +196,10 @@ class EventService {
       throw new AppError(`Event with ID ${id} not found`, 404);
     }
 
-    userRoles = userRoles.map((role) => Number(role));
+    if (userRoles) {
+      userRoles = Array.isArray(userRoles) ? userRoles : [userRoles];
+      userRoles = userRoles.map((role) => Number(role));
+    }
 
     if (userId != null && userRoles && userRoles.includes(Roles.MANAGER)) {
       const user = await User.findByPk(userId, {
@@ -360,7 +363,7 @@ class EventService {
    * @param {Array<Object>} [otherPhotos] - A list of new additional photos for the event.
    *
    * @returns {Promise<Object>} - The updated event object.
-   * @throws {AppError} - If the event is not found or issues occur during photo uploads or updates.
+   * @throws {AppError} - If the event is not found or issues occur during photo uploads or updates or user not allowed to edit.
    */
   async editEvent(
     id,
@@ -377,11 +380,15 @@ class EventService {
       maxPeopleAllowed,
       bannerPhoto,
       otherPhotos,
+      userId = null,
     }
   ) {
     const event = await Event.findByPk(id);
     if (!event) {
       throw new AppError(`Event with ID ${id} not found`, 404);
+    }
+    if (userId != null && event.authorId != userId) {
+      throw new AppError(`You are not allowed to edit this object`, 404);
     }
 
     const parsedFields = {

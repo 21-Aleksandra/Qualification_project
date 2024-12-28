@@ -614,3 +614,22 @@ In summary:
 
 - Fixed error message styles
 - Fixed no map error for event
+
+### [7.2] - 28-12-2024
+
+#### Added:
+
+##### Backend:
+
+- Added backend automated tests (116 total)
+
+#### Changed
+
+##### Frontend:
+
+- Removed unneccesary console.logs
+
+##### Backend:
+
+- Removed unneccesary console.logs
+- Updated controller and services after tests for more logical performance

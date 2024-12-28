@@ -97,9 +97,12 @@ class EventController {
   async getEventNamesList(req, res, next) {
     try {
       const { userId, userRoles } = req.query;
-      const rolesArray = userRoles
-        ? userRoles.split(",").map((role) => Number(role))
-        : [];
+      let rolesArray;
+      if (userRoles) {
+        rolesArray = userRoles
+          ? userRoles.split(",").map((role) => Number(role))
+          : [];
+      }
 
       const events = await eventService.findEventNames(userId, rolesArray);
 
@@ -141,10 +144,18 @@ class EventController {
         throw new AppError("ManagedId and name are required", 400);
       }
 
-      const bannerPhoto = req.files.bannerPhoto
-        ? req.files.bannerPhoto[0]
-        : null;
-      const otherPhotos = req.files.otherPhotos || [];
+      let bannerPhoto = null;
+      let otherPhotos = [];
+
+      // Ensure req.files is defined before accessing it
+      if (req.files) {
+        if (req.files.bannerPhoto) {
+          bannerPhoto = req.files.bannerPhoto[0]; // First file for 'bannerPhoto'
+        }
+        if (req.files.otherPhotos) {
+          otherPhotos = req.files.otherPhotos; // Array of 'otherPhotos'
+        }
+      }
 
       const newEvent = await eventService.addEvent({
         managerId,
@@ -196,10 +207,18 @@ class EventController {
         maxPeopleAllowed,
       } = req.body;
 
-      const bannerPhoto = req.files.bannerPhoto
-        ? req.files.bannerPhoto[0]
-        : null;
-      const otherPhotos = req.files.otherPhotos || [];
+      let bannerPhoto = null;
+      let otherPhotos = [];
+
+      // Ensure req.files is defined before accessing it
+      if (req.files) {
+        if (req.files.bannerPhoto) {
+          bannerPhoto = req.files.bannerPhoto[0]; // First file for 'bannerPhoto'
+        }
+        if (req.files.otherPhotos) {
+          otherPhotos = req.files.otherPhotos; // Array of 'otherPhotos'
+        }
+      }
 
       if (!id) {
         throw new AppError("Subsidiary ID is required", 400);
@@ -208,6 +227,7 @@ class EventController {
       if (!name || name == "") {
         throw new AppError("Name is required", 400);
       }
+      let userId = req.session.user.id;
 
       const updatedEvent = await eventService.editEvent(id, {
         name,
@@ -222,6 +242,7 @@ class EventController {
         maxPeopleAllowed,
         bannerPhoto,
         otherPhotos,
+        userId,
       });
 
       res.status(200).json(updatedEvent);

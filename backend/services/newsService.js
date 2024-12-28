@@ -188,13 +188,17 @@ class NewsService {
    * @param {number} id - ID of the news entry to update.
    * @param {Object} updateData - Fields to update.
    * @returns {Promise<Object>} - The updated subsidiary news entry.
-   * @throws {AppError} - If the news entry is not found.
+   * @throws {AppError} - If the news entry is not found or user not allowed to edit.
    */
-  async editSubsidiaryNews(id, updateData) {
+  async editSubsidiaryNews(id, updateData, userId = null) {
     const news = await News.findByPk(id);
 
     if (!news) {
       throw new AppError("News not found", 404);
+    }
+
+    if (userId != null && userId != news.authorId) {
+      throw new AppError("You cannot edit this", 404);
     }
 
     // If changing the associated subsidiary, update the news set ID
@@ -353,13 +357,17 @@ class NewsService {
    * @param {number} id - ID of the news entry to update.
    * @param {Object} updateData - Fields to update.
    * @returns {Promise<Object>} - The updated event news entry.
-   * @throws {AppError} - If the news entry is not found.
+   * @throws {AppError} - If the news entry is not found or user not allowed to edit.
    */
-  async editEventNews(id, updateData) {
+  async editEventNews(id, updateData, userId) {
     const news = await News.findByPk(id);
 
     if (!news) {
       throw new AppError("News not found", 404);
+    }
+
+    if (userId != null && userId != news.authorId) {
+      throw new AppError("You cannot edit this", 404);
     }
 
     if (updateData.eventId) {
